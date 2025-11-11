@@ -1,0 +1,13 @@
+# Loại bỏ các thư mục build
+[Bb]in/
+[Oo]bj/
+
+# Loại bỏ các tệp và thư mục cache của Visual Studio
+.vs/
+[Vv]s/
+*.suo
+*.user
+
+# Các file hệ điều hành
+*.DS_Store
+Thumbs.db
