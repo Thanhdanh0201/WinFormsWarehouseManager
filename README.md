@@ -7,7 +7,7 @@
 ## Logo Dự Án
 
 <p align="center">
-  <img src="Assets/LogoWarehouseManager.png" title="WarehouseManager Logo" width="600"/>
+  <img src="Assets/BgSpashForm.png" title="WarehouseManager Logo" width="600"/>
 </p>
 
 ##  Công Nghệ Sử Dụng
