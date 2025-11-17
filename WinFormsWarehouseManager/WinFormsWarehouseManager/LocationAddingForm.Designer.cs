@@ -77,7 +77,7 @@
             // 
             // ckbA1
             // 
-            this.ckbA1.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.IconRoom;
+            this.ckbA1.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.iconshelves;
             this.ckbA1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ckbA1.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image")));
             this.ckbA1.Image = ((System.Drawing.Image)(resources.GetObject("ckbA1.Image")));
@@ -113,7 +113,7 @@
             // 
             // ckbA2
             // 
-            this.ckbA2.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.IconRoom;
+            this.ckbA2.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.iconshelves;
             this.ckbA2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ckbA2.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image1")));
             this.ckbA2.Image = ((System.Drawing.Image)(resources.GetObject("ckbA2.Image")));
@@ -137,7 +137,7 @@
             // 
             // ckbA5
             // 
-            this.ckbA5.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.IconRoom;
+            this.ckbA5.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.iconshelves;
             this.ckbA5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ckbA5.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image2")));
             this.ckbA5.Image = ((System.Drawing.Image)(resources.GetObject("ckbA5.Image")));
@@ -161,7 +161,7 @@
             // 
             // ckbA4
             // 
-            this.ckbA4.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.IconRoom;
+            this.ckbA4.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.iconshelves;
             this.ckbA4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ckbA4.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image3")));
             this.ckbA4.Image = ((System.Drawing.Image)(resources.GetObject("ckbA4.Image")));
@@ -185,7 +185,7 @@
             // 
             // ckbA6
             // 
-            this.ckbA6.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.IconRoom;
+            this.ckbA6.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.iconshelves;
             this.ckbA6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ckbA6.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image4")));
             this.ckbA6.Image = ((System.Drawing.Image)(resources.GetObject("ckbA6.Image")));
@@ -209,7 +209,7 @@
             // 
             // ckbA3
             // 
-            this.ckbA3.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.IconRoom;
+            this.ckbA3.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.iconshelves;
             this.ckbA3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ckbA3.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image5")));
             this.ckbA3.Image = ((System.Drawing.Image)(resources.GetObject("ckbA3.Image")));
@@ -265,11 +265,11 @@
             // lblstatus1
             // 
             this.lblstatus1.BackColor = System.Drawing.Color.Transparent;
-            this.lblstatus1.Font = new System.Drawing.Font("Franklin Gothic Medium", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblstatus1.Font = new System.Drawing.Font("Franklin Gothic Medium", 7.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblstatus1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.lblstatus1.Location = new System.Drawing.Point(8, 104);
             this.lblstatus1.Name = "lblstatus1";
-            this.lblstatus1.Size = new System.Drawing.Size(120, 36);
+            this.lblstatus1.Size = new System.Drawing.Size(93, 28);
             this.lblstatus1.TabIndex = 16;
             this.lblstatus1.Text = "Available";
             this.lblstatus1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
