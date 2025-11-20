@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArtanPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="LocationAddingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,6 +67,12 @@
     </Compile>
     <Compile Include="LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProductListForm.Designer.cs">
+      <DependentUpon>ProductListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SplashForm.cs">
       <SubType>Form</SubType>
@@ -78,6 +87,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductListForm.resx">
+      <DependentUpon>ProductListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SplashForm.resx">
       <DependentUpon>SplashForm.cs</DependentUpon>
