@@ -56,8 +56,7 @@
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
             this.guna2DataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.guna2DataGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.guna2DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.guna2DataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SunkenHorizontal;
+            this.guna2DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -85,7 +84,7 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.guna2DataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
             this.guna2DataGridView1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.guna2DataGridView1.Location = new System.Drawing.Point(121, 126);
+            this.guna2DataGridView1.Location = new System.Drawing.Point(106, 126);
             this.guna2DataGridView1.Name = "guna2DataGridView1";
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
@@ -98,7 +97,7 @@
             this.guna2DataGridView1.RowHeadersVisible = false;
             this.guna2DataGridView1.RowHeadersWidth = 82;
             this.guna2DataGridView1.RowTemplate.Height = 33;
-            this.guna2DataGridView1.Size = new System.Drawing.Size(1041, 582);
+            this.guna2DataGridView1.Size = new System.Drawing.Size(882, 558);
             this.guna2DataGridView1.TabIndex = 0;
             this.guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -203,6 +202,7 @@
             this.btnUpdate.Size = new System.Drawing.Size(99, 72);
             this.btnUpdate.TabIndex = 4;
             this.btnUpdate.Text = "Update";
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnAdd
             // 
@@ -232,12 +232,12 @@
             this.guna2TextBox1.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.guna2TextBox1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.guna2TextBox1.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.guna2TextBox1.Location = new System.Drawing.Point(121, 40);
+            this.guna2TextBox1.Location = new System.Drawing.Point(106, 40);
             this.guna2TextBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.guna2TextBox1.Name = "guna2TextBox1";
             this.guna2TextBox1.PlaceholderText = "";
             this.guna2TextBox1.SelectedText = "";
-            this.guna2TextBox1.Size = new System.Drawing.Size(663, 77);
+            this.guna2TextBox1.Size = new System.Drawing.Size(678, 65);
             this.guna2TextBox1.TabIndex = 6;
             // 
             // btnFind
@@ -253,9 +253,9 @@
             this.btnFind.ForeColor = System.Drawing.Color.White;
             this.btnFind.Image = global::WinFormsWarehouseManager.Properties.Resources.IconFind_copy;
             this.btnFind.ImageSize = new System.Drawing.Size(115, 75);
-            this.btnFind.Location = new System.Drawing.Point(819, 40);
+            this.btnFind.Location = new System.Drawing.Point(793, 40);
             this.btnFind.Name = "btnFind";
-            this.btnFind.Size = new System.Drawing.Size(102, 77);
+            this.btnFind.Size = new System.Drawing.Size(102, 65);
             this.btnFind.TabIndex = 7;
             // 
             // guna2Button1
@@ -269,19 +269,18 @@
             this.guna2Button1.ForeColor = System.Drawing.Color.White;
             this.guna2Button1.Image = global::WinFormsWarehouseManager.Properties.Resources.IconRefresh;
             this.guna2Button1.ImageSize = new System.Drawing.Size(105, 73);
-            this.guna2Button1.Location = new System.Drawing.Point(977, 40);
+            this.guna2Button1.Location = new System.Drawing.Point(901, 40);
             this.guna2Button1.Name = "guna2Button1";
-            this.guna2Button1.Size = new System.Drawing.Size(100, 77);
+            this.guna2Button1.Size = new System.Drawing.Size(100, 65);
             this.guna2Button1.TabIndex = 8;
             // 
             // ProductListForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(45)))), ((int)(((byte)(61)))));
             this.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.bgAdding;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1174, 829);
+            this.ClientSize = new System.Drawing.Size(1000, 800);
             this.Controls.Add(this.guna2Button1);
             this.Controls.Add(this.btnFind);
             this.Controls.Add(this.guna2TextBox1);
