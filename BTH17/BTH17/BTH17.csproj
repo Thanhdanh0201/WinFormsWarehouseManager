@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D3CA67D2-0EA3-48DF-829A-A838391FFFF3}</ProjectGuid>
+    <ProjectGuid>{2690DE8A-59EA-4780-BD36-C0CF5EA9122A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>WinFormsWarehouseManager</RootNamespace>
-    <AssemblyName>WinFormsWarehouseManager</AssemblyName>
+    <RootNamespace>BTH17</RootNamespace>
+    <AssemblyName>BTH17</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -34,14 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Guna.UI2, Version=2.0.4.7, Culture=neutral, PublicKeyToken=8b9d14aa5142e261, processorArchitecture=MSIL">
-      <HintPath>..\packages\Guna.UI2.WinForms.2.0.4.7\lib\net472\Guna.UI2.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,46 +47,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArtanPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="LocationAddingForm.cs">
+    <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LocationAddingForm.Designer.cs">
-      <DependentUpon>LocationAddingForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LoginForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LoginForm.Designer.cs">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductListForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProductListForm.Designer.cs">
-      <DependentUpon>ProductListForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SplashForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SplashForm.Designer.cs">
-      <DependentUpon>SplashForm.cs</DependentUpon>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="LocationAddingForm.resx">
-      <DependentUpon>LocationAddingForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LoginForm.resx">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductListForm.resx">
-      <DependentUpon>ProductListForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SplashForm.resx">
-      <DependentUpon>SplashForm.cs</DependentUpon>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -102,9 +66,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -117,48 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\bg.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\padlock.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\user.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\bgAdding.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Room.jpeg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\IconRoom.jpeg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\iconshelves.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\IconAdd.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\IconDelete.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\IconFind.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\IconInventory.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\IconQR.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\IconRefresh.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\IconFind copy.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

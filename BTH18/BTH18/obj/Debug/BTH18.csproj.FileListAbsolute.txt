@@ -1,0 +1,11 @@
+C:\WinFormsWarehouseManager\BTH18\BTH18\bin\Debug\BTH18.exe.config
+C:\WinFormsWarehouseManager\BTH18\BTH18\bin\Debug\BTH18.exe
+C:\WinFormsWarehouseManager\BTH18\BTH18\bin\Debug\BTH18.pdb
+C:\WinFormsWarehouseManager\BTH18\BTH18\obj\Debug\BTH18.csproj.AssemblyReference.cache
+C:\WinFormsWarehouseManager\BTH18\BTH18\obj\Debug\BTH18.Form1.resources
+C:\WinFormsWarehouseManager\BTH18\BTH18\obj\Debug\BTH18.Properties.Resources.resources
+C:\WinFormsWarehouseManager\BTH18\BTH18\obj\Debug\BTH18.csproj.GenerateResource.cache
+C:\WinFormsWarehouseManager\BTH18\BTH18\obj\Debug\BTH18.csproj.CoreCompileInputs.cache
+C:\WinFormsWarehouseManager\BTH18\BTH18\obj\Debug\BTH18.exe
+C:\WinFormsWarehouseManager\BTH18\BTH18\obj\Debug\BTH18.pdb
+C:\WinFormsWarehouseManager\BTH18\BTH18\obj\Debug\BTH18.exe.config

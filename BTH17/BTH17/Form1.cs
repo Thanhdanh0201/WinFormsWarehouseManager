@@ -8,18 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WinFormsWarehouseManager
+namespace BTH17
 {
-    public partial class ProductListForm : Form
+    public partial class Form1 : Form
     {
-        public ProductListForm()
+        public Form1()
         {
             InitializeComponent();
-        }
-
-        private void ProductListForm_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
