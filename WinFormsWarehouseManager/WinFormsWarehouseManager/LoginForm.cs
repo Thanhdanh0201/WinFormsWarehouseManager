@@ -7,14 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing;
-using System.Windows.Forms;
-
 namespace WinFormsWarehouseManager
 {
     public partial class LoginForm : Form
     {
-        Color BackColor = Color.FromArgb(255, 52, 58, 64);      // Xám đậm
+        Color newBackColor = Color.FromArgb(255, 52, 58, 64);      // Xám đậm
         Color AccentColor = Color.FromArgb(255, 214, 90, 49);    // Cam cháy
         Color TextColor = Color.White;                          // Thường dùng chữ trắng trên nền tối
 

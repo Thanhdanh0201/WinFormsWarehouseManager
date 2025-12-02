@@ -8,7 +8,7 @@ namespace WinFormsWarehouseManager
         [STAThread]
         static void Main()
         {
-            Application.Run(new MainFormDashboard());
+            Application.Run(new MainForm());
         }
     }
 }
