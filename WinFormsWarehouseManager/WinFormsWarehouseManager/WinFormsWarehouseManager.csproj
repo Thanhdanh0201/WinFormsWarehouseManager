@@ -69,6 +69,12 @@
     <Compile Include="FormDashboard.Designer.cs">
       <DependentUpon>FormDashboard.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormNhapKho.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormNhapKho.Designer.cs">
+      <DependentUpon>FormNhapKho.cs</DependentUpon>
+    </Compile>
     <Compile Include="LocationAddingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,6 +99,21 @@
     <Compile Include="ProductListForm.Designer.cs">
       <DependentUpon>ProductListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="RJControls\RJButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJComboBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJDateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RJControls\RJTextBox.Designer.cs">
+      <DependentUpon>RJTextBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="SplashForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +124,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormDashboard.resx">
       <DependentUpon>FormDashboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormNhapKho.resx">
+      <DependentUpon>FormNhapKho.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LocationAddingForm.resx">
       <DependentUpon>LocationAddingForm.cs</DependentUpon>
@@ -115,6 +139,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductListForm.resx">
       <DependentUpon>ProductListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RJControls\RJTextBox.resx">
+      <DependentUpon>RJTextBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SplashForm.resx">
       <DependentUpon>SplashForm.cs</DependentUpon>
@@ -202,6 +229,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\colorbutton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\calendarWhite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\calendarDark.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
