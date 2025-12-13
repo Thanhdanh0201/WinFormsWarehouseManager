@@ -8,4 +8,4 @@
 
 * **Backend:** C# 
 * **Frontend:** WinForms 
-* **Database:** MySQL 
+  
