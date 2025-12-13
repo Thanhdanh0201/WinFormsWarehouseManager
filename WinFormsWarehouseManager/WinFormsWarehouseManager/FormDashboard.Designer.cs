@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.btnOK = new System.Windows.Forms.Button();
             this.dtpfromDate = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
@@ -46,22 +46,22 @@
             this.btnCustom = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblNumExportReciepts = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.lblNumImportReciepts = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.lblNumProducts = new System.Windows.Forms.Label();
-            this.lblNumImportReciepts = new System.Windows.Forms.Label();
-            this.lblNumExportReciepts = new System.Windows.Forms.Label();
             this.chartReceipts = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartTopCategories = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.lblNumSuppliers = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.lblNumRecievers = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.lblNumSuppliers = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.label12 = new System.Windows.Forms.Label();
             this.dgvDS = new System.Windows.Forms.DataGridView();
+            this.label12 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -81,6 +81,7 @@
             this.btnOK.Size = new System.Drawing.Size(30, 30);
             this.btnOK.TabIndex = 18;
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // dtpfromDate
             // 
@@ -133,6 +134,7 @@
             this.btnLast7Days.TabIndex = 15;
             this.btnLast7Days.Text = "Last 7 days";
             this.btnLast7Days.UseVisualStyleBackColor = true;
+            this.btnLast7Days.Click += new System.EventHandler(this.btnLast7Days_Click);
             // 
             // btnThisMonth
             // 
@@ -144,6 +146,7 @@
             this.btnThisMonth.TabIndex = 13;
             this.btnThisMonth.Text = "This month";
             this.btnThisMonth.UseVisualStyleBackColor = true;
+            this.btnThisMonth.Click += new System.EventHandler(this.btnThisMonth_Click);
             // 
             // btnLast30Days
             // 
@@ -155,6 +158,7 @@
             this.btnLast30Days.TabIndex = 14;
             this.btnLast30Days.Text = "Last 30 days";
             this.btnLast30Days.UseVisualStyleBackColor = true;
+            this.btnLast30Days.Click += new System.EventHandler(this.btnLast30Days_Click);
             // 
             // btnToday
             // 
@@ -166,6 +170,7 @@
             this.btnToday.TabIndex = 16;
             this.btnToday.Text = "Today";
             this.btnToday.UseVisualStyleBackColor = true;
+            this.btnToday.Click += new System.EventHandler(this.btnToday_Click);
             // 
             // btnCustom
             // 
@@ -199,6 +204,17 @@
             this.panel1.Size = new System.Drawing.Size(413, 77);
             this.panel1.TabIndex = 22;
             // 
+            // lblNumExportReciepts
+            // 
+            this.lblNumExportReciepts.AutoSize = true;
+            this.lblNumExportReciepts.Font = new System.Drawing.Font("Segoe UI", 10.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNumExportReciepts.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.lblNumExportReciepts.Location = new System.Drawing.Point(17, 29);
+            this.lblNumExportReciepts.Name = "lblNumExportReciepts";
+            this.lblNumExportReciepts.Size = new System.Drawing.Size(102, 40);
+            this.lblNumExportReciepts.TabIndex = 3;
+            this.lblNumExportReciepts.Text = "10000";
+            // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
@@ -208,6 +224,17 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(416, 76);
             this.panel2.TabIndex = 23;
+            // 
+            // lblNumImportReciepts
+            // 
+            this.lblNumImportReciepts.AutoSize = true;
+            this.lblNumImportReciepts.Font = new System.Drawing.Font("Segoe UI", 10.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNumImportReciepts.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.lblNumImportReciepts.Location = new System.Drawing.Point(21, 29);
+            this.lblNumImportReciepts.Name = "lblNumImportReciepts";
+            this.lblNumImportReciepts.Size = new System.Drawing.Size(102, 40);
+            this.lblNumImportReciepts.TabIndex = 2;
+            this.lblNumImportReciepts.Text = "10000";
             // 
             // panel3
             // 
@@ -230,44 +257,22 @@
             this.lblNumProducts.TabIndex = 1;
             this.lblNumProducts.Text = "10000";
             // 
-            // lblNumImportReciepts
-            // 
-            this.lblNumImportReciepts.AutoSize = true;
-            this.lblNumImportReciepts.Font = new System.Drawing.Font("Segoe UI", 10.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNumImportReciepts.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.lblNumImportReciepts.Location = new System.Drawing.Point(21, 29);
-            this.lblNumImportReciepts.Name = "lblNumImportReciepts";
-            this.lblNumImportReciepts.Size = new System.Drawing.Size(102, 40);
-            this.lblNumImportReciepts.TabIndex = 2;
-            this.lblNumImportReciepts.Text = "10000";
-            // 
-            // lblNumExportReciepts
-            // 
-            this.lblNumExportReciepts.AutoSize = true;
-            this.lblNumExportReciepts.Font = new System.Drawing.Font("Segoe UI", 10.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNumExportReciepts.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.lblNumExportReciepts.Location = new System.Drawing.Point(17, 29);
-            this.lblNumExportReciepts.Name = "lblNumExportReciepts";
-            this.lblNumExportReciepts.Size = new System.Drawing.Size(102, 40);
-            this.lblNumExportReciepts.TabIndex = 3;
-            this.lblNumExportReciepts.Text = "10000";
-            // 
             // chartReceipts
             // 
             this.chartReceipts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea3.Name = "ChartArea1";
-            this.chartReceipts.ChartAreas.Add(chartArea3);
-            legend3.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend3.Name = "Legend1";
-            this.chartReceipts.Legends.Add(legend3);
+            chartArea9.Name = "ChartArea1";
+            this.chartReceipts.ChartAreas.Add(chartArea9);
+            legend9.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend9.Name = "Legend1";
+            this.chartReceipts.Legends.Add(legend9);
             this.chartReceipts.Location = new System.Drawing.Point(12, 129);
             this.chartReceipts.Name = "chartReceipts";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.chartReceipts.Series.Add(series3);
+            series9.ChartArea = "ChartArea1";
+            series9.Legend = "Legend1";
+            series9.Name = "Series1";
+            this.chartReceipts.Series.Add(series9);
             this.chartReceipts.Size = new System.Drawing.Size(754, 320);
             this.chartReceipts.TabIndex = 26;
             // 
@@ -276,23 +281,23 @@
             this.chartTopCategories.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea4.Name = "ChartArea1";
-            this.chartTopCategories.ChartAreas.Add(chartArea4);
-            legend4.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend4.Name = "Legend1";
-            legend4.Title = "Thông số danh mục sản phẩm";
-            legend4.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold);
-            this.chartTopCategories.Legends.Add(legend4);
+            chartArea10.Name = "ChartArea1";
+            this.chartTopCategories.ChartAreas.Add(chartArea10);
+            legend10.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend10.Name = "Legend1";
+            legend10.Title = "Thông số danh mục sản phẩm";
+            legend10.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold);
+            this.chartTopCategories.Legends.Add(legend10);
             this.chartTopCategories.Location = new System.Drawing.Point(772, 129);
             this.chartTopCategories.Name = "chartTopCategories";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
-            series4.Font = new System.Drawing.Font("Microsoft JhengHei", 10F);
-            series4.IsValueShownAsLabel = true;
-            series4.LabelForeColor = System.Drawing.Color.White;
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chartTopCategories.Series.Add(series4);
+            series10.ChartArea = "ChartArea1";
+            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
+            series10.Font = new System.Drawing.Font("Microsoft JhengHei", 10F);
+            series10.IsValueShownAsLabel = true;
+            series10.LabelForeColor = System.Drawing.Color.White;
+            series10.Legend = "Legend1";
+            series10.Name = "Series1";
+            this.chartTopCategories.Series.Add(series10);
             this.chartTopCategories.Size = new System.Drawing.Size(344, 519);
             this.chartTopCategories.TabIndex = 27;
             // 
@@ -311,39 +316,6 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(250, 193);
             this.panel4.TabIndex = 28;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 7.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.label4.Location = new System.Drawing.Point(17, 4);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(173, 25);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Các thông số khác";
-            // 
-            // lblNumSuppliers
-            // 
-            this.lblNumSuppliers.AutoSize = true;
-            this.lblNumSuppliers.Font = new System.Drawing.Font("Segoe UI", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNumSuppliers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.lblNumSuppliers.Location = new System.Drawing.Point(14, 50);
-            this.lblNumSuppliers.Name = "lblNumSuppliers";
-            this.lblNumSuppliers.Size = new System.Drawing.Size(97, 37);
-            this.lblNumSuppliers.TabIndex = 3;
-            this.lblNumSuppliers.Text = "10000";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.label5.Location = new System.Drawing.Point(17, 29);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(169, 21);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "Số lượng nhà cung cấp";
             // 
             // lblNumRecievers
             // 
@@ -367,6 +339,39 @@
             this.label7.TabIndex = 4;
             this.label7.Text = "Số lượng khách hàng";
             // 
+            // lblNumSuppliers
+            // 
+            this.lblNumSuppliers.AutoSize = true;
+            this.lblNumSuppliers.Font = new System.Drawing.Font("Segoe UI", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNumSuppliers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.lblNumSuppliers.Location = new System.Drawing.Point(14, 50);
+            this.lblNumSuppliers.Name = "lblNumSuppliers";
+            this.lblNumSuppliers.Size = new System.Drawing.Size(97, 37);
+            this.lblNumSuppliers.TabIndex = 3;
+            this.lblNumSuppliers.Text = "10000";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.label5.Location = new System.Drawing.Point(17, 29);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(169, 21);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Số lượng nhà cung cấp";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 7.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.label4.Location = new System.Drawing.Point(17, 4);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(173, 25);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Các thông số khác";
+            // 
             // panel5
             // 
             this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -379,6 +384,17 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(498, 193);
             this.panel5.TabIndex = 29;
+            // 
+            // dgvDS
+            // 
+            this.dgvDS.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvDS.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvDS.Location = new System.Drawing.Point(16, 32);
+            this.dgvDS.Name = "dgvDS";
+            this.dgvDS.RowHeadersWidth = 82;
+            this.dgvDS.RowTemplate.Height = 33;
+            this.dgvDS.Size = new System.Drawing.Size(478, 150);
+            this.dgvDS.TabIndex = 1;
             // 
             // label12
             // 
@@ -393,17 +409,6 @@
             this.label12.Size = new System.Drawing.Size(420, 25);
             this.label12.TabIndex = 0;
             this.label12.Text = "Danh sách sản phẩm hết hạn hoặc gần hết hạn";
-            // 
-            // dgvDS
-            // 
-            this.dgvDS.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvDS.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvDS.Location = new System.Drawing.Point(16, 32);
-            this.dgvDS.Name = "dgvDS";
-            this.dgvDS.RowHeadersWidth = 82;
-            this.dgvDS.RowTemplate.Height = 33;
-            this.dgvDS.Size = new System.Drawing.Size(478, 150);
-            this.dgvDS.TabIndex = 1;
             // 
             // FormDashboard
             // 

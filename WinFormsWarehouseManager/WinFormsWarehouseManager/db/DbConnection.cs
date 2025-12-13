@@ -1,25 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Markup;
 
 namespace WinFormsWarehouseManager.db
 {
-        public abstract class DbConnection
-        {
-            private readonly string connectionString;
-            public DbConnection()
-            {
-            connectionString = @"Server=localhost;Database=QuanLyKhoHang;Integrated Security=True;Encrypt=False";
-        }
-        protected SqlConnection GetConnection()
-            {
-                return new SqlConnection(connectionString);
-            }
-    }
+    public abstract class DbConnection
+    {
+        private readonly string connectionString;
 
+        public DbConnection()
+        {
+            // Đường dẫn đến file SQLite.db trong thư mục bin\Debug
+            string dbPath = System.IO.Path.Combine(Application.StartupPath, "SQLite.db");
+            connectionString = $"Data Source={dbPath};Version=3;";
+        }
+
+        protected SQLiteConnection GetConnection()
+        {
+            return new SQLiteConnection(connectionString);
+        }
+    }
 }
