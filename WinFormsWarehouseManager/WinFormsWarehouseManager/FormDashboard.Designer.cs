@@ -28,458 +28,474 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            this.btnOK = new System.Windows.Forms.Button();
-            this.dtpfromDate = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
-            this.dtptoDate = new System.Windows.Forms.DateTimePicker();
-            this.labelSanPham = new System.Windows.Forms.Label();
-            this.btnLast7Days = new System.Windows.Forms.Button();
-            this.btnThisMonth = new System.Windows.Forms.Button();
-            this.btnLast30Days = new System.Windows.Forms.Button();
-            this.btnToday = new System.Windows.Forms.Button();
+            this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
+            this.panelTop = new System.Windows.Forms.Panel();
+            this.tableLayoutPanelTop = new System.Windows.Forms.TableLayoutPanel();
+            this.panelNumExport = new System.Windows.Forms.Panel();
+            this.lblNumExport = new System.Windows.Forms.Label();
+            this.lblTitleExport = new System.Windows.Forms.Label();
+            this.panelNumImport = new System.Windows.Forms.Panel();
+            this.lblNumImport = new System.Windows.Forms.Label();
+            this.lblTitleImport = new System.Windows.Forms.Label();
+            this.flowLayoutPanelButtons = new System.Windows.Forms.FlowLayoutPanel();
+            this.dtpFromDate = new System.Windows.Forms.DateTimePicker();
+            this.dtpToDate = new System.Windows.Forms.DateTimePicker();
+            this.btnApply = new System.Windows.Forms.Button();
             this.btnCustom = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.lblNumExportReciepts = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.lblNumImportReciepts = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.btnToday = new System.Windows.Forms.Button();
+            this.btnLast7Days = new System.Windows.Forms.Button();
+            this.btnLast30Days = new System.Windows.Forms.Button();
+            this.btnThisMonth = new System.Windows.Forms.Button();
+            this.panelNumProducts = new System.Windows.Forms.Panel();
             this.lblNumProducts = new System.Windows.Forms.Label();
-            this.chartReceipts = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.chartTopCategories = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.lblNumRecievers = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.lblNumSuppliers = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.panel5 = new System.Windows.Forms.Panel();
+            this.lblTitleProducts = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvDS = new System.Windows.Forms.DataGridView();
-            this.label12 = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chartReceipts)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chartTopCategories)).BeginInit();
-            this.panel4.SuspendLayout();
-            this.panel5.SuspendLayout();
+            this.panelStats = new System.Windows.Forms.Panel();
+            this.lblNumRecievers = new System.Windows.Forms.Label();
+            this.lblTitleReceiver = new System.Windows.Forms.Label();
+            this.lblNumSuppliers = new System.Windows.Forms.Label();
+            this.lblTitleSuppliers = new System.Windows.Forms.Label();
+            this.lblTitleStats = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.tableLayoutPanelMain.SuspendLayout();
+            this.panelTop.SuspendLayout();
+            this.tableLayoutPanelTop.SuspendLayout();
+            this.panelNumExport.SuspendLayout();
+            this.panelNumImport.SuspendLayout();
+            this.flowLayoutPanelButtons.SuspendLayout();
+            this.panelNumProducts.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDS)).BeginInit();
+            this.panelStats.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnOK
+            // tableLayoutPanelMain
             // 
-            this.btnOK.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOK.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.btnOK.Location = new System.Drawing.Point(443, 9);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(30, 30);
-            this.btnOK.TabIndex = 18;
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            this.tableLayoutPanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            this.tableLayoutPanelMain.ColumnCount = 2;
+            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 13.04348F));
+            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 86.95652F));
+            this.tableLayoutPanelMain.Controls.Add(this.panelTop, 0, 0);
+            this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanel1, 0, 2);
+            this.tableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
+            this.tableLayoutPanelMain.RowCount = 3;
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1274, 829);
+            this.tableLayoutPanelMain.TabIndex = 0;
+            this.tableLayoutPanelMain.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanelMain_Paint);
             // 
-            // dtpfromDate
+            // panelTop
             // 
-            this.dtpfromDate.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtpfromDate.CustomFormat = "MMM dd,yyyy";
-            this.dtpfromDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpfromDate.Location = new System.Drawing.Point(12, 10);
-            this.dtpfromDate.Name = "dtpfromDate";
-            this.dtpfromDate.Size = new System.Drawing.Size(200, 31);
-            this.dtpfromDate.TabIndex = 11;
+            this.tableLayoutPanelMain.SetColumnSpan(this.panelTop, 2);
+            this.panelTop.Controls.Add(this.tableLayoutPanelTop);
+            this.panelTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelTop.Location = new System.Drawing.Point(3, 3);
+            this.panelTop.Name = "panelTop";
+            this.panelTop.Size = new System.Drawing.Size(1268, 284);
+            this.panelTop.TabIndex = 0;
             // 
-            // label1
+            // tableLayoutPanelTop
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 7.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.label1.Location = new System.Drawing.Point(24, 4);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(311, 25);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Tổng số lượng hóa đơn nhập kho";
+            this.tableLayoutPanelTop.ColumnCount = 3;
+            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
+            this.tableLayoutPanelTop.Controls.Add(this.panelNumExport, 2, 1);
+            this.tableLayoutPanelTop.Controls.Add(this.panelNumImport, 1, 1);
+            this.tableLayoutPanelTop.Controls.Add(this.flowLayoutPanelButtons, 0, 0);
+            this.tableLayoutPanelTop.Controls.Add(this.panelNumProducts, 0, 1);
+            this.tableLayoutPanelTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelTop.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanelTop.Name = "tableLayoutPanelTop";
+            this.tableLayoutPanelTop.RowCount = 2;
+            this.tableLayoutPanelTop.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanelTop.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanelTop.Size = new System.Drawing.Size(1268, 284);
+            this.tableLayoutPanelTop.TabIndex = 0;
             // 
-            // dtptoDate
+            // panelNumExport
             // 
-            this.dtptoDate.CustomFormat = "MMM dd,yyyy";
-            this.dtptoDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtptoDate.Location = new System.Drawing.Point(237, 9);
-            this.dtptoDate.Name = "dtptoDate";
-            this.dtptoDate.Size = new System.Drawing.Size(200, 31);
-            this.dtptoDate.TabIndex = 12;
+            this.panelNumExport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelNumExport.Controls.Add(this.lblNumExport);
+            this.panelNumExport.Controls.Add(this.lblTitleExport);
+            this.panelNumExport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelNumExport.Location = new System.Drawing.Point(847, 55);
+            this.panelNumExport.Name = "panelNumExport";
+            this.panelNumExport.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.panelNumExport.Size = new System.Drawing.Size(418, 235);
+            this.panelNumExport.TabIndex = 3;
             // 
-            // labelSanPham
+            // lblNumExport
             // 
-            this.labelSanPham.AutoSize = true;
-            this.labelSanPham.Font = new System.Drawing.Font("Segoe UI", 7.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSanPham.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.labelSanPham.Location = new System.Drawing.Point(17, 4);
-            this.labelSanPham.Name = "labelSanPham";
-            this.labelSanPham.Size = new System.Drawing.Size(233, 25);
-            this.labelSanPham.TabIndex = 0;
-            this.labelSanPham.Text = "Tổng số lượng sản phẩm";
+            this.lblNumExport.AutoSize = true;
+            this.lblNumExport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblNumExport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.lblNumExport.Location = new System.Drawing.Point(10, 25);
+            this.lblNumExport.Name = "lblNumExport";
+            this.lblNumExport.Size = new System.Drawing.Size(24, 25);
+            this.lblNumExport.TabIndex = 1;
+            this.lblNumExport.Text = "0";
             // 
-            // btnLast7Days
+            // lblTitleExport
             // 
-            this.btnLast7Days.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLast7Days.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.btnLast7Days.Location = new System.Drawing.Point(731, 9);
-            this.btnLast7Days.Name = "btnLast7Days";
-            this.btnLast7Days.Size = new System.Drawing.Size(120, 31);
-            this.btnLast7Days.TabIndex = 15;
-            this.btnLast7Days.Text = "Last 7 days";
-            this.btnLast7Days.UseVisualStyleBackColor = true;
-            this.btnLast7Days.Click += new System.EventHandler(this.btnLast7Days_Click);
+            this.lblTitleExport.AutoSize = true;
+            this.lblTitleExport.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTitleExport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.lblTitleExport.Location = new System.Drawing.Point(10, 0);
+            this.lblTitleExport.Name = "lblTitleExport";
+            this.lblTitleExport.Size = new System.Drawing.Size(321, 25);
+            this.lblTitleExport.TabIndex = 0;
+            this.lblTitleExport.Text = "Tổng số lượng hóa đơn xuất kho";
             // 
-            // btnThisMonth
+            // panelNumImport
             // 
-            this.btnThisMonth.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnThisMonth.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.btnThisMonth.Location = new System.Drawing.Point(983, 10);
-            this.btnThisMonth.Name = "btnThisMonth";
-            this.btnThisMonth.Size = new System.Drawing.Size(120, 31);
-            this.btnThisMonth.TabIndex = 13;
-            this.btnThisMonth.Text = "This month";
-            this.btnThisMonth.UseVisualStyleBackColor = true;
-            this.btnThisMonth.Click += new System.EventHandler(this.btnThisMonth_Click);
+            this.panelNumImport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelNumImport.Controls.Add(this.lblNumImport);
+            this.panelNumImport.Controls.Add(this.lblTitleImport);
+            this.panelNumImport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelNumImport.Location = new System.Drawing.Point(425, 55);
+            this.panelNumImport.Name = "panelNumImport";
+            this.panelNumImport.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.panelNumImport.Size = new System.Drawing.Size(416, 235);
+            this.panelNumImport.TabIndex = 2;
             // 
-            // btnLast30Days
+            // lblNumImport
             // 
-            this.btnLast30Days.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLast30Days.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.btnLast30Days.Location = new System.Drawing.Point(857, 9);
-            this.btnLast30Days.Name = "btnLast30Days";
-            this.btnLast30Days.Size = new System.Drawing.Size(120, 31);
-            this.btnLast30Days.TabIndex = 14;
-            this.btnLast30Days.Text = "Last 30 days";
-            this.btnLast30Days.UseVisualStyleBackColor = true;
-            this.btnLast30Days.Click += new System.EventHandler(this.btnLast30Days_Click);
+            this.lblNumImport.AutoSize = true;
+            this.lblNumImport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblNumImport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.lblNumImport.Location = new System.Drawing.Point(10, 25);
+            this.lblNumImport.Name = "lblNumImport";
+            this.lblNumImport.Size = new System.Drawing.Size(24, 25);
+            this.lblNumImport.TabIndex = 1;
+            this.lblNumImport.Text = "0";
+            // 
+            // lblTitleImport
+            // 
+            this.lblTitleImport.AutoSize = true;
+            this.lblTitleImport.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTitleImport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.lblTitleImport.Location = new System.Drawing.Point(10, 0);
+            this.lblTitleImport.Name = "lblTitleImport";
+            this.lblTitleImport.Size = new System.Drawing.Size(328, 25);
+            this.lblTitleImport.TabIndex = 0;
+            this.lblTitleImport.Text = "Tổng số lượng hóa đơn nhập kho";
+            // 
+            // flowLayoutPanelButtons
+            // 
+            this.flowLayoutPanelButtons.AutoSize = true;
+            this.flowLayoutPanelButtons.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            this.tableLayoutPanelTop.SetColumnSpan(this.flowLayoutPanelButtons, 3);
+            this.flowLayoutPanelButtons.Controls.Add(this.dtpFromDate);
+            this.flowLayoutPanelButtons.Controls.Add(this.dtpToDate);
+            this.flowLayoutPanelButtons.Controls.Add(this.btnApply);
+            this.flowLayoutPanelButtons.Controls.Add(this.btnCustom);
+            this.flowLayoutPanelButtons.Controls.Add(this.btnToday);
+            this.flowLayoutPanelButtons.Controls.Add(this.btnLast7Days);
+            this.flowLayoutPanelButtons.Controls.Add(this.btnLast30Days);
+            this.flowLayoutPanelButtons.Controls.Add(this.btnThisMonth);
+            this.flowLayoutPanelButtons.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanelButtons.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanelButtons.Name = "flowLayoutPanelButtons";
+            this.flowLayoutPanelButtons.Size = new System.Drawing.Size(1262, 46);
+            this.flowLayoutPanelButtons.TabIndex = 0;
+            // 
+            // dtpFromDate
+            // 
+            this.dtpFromDate.CalendarForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.dtpFromDate.CustomFormat = "MMM,dd,yyyy";
+            this.dtpFromDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpFromDate.Location = new System.Drawing.Point(3, 3);
+            this.dtpFromDate.MinimumSize = new System.Drawing.Size(130, 30);
+            this.dtpFromDate.Name = "dtpFromDate";
+            this.dtpFromDate.Size = new System.Drawing.Size(200, 31);
+            this.dtpFromDate.TabIndex = 0;
+            // 
+            // dtpToDate
+            // 
+            this.dtpToDate.CalendarForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.dtpToDate.CustomFormat = "MMM,dd,yyyy";
+            this.dtpToDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpToDate.Location = new System.Drawing.Point(209, 3);
+            this.dtpToDate.MinimumSize = new System.Drawing.Size(130, 30);
+            this.dtpToDate.Name = "dtpToDate";
+            this.dtpToDate.Size = new System.Drawing.Size(200, 31);
+            this.dtpToDate.TabIndex = 1;
+            // 
+            // btnApply
+            // 
+            this.btnApply.Location = new System.Drawing.Point(415, 3);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(40, 40);
+            this.btnApply.TabIndex = 2;
+            this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            // 
+            // btnCustom
+            // 
+            this.btnCustom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.btnCustom.Location = new System.Drawing.Point(461, 3);
+            this.btnCustom.MinimumSize = new System.Drawing.Size(130, 30);
+            this.btnCustom.Name = "btnCustom";
+            this.btnCustom.Size = new System.Drawing.Size(130, 40);
+            this.btnCustom.TabIndex = 3;
+            this.btnCustom.Text = "Custom";
+            this.btnCustom.UseVisualStyleBackColor = true;
+            this.btnCustom.Click += new System.EventHandler(this.btnCustom_Click);
             // 
             // btnToday
             // 
-            this.btnToday.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnToday.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.btnToday.Location = new System.Drawing.Point(605, 9);
+            this.btnToday.Location = new System.Drawing.Point(597, 3);
+            this.btnToday.MinimumSize = new System.Drawing.Size(130, 30);
             this.btnToday.Name = "btnToday";
-            this.btnToday.Size = new System.Drawing.Size(120, 31);
-            this.btnToday.TabIndex = 16;
+            this.btnToday.Size = new System.Drawing.Size(130, 40);
+            this.btnToday.TabIndex = 4;
             this.btnToday.Text = "Today";
             this.btnToday.UseVisualStyleBackColor = true;
             this.btnToday.Click += new System.EventHandler(this.btnToday_Click);
             // 
-            // btnCustom
+            // btnLast7Days
             // 
-            this.btnCustom.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCustom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.btnCustom.Location = new System.Drawing.Point(479, 9);
-            this.btnCustom.Name = "btnCustom";
-            this.btnCustom.Size = new System.Drawing.Size(120, 31);
-            this.btnCustom.TabIndex = 17;
-            this.btnCustom.Text = "Custom";
-            this.btnCustom.UseVisualStyleBackColor = true;
+            this.btnLast7Days.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.btnLast7Days.Location = new System.Drawing.Point(733, 3);
+            this.btnLast7Days.MinimumSize = new System.Drawing.Size(130, 30);
+            this.btnLast7Days.Name = "btnLast7Days";
+            this.btnLast7Days.Size = new System.Drawing.Size(130, 40);
+            this.btnLast7Days.TabIndex = 5;
+            this.btnLast7Days.Text = "Last 7 Days";
+            this.btnLast7Days.UseVisualStyleBackColor = true;
+            this.btnLast7Days.Click += new System.EventHandler(this.btnLast7Days_Click);
             // 
-            // label2
+            // btnLast30Days
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 7.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.label2.Location = new System.Drawing.Point(20, 4);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(306, 25);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Tổng số lượng hóa đơn xuất kho";
+            this.btnLast30Days.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.btnLast30Days.Location = new System.Drawing.Point(869, 3);
+            this.btnLast30Days.MinimumSize = new System.Drawing.Size(130, 30);
+            this.btnLast30Days.Name = "btnLast30Days";
+            this.btnLast30Days.Size = new System.Drawing.Size(130, 40);
+            this.btnLast30Days.TabIndex = 6;
+            this.btnLast30Days.Text = "Last 30 Days";
+            this.btnLast30Days.UseVisualStyleBackColor = true;
+            this.btnLast30Days.Click += new System.EventHandler(this.btnLast30Days_Click);
             // 
-            // panel1
+            // btnThisMonth
             // 
-            this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.lblNumExportReciepts);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Location = new System.Drawing.Point(706, 47);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(413, 77);
-            this.panel1.TabIndex = 22;
+            this.btnThisMonth.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.btnThisMonth.Location = new System.Drawing.Point(1005, 3);
+            this.btnThisMonth.MinimumSize = new System.Drawing.Size(130, 30);
+            this.btnThisMonth.Name = "btnThisMonth";
+            this.btnThisMonth.Size = new System.Drawing.Size(130, 40);
+            this.btnThisMonth.TabIndex = 7;
+            this.btnThisMonth.Text = "This Month";
+            this.btnThisMonth.UseVisualStyleBackColor = true;
+            this.btnThisMonth.Click += new System.EventHandler(this.btnThisMonth_Click);
             // 
-            // lblNumExportReciepts
+            // panelNumProducts
             // 
-            this.lblNumExportReciepts.AutoSize = true;
-            this.lblNumExportReciepts.Font = new System.Drawing.Font("Segoe UI", 10.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNumExportReciepts.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.lblNumExportReciepts.Location = new System.Drawing.Point(17, 29);
-            this.lblNumExportReciepts.Name = "lblNumExportReciepts";
-            this.lblNumExportReciepts.Size = new System.Drawing.Size(102, 40);
-            this.lblNumExportReciepts.TabIndex = 3;
-            this.lblNumExportReciepts.Text = "10000";
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.White;
-            this.panel2.Controls.Add(this.lblNumImportReciepts);
-            this.panel2.Controls.Add(this.label1);
-            this.panel2.Location = new System.Drawing.Point(284, 47);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(416, 76);
-            this.panel2.TabIndex = 23;
-            // 
-            // lblNumImportReciepts
-            // 
-            this.lblNumImportReciepts.AutoSize = true;
-            this.lblNumImportReciepts.Font = new System.Drawing.Font("Segoe UI", 10.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNumImportReciepts.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.lblNumImportReciepts.Location = new System.Drawing.Point(21, 29);
-            this.lblNumImportReciepts.Name = "lblNumImportReciepts";
-            this.lblNumImportReciepts.Size = new System.Drawing.Size(102, 40);
-            this.lblNumImportReciepts.TabIndex = 2;
-            this.lblNumImportReciepts.Text = "10000";
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.White;
-            this.panel3.Controls.Add(this.lblNumProducts);
-            this.panel3.Controls.Add(this.labelSanPham);
-            this.panel3.Location = new System.Drawing.Point(12, 46);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(266, 77);
-            this.panel3.TabIndex = 25;
+            this.panelNumProducts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelNumProducts.Controls.Add(this.lblNumProducts);
+            this.panelNumProducts.Controls.Add(this.lblTitleProducts);
+            this.panelNumProducts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelNumProducts.Location = new System.Drawing.Point(3, 55);
+            this.panelNumProducts.Name = "panelNumProducts";
+            this.panelNumProducts.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.panelNumProducts.Size = new System.Drawing.Size(416, 235);
+            this.panelNumProducts.TabIndex = 1;
             // 
             // lblNumProducts
             // 
             this.lblNumProducts.AutoSize = true;
-            this.lblNumProducts.Font = new System.Drawing.Font("Segoe UI", 10.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNumProducts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblNumProducts.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.lblNumProducts.Location = new System.Drawing.Point(14, 29);
+            this.lblNumProducts.Location = new System.Drawing.Point(10, 25);
             this.lblNumProducts.Name = "lblNumProducts";
-            this.lblNumProducts.Size = new System.Drawing.Size(102, 40);
+            this.lblNumProducts.Size = new System.Drawing.Size(24, 25);
             this.lblNumProducts.TabIndex = 1;
-            this.lblNumProducts.Text = "10000";
+            this.lblNumProducts.Text = "0";
             // 
-            // chartReceipts
+            // lblTitleProducts
             // 
-            this.chartReceipts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea9.Name = "ChartArea1";
-            this.chartReceipts.ChartAreas.Add(chartArea9);
-            legend9.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend9.Name = "Legend1";
-            this.chartReceipts.Legends.Add(legend9);
-            this.chartReceipts.Location = new System.Drawing.Point(12, 129);
-            this.chartReceipts.Name = "chartReceipts";
-            series9.ChartArea = "ChartArea1";
-            series9.Legend = "Legend1";
-            series9.Name = "Series1";
-            this.chartReceipts.Series.Add(series9);
-            this.chartReceipts.Size = new System.Drawing.Size(754, 320);
-            this.chartReceipts.TabIndex = 26;
+            this.lblTitleProducts.AutoSize = true;
+            this.lblTitleProducts.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTitleProducts.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.lblTitleProducts.Location = new System.Drawing.Point(10, 0);
+            this.lblTitleProducts.Name = "lblTitleProducts";
+            this.lblTitleProducts.Size = new System.Drawing.Size(249, 25);
+            this.lblTitleProducts.TabIndex = 0;
+            this.lblTitleProducts.Text = "Tổng số lượng sản phẩm";
             // 
-            // chartTopCategories
+            // tableLayoutPanel1
             // 
-            this.chartTopCategories.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea10.Name = "ChartArea1";
-            this.chartTopCategories.ChartAreas.Add(chartArea10);
-            legend10.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend10.Name = "Legend1";
-            legend10.Title = "Thông số danh mục sản phẩm";
-            legend10.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Bold);
-            this.chartTopCategories.Legends.Add(legend10);
-            this.chartTopCategories.Location = new System.Drawing.Point(772, 129);
-            this.chartTopCategories.Name = "chartTopCategories";
-            series10.ChartArea = "ChartArea1";
-            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
-            series10.Font = new System.Drawing.Font("Microsoft JhengHei", 10F);
-            series10.IsValueShownAsLabel = true;
-            series10.LabelForeColor = System.Drawing.Color.White;
-            series10.Legend = "Legend1";
-            series10.Name = "Series1";
-            this.chartTopCategories.Series.Add(series10);
-            this.chartTopCategories.Size = new System.Drawing.Size(344, 519);
-            this.chartTopCategories.TabIndex = 27;
-            // 
-            // panel4
-            // 
-            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel4.BackColor = System.Drawing.Color.White;
-            this.panel4.Controls.Add(this.lblNumRecievers);
-            this.panel4.Controls.Add(this.label7);
-            this.panel4.Controls.Add(this.lblNumSuppliers);
-            this.panel4.Controls.Add(this.label5);
-            this.panel4.Controls.Add(this.label4);
-            this.panel4.Location = new System.Drawing.Point(12, 455);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(250, 193);
-            this.panel4.TabIndex = 28;
-            // 
-            // lblNumRecievers
-            // 
-            this.lblNumRecievers.AutoSize = true;
-            this.lblNumRecievers.Font = new System.Drawing.Font("Segoe UI", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNumRecievers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.lblNumRecievers.Location = new System.Drawing.Point(15, 108);
-            this.lblNumRecievers.Name = "lblNumRecievers";
-            this.lblNumRecievers.Size = new System.Drawing.Size(97, 37);
-            this.lblNumRecievers.TabIndex = 5;
-            this.lblNumRecievers.Text = "10000";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.label7.Location = new System.Drawing.Point(18, 87);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(157, 21);
-            this.label7.TabIndex = 4;
-            this.label7.Text = "Số lượng khách hàng";
-            // 
-            // lblNumSuppliers
-            // 
-            this.lblNumSuppliers.AutoSize = true;
-            this.lblNumSuppliers.Font = new System.Drawing.Font("Segoe UI", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNumSuppliers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.lblNumSuppliers.Location = new System.Drawing.Point(14, 50);
-            this.lblNumSuppliers.Name = "lblNumSuppliers";
-            this.lblNumSuppliers.Size = new System.Drawing.Size(97, 37);
-            this.lblNumSuppliers.TabIndex = 3;
-            this.lblNumSuppliers.Text = "10000";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.label5.Location = new System.Drawing.Point(17, 29);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(169, 21);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "Số lượng nhà cung cấp";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 7.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.label4.Location = new System.Drawing.Point(17, 4);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(173, 25);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Các thông số khác";
-            // 
-            // panel5
-            // 
-            this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel5.BackColor = System.Drawing.Color.White;
-            this.panel5.Controls.Add(this.dgvDS);
-            this.panel5.Controls.Add(this.label12);
-            this.panel5.Location = new System.Drawing.Point(268, 455);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(498, 193);
-            this.panel5.TabIndex = 29;
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanelMain.SetColumnSpan(this.tableLayoutPanel1, 2);
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tableLayoutPanel1.Controls.Add(this.dgvDS, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.panelStats, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 624);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1268, 202);
+            this.tableLayoutPanel1.TabIndex = 3;
+            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // dgvDS
             // 
             this.dgvDS.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDS.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvDS.Location = new System.Drawing.Point(16, 32);
+            this.dgvDS.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvDS.Location = new System.Drawing.Point(383, 3);
             this.dgvDS.Name = "dgvDS";
             this.dgvDS.RowHeadersWidth = 82;
             this.dgvDS.RowTemplate.Height = 33;
-            this.dgvDS.Size = new System.Drawing.Size(478, 150);
-            this.dgvDS.TabIndex = 1;
+            this.dgvDS.Size = new System.Drawing.Size(882, 196);
+            this.dgvDS.TabIndex = 32;
             // 
-            // label12
+            // panelStats
             // 
-            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Segoe UI", 7.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.label12.Location = new System.Drawing.Point(12, 4);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(420, 25);
-            this.label12.TabIndex = 0;
-            this.label12.Text = "Danh sách sản phẩm hết hạn hoặc gần hết hạn";
+            this.panelStats.BackColor = System.Drawing.Color.White;
+            this.panelStats.Controls.Add(this.lblNumRecievers);
+            this.panelStats.Controls.Add(this.lblTitleReceiver);
+            this.panelStats.Controls.Add(this.lblNumSuppliers);
+            this.panelStats.Controls.Add(this.lblTitleSuppliers);
+            this.panelStats.Controls.Add(this.lblTitleStats);
+            this.panelStats.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelStats.Location = new System.Drawing.Point(3, 3);
+            this.panelStats.Name = "panelStats";
+            this.panelStats.Size = new System.Drawing.Size(374, 196);
+            this.panelStats.TabIndex = 29;
+            // 
+            // lblNumRecievers
+            // 
+            this.lblNumRecievers.AutoSize = true;
+            this.lblNumRecievers.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblNumRecievers.Font = new System.Drawing.Font("Segoe UI", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNumRecievers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.lblNumRecievers.Location = new System.Drawing.Point(0, 104);
+            this.lblNumRecievers.Name = "lblNumRecievers";
+            this.lblNumRecievers.Size = new System.Drawing.Size(97, 37);
+            this.lblNumRecievers.TabIndex = 5;
+            this.lblNumRecievers.Text = "10000";
+            // 
+            // lblTitleReceiver
+            // 
+            this.lblTitleReceiver.AutoSize = true;
+            this.lblTitleReceiver.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTitleReceiver.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitleReceiver.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.lblTitleReceiver.Location = new System.Drawing.Point(0, 83);
+            this.lblTitleReceiver.Name = "lblTitleReceiver";
+            this.lblTitleReceiver.Size = new System.Drawing.Size(157, 21);
+            this.lblTitleReceiver.TabIndex = 4;
+            this.lblTitleReceiver.Text = "Số lượng khách hàng";
+            // 
+            // lblNumSuppliers
+            // 
+            this.lblNumSuppliers.AutoSize = true;
+            this.lblNumSuppliers.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblNumSuppliers.Font = new System.Drawing.Font("Segoe UI", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNumSuppliers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.lblNumSuppliers.Location = new System.Drawing.Point(0, 46);
+            this.lblNumSuppliers.Name = "lblNumSuppliers";
+            this.lblNumSuppliers.Size = new System.Drawing.Size(97, 37);
+            this.lblNumSuppliers.TabIndex = 3;
+            this.lblNumSuppliers.Text = "10000";
+            // 
+            // lblTitleSuppliers
+            // 
+            this.lblTitleSuppliers.AutoSize = true;
+            this.lblTitleSuppliers.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTitleSuppliers.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitleSuppliers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.lblTitleSuppliers.Location = new System.Drawing.Point(0, 25);
+            this.lblTitleSuppliers.Name = "lblTitleSuppliers";
+            this.lblTitleSuppliers.Size = new System.Drawing.Size(169, 21);
+            this.lblTitleSuppliers.TabIndex = 2;
+            this.lblTitleSuppliers.Text = "Số lượng nhà cung cấp";
+            // 
+            // lblTitleStats
+            // 
+            this.lblTitleStats.AutoSize = true;
+            this.lblTitleStats.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTitleStats.Font = new System.Drawing.Font("Segoe UI", 7.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitleStats.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.lblTitleStats.Location = new System.Drawing.Point(0, 0);
+            this.lblTitleStats.Name = "lblTitleStats";
+            this.lblTitleStats.Size = new System.Drawing.Size(173, 25);
+            this.lblTitleStats.TabIndex = 0;
+            this.lblTitleStats.Text = "Các thông số khác";
             // 
             // FormDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1128, 660);
-            this.Controls.Add(this.panel5);
-            this.Controls.Add(this.panel4);
-            this.Controls.Add(this.chartTopCategories);
-            this.Controls.Add(this.chartReceipts);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.dtpfromDate);
-            this.Controls.Add(this.dtptoDate);
-            this.Controls.Add(this.btnLast7Days);
-            this.Controls.Add(this.btnThisMonth);
-            this.Controls.Add(this.btnLast30Days);
-            this.Controls.Add(this.btnToday);
-            this.Controls.Add(this.btnCustom);
-            this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.ClientSize = new System.Drawing.Size(1274, 829);
+            this.Controls.Add(this.tableLayoutPanelMain);
             this.Name = "FormDashboard";
-            this.Text = "FormDashboard";
+            this.Text = "FormDashboardNew";
             this.Load += new System.EventHandler(this.FormDashboard_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chartReceipts)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chartTopCategories)).EndInit();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
+            this.tableLayoutPanelMain.ResumeLayout(false);
+            this.panelTop.ResumeLayout(false);
+            this.tableLayoutPanelTop.ResumeLayout(false);
+            this.tableLayoutPanelTop.PerformLayout();
+            this.panelNumExport.ResumeLayout(false);
+            this.panelNumExport.PerformLayout();
+            this.panelNumImport.ResumeLayout(false);
+            this.panelNumImport.PerformLayout();
+            this.flowLayoutPanelButtons.ResumeLayout(false);
+            this.panelNumProducts.ResumeLayout(false);
+            this.panelNumProducts.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDS)).EndInit();
+            this.panelStats.ResumeLayout(false);
+            this.panelStats.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button btnOK;
-        private System.Windows.Forms.DateTimePicker dtpfromDate;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DateTimePicker dtptoDate;
-        private System.Windows.Forms.Label labelSanPham;
-        private System.Windows.Forms.Button btnLast7Days;
-        private System.Windows.Forms.Button btnThisMonth;
-        private System.Windows.Forms.Button btnLast30Days;
-        private System.Windows.Forms.Button btnToday;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
+        private System.Windows.Forms.Panel panelTop;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelTop;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelButtons;
+        private System.Windows.Forms.DateTimePicker dtpFromDate;
+        private System.Windows.Forms.DateTimePicker dtpToDate;
+        private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Button btnCustom;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label lblNumProducts;
-        private System.Windows.Forms.Label lblNumExportReciepts;
-        private System.Windows.Forms.Label lblNumImportReciepts;
+        private System.Windows.Forms.Button btnToday;
+        private System.Windows.Forms.Button btnLast7Days;
+        private System.Windows.Forms.Button btnLast30Days;
+        private System.Windows.Forms.Button btnThisMonth;
+        private System.Windows.Forms.Panel panelNumExport;
+        private System.Windows.Forms.Label lblNumExport;
+        private System.Windows.Forms.Label lblTitleExport;
+        private System.Windows.Forms.Panel panelNumImport;
+        private System.Windows.Forms.Label lblNumImport;
+        private System.Windows.Forms.Label lblTitleImport;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartReceipts;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartTopCategories;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Label lblNumSuppliers;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel panelStats;
         private System.Windows.Forms.Label lblNumRecievers;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label lblTitleReceiver;
+        private System.Windows.Forms.Label lblNumSuppliers;
+        private System.Windows.Forms.Label lblTitleSuppliers;
+        private System.Windows.Forms.Label lblTitleStats;
+
         private System.Windows.Forms.DataGridView dgvDS;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartTopCategories;
+        private System.Windows.Forms.Panel panelNumProducts;
+        private System.Windows.Forms.Label lblNumProducts;
+        private System.Windows.Forms.Label lblTitleProducts;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }

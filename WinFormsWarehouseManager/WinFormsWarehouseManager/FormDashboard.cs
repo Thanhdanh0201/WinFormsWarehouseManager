@@ -8,34 +8,37 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using WinFormsWarehouseManager.db;
 using WinFormsWarehouseManager.Models;
 
 namespace WinFormsWarehouseManager
 {
     public partial class FormDashboard : Form
     {
-        //Fields
-        private DashboardSQLite Model; 
+        private DashboardSQLite Model;
+
         public FormDashboard()
         {
+
             InitializeComponent();
+            AddCharts();
+
             Model = new DashboardSQLite();
 
+
             //Default - Last 7 days
-            dtpfromDate.Value = DateTime.Today.AddDays(-7);
-            dtptoDate.Value = DateTime.Now;
+            dtpFromDate.Value = DateTime.Today.AddDays(-7);
+            dtpToDate.Value = DateTime.Now;
             btnLast7Days.Select();
 
             LoadData();
-
         }
-
 
         private void LoadData()
         {
             try
             {
-                bool loaded = Model.LoadData(dtpfromDate.Value, dtptoDate.Value);
+                bool loaded = Model.LoadData(dtpFromDate.Value, dtpToDate.Value);
 
                 if (!loaded)
                 {
@@ -61,8 +64,8 @@ namespace WinFormsWarehouseManager
             lblNumProducts.Text = Model.NumProducts.ToString();
             lblNumSuppliers.Text = Model.NumSuppliers.ToString();
             lblNumRecievers.Text = Model.NumRecievers.ToString();
-            lblNumExportReciepts.Text = Model.NumExportReceipts.ToString();
-            lblNumImportReciepts.Text = Model.NumImportReceipts.ToString();
+            lblNumExport.Text = Model.NumExportReceipts.ToString();
+            lblNumImport.Text = Model.NumImportReceipts.ToString();
         }
 
         private void LoadTopCategories()
@@ -123,12 +126,90 @@ namespace WinFormsWarehouseManager
 
 
 
-        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
-        private void panelNCC1_Paint(object sender, PaintEventArgs e)
+        private void btnApply_Click(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+
+        private void btnCustom_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnToday_Click(object sender, EventArgs e)
+        {
+            dtpFromDate.Value = DateTime.Today;
+            dtpToDate.Value = DateTime.Now;
+            LoadData();
+        }
+
+        private void btnLast7Days_Click(object sender, EventArgs e)
+        {
+            dtpFromDate.Value = DateTime.Today.AddDays(-7);
+            dtpToDate.Value = DateTime.Now;
+            LoadData();
+        }
+
+        private void btnLast30Days_Click(object sender, EventArgs e)
+        {
+            dtpFromDate.Value = DateTime.Today.AddDays(-30);
+            dtpToDate.Value = DateTime.Now;
+            LoadData();
+        }
+
+        private void btnThisMonth_Click(object sender, EventArgs e)
+        {
+            dtpFromDate.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            dtpToDate.Value = DateTime.Now;
+            LoadData();
+        }
+
+
+        private void AddCharts()
+        {
+            // Tạo chartReceipts
+            chartReceipts = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            chartReceipts.Dock = DockStyle.Fill;
+            var chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            chartArea1.Name = "ChartArea1";
+            chartReceipts.ChartAreas.Add(chartArea1);
+            var legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            legend1.Name = "Legend1";
+            chartReceipts.Legends.Add(legend1);
+            tableLayoutPanelMain.Controls.Add(chartReceipts, 1, 1);
+
+            // Tạo chartTopCategories
+            chartTopCategories = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            chartTopCategories.Dock = DockStyle.Fill;
+            var chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            chartArea2.Name = "ChartArea1";
+            chartTopCategories.ChartAreas.Add(chartArea2);
+            var legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            legend2.Name = "Legend1";
+            chartTopCategories.Legends.Add(legend2);
+            var series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
+            series1.Name = "Series1";
+            chartTopCategories.Series.Add(series1);
+            /*
+            chartTopCategories.Titles = "Thong ke danh muc san pham";
+            chartTopCategories.
+            */
+            tableLayoutPanelMain.Controls.Add(chartTopCategories, 0, 1);
+           
+        }
+
+        private void tableLayoutPanelMain_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void artanPanel1_Paint(object sender, PaintEventArgs e)
         {
 
         }
@@ -136,39 +217,6 @@ namespace WinFormsWarehouseManager
         private void FormDashboard_Load(object sender, EventArgs e)
         {
 
-        }
-
-        private void btnOK_Click(object sender, EventArgs e)
-        {
-            LoadData();
-        }
-
-        private void btnToday_Click(object sender, EventArgs e)
-        {
-            dtpfromDate.Value = DateTime.Today;
-            dtptoDate.Value = DateTime.Now;
-            LoadData();
-        }
-
-        private void btnLast7Days_Click(object sender, EventArgs e)
-        {
-            dtpfromDate.Value = DateTime.Today.AddDays(-7);
-            dtptoDate.Value = DateTime.Now;
-            LoadData();
-        }
-
-        private void btnLast30Days_Click(object sender, EventArgs e)
-        {
-            dtpfromDate.Value = DateTime.Today.AddDays(-30);
-            dtptoDate.Value = DateTime.Now;
-            LoadData();
-        }
-
-        private void btnThisMonth_Click(object sender, EventArgs e)
-        {
-            dtpfromDate.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-            dtptoDate.Value = DateTime.Now;
-            LoadData();
         }
     }
 }

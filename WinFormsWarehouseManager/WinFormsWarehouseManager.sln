@@ -5,6 +5,12 @@ VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsWarehouseManager", "WinFormsWarehouseManager\WinFormsWarehouseManager.csproj", "{D3CA67D2-0EA3-48DF-829A-A838391FFFF3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\PackMe.ps1 = .nuget\PackMe.ps1
+		.nuget\PowerPack.psm1 = .nuget\PowerPack.psm1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

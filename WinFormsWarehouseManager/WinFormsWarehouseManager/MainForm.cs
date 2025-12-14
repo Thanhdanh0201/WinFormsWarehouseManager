@@ -10,6 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
+using WinFormsWarehouseManager.db;
+using WinFormsWarehouseManager.Services;
+using WinFormsWarehouseManager.Forms;
 using Panel = System.Windows.Forms.Panel;
 
 namespace WinFormsWarehouseManager
@@ -31,7 +34,42 @@ namespace WinFormsWarehouseManager
             panelMenu.Controls.Add(leftBorderBtn);
             this.Padding = new Padding(borderSize);
             this.BackColor = Color.FromArgb(2, 51, 66);
+            ResetNotificationsOneTime();
 
+        }
+
+        private void ResetNotificationsOneTime()
+        {
+            try
+            {
+                DatabaseHelper db = new DatabaseHelper();
+
+                // Đánh dấu tất cả là đã đọc
+                db.ExecuteNonQuery("UPDATE Notifications SET IsRead = 1");
+
+                // Đánh dấu 50 mới nhất là chưa đọc
+                string query = @"UPDATE Notifications
+                        SET IsRead = 0
+                        WHERE NotiID IN (
+                            SELECT NotiID
+                            FROM Notifications
+                            ORDER BY CreatedAt DESC
+                            LIMIT 50
+                        )";
+                db.ExecuteNonQuery(query);
+
+                MessageBox.Show("✅ Đã reset notifications thành công!\n(Xóa code này sau khi chạy xong)",
+                               "Thông báo",
+                               MessageBoxButtons.OK,
+                               MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi reset notifications: {ex.Message}",
+                               "Lỗi",
+                               MessageBoxButtons.OK,
+                               MessageBoxIcon.Error);
+            }
         }
 
         //Drag Form
@@ -251,7 +289,7 @@ namespace WinFormsWarehouseManager
         private void iconButton5_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, RGBColors.color6);
-            //OpenChildForm(new FormReports());
+            OpenChildForm(new NotificationForm());
         }
 
         private void iconButton6_Click(object sender, EventArgs e)
@@ -286,7 +324,7 @@ namespace WinFormsWarehouseManager
             ActivateButton(sender, RGBColors.color7);
             iconChildForm.Visible = false;
             lblChildForm.Visible = false;
-            //OpenChildForm(new FormMail());
+            OpenChildForm(new MailBoxForm());
         }
 
         private void btnIconUser_Click_1(object sender, EventArgs e)
@@ -353,5 +391,9 @@ namespace WinFormsWarehouseManager
         {
         }
 
+        private void panelDesktop_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
