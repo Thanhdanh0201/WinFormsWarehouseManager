@@ -62,7 +62,6 @@ namespace WinFormsWarehouseManager.Services
             }
             catch { }
         }
-
         /// <summary>
         /// Lấy danh sách email từ folder
         /// </summary>
@@ -76,33 +75,49 @@ namespace WinFormsWarehouseManager.Services
                 folder.Open(FolderAccess.ReadOnly);
 
                 var emails = new List<EmailModel>();
-                int count = Math.Min(folder.Count, limit);
 
-                // Lấy UIDs trước
-                var uids = new List<UniqueId>();
-                for (int i = folder.Count - 1; i >= folder.Count - count && i >= 0; i--)
+                if (folder.Count == 0)
                 {
-                    uids.Add(new UniqueId((uint)i));
+                    folder.Close();
+                    return emails;
                 }
 
-                // Fetch messages với flags
-                var items = folder.Fetch(uids, MessageSummaryItems.UniqueId | MessageSummaryItems.Envelope | MessageSummaryItems.Flags | MessageSummaryItems.BodyStructure);
+                int count = Math.Min(folder.Count, limit);
 
-                foreach (var item in items)
+                // Lấy range của messages (từ cuối lùi lên)
+                int startIndex = Math.Max(0, folder.Count - count);
+                int endIndex = folder.Count - 1;
+
+                // Fetch messages với flags - MailKit tự động convert index sang UID
+                var items = folder.Fetch(startIndex, endIndex,
+                    MessageSummaryItems.UniqueId |
+                    MessageSummaryItems.Envelope |
+                    MessageSummaryItems.Flags |
+                    MessageSummaryItems.BodyStructure);
+
+                foreach (var item in items.OrderByDescending(x => x.Index))
                 {
-                    var message = folder.GetMessage(item.UniqueId);
-
-                    emails.Add(new EmailModel
+                    try
                     {
-                        Uid = item.UniqueId.Id,
-                        From = item.Envelope.From.ToString(),
-                        To = item.Envelope.To.ToString(),
-                        Subject = item.Envelope.Subject ?? "(No Subject)",
-                        Body = message.TextBody ?? message.HtmlBody ?? "",
-                        Date = item.Envelope.Date?.DateTime ?? DateTime.Now,
-                        IsRead = item.Flags.HasValue && item.Flags.Value.HasFlag(MessageFlags.Seen),
-                        FolderName = folderName
-                    });
+                        var message = folder.GetMessage(item.UniqueId);
+
+                        emails.Add(new EmailModel
+                        {
+                            Uid = item.UniqueId.Id,
+                            From = item.Envelope.From.ToString(),
+                            To = item.Envelope.To.ToString(),
+                            Subject = item.Envelope.Subject ?? "(No Subject)",
+                            Body = message.TextBody ?? message.HtmlBody ?? "",
+                            Date = item.Envelope.Date?.DateTime ?? DateTime.Now,
+                            IsRead = item.Flags.HasValue && item.Flags.Value.HasFlag(MessageFlags.Seen),
+                            FolderName = folderName
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        // Skip email lỗi và tiếp tục
+                        Console.WriteLine($"Skip email UID {item.UniqueId}: {ex.Message}");
+                    }
                 }
 
                 folder.Close();
@@ -287,7 +302,7 @@ namespace WinFormsWarehouseManager.Services
         }
 
         /// <summary>
-        /// Lấy số lượng email trong Inbox
+        /// Lấy số lượng email trong Inbox 
         /// </summary>
         public int GetInboxCount()
         {

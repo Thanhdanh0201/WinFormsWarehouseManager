@@ -266,6 +266,7 @@
     </Compile>
     <Compile Include="Models\DashboardSQLite.cs" />
     <Compile Include="Models\EmailModel.cs" />
+    <Compile Include="Models\ProductInfo.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserSession.cs" />
     <Compile Include="NotificationForm.cs">
@@ -273,6 +274,15 @@
     </Compile>
     <Compile Include="NotificationForm.Designer.cs">
       <DependentUpon>NotificationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProductListForm.Designer.cs">
+      <DependentUpon>ProductListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RJControls\CustomDateTimePicker.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="RJControls\RJButton.cs">
       <SubType>Component</SubType>
@@ -290,11 +300,11 @@
       <DependentUpon>RJTextBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\EmailService.cs" />
-    <Compile Include="Services\MailBoxForm.cs">
+    <Compile Include="Services\FormMailBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Services\MailBoxForm.Designer.cs">
-      <DependentUpon>MailBoxForm.cs</DependentUpon>
+    <Compile Include="Services\FormMailBox.Designer.cs">
+      <DependentUpon>FormMailBox.cs</DependentUpon>
     </Compile>
     <Compile Include="SplashForm.cs">
       <SubType>Form</SubType>
@@ -322,11 +332,20 @@
     <EmbeddedResource Include="NotificationForm.resx">
       <DependentUpon>NotificationForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ProductListForm.resx">
+      <DependentUpon>ProductListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RJControls\CustomDateTimePicker.resx">
+      <DependentUpon>CustomDateTimePicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RJControls\RJDateTimePicker.resx">
+      <DependentUpon>RJDateTimePicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RJControls\RJTextBox.resx">
       <DependentUpon>RJTextBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Services\MailBoxForm.resx">
-      <DependentUpon>MailBoxForm.cs</DependentUpon>
+    <EmbeddedResource Include="Services\FormMailBox.resx">
+      <DependentUpon>FormMailBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SplashForm.resx">
       <DependentUpon>SplashForm.cs</DependentUpon>

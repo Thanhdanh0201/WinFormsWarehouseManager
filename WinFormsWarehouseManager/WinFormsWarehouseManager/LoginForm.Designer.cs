@@ -40,12 +40,13 @@
             this.btnLogin = new WinFormsWarehouseManager.RJControls.RJButton();
             this.llblForgotPW = new System.Windows.Forms.LinkLabel();
             this.iconSplitButton1 = new FontAwesome.Sharp.IconSplitButton();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.panelTitleBar.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelTitleBar
             // 
-            this.panelTitleBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(38)))), ((int)(((byte)(70)))));
+            this.panelTitleBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
             this.panelTitleBar.Controls.Add(this.iconbtnMinimize);
             this.panelTitleBar.Controls.Add(this.iconbtnExit);
             this.panelTitleBar.Dock = System.Windows.Forms.DockStyle.Top;
@@ -103,7 +104,7 @@
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(38)))), ((int)(((byte)(70)))));
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 880);
             this.panel1.Name = "panel1";
@@ -113,11 +114,11 @@
             // lblUsername
             // 
             this.lblUsername.AutoSize = true;
-            this.lblUsername.Font = new System.Drawing.Font("Segoe UI", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUsername.Font = new System.Drawing.Font("Segoe UI", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUsername.ForeColor = System.Drawing.Color.Silver;
-            this.lblUsername.Location = new System.Drawing.Point(99, 303);
+            this.lblUsername.Location = new System.Drawing.Point(77, 409);
             this.lblUsername.Name = "lblUsername";
-            this.lblUsername.Size = new System.Drawing.Size(136, 37);
+            this.lblUsername.Size = new System.Drawing.Size(146, 37);
             this.lblUsername.TabIndex = 2;
             this.lblUsername.Text = "Username";
             // 
@@ -125,9 +126,10 @@
             // 
             this.txtUsername.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(94)))), ((int)(((byte)(129)))));
             this.txtUsername.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtUsername.Location = new System.Drawing.Point(99, 343);
+            this.txtUsername.Location = new System.Drawing.Point(77, 449);
+            this.txtUsername.MinimumSize = new System.Drawing.Size(500, 40);
             this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(500, 24);
+            this.txtUsername.Size = new System.Drawing.Size(500, 40);
             this.txtUsername.TabIndex = 3;
             // 
             // chkRememberMe
@@ -135,7 +137,7 @@
             this.chkRememberMe.AutoSize = true;
             this.chkRememberMe.Font = new System.Drawing.Font("Segoe UI", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkRememberMe.ForeColor = System.Drawing.Color.Silver;
-            this.chkRememberMe.Location = new System.Drawing.Point(99, 480);
+            this.chkRememberMe.Location = new System.Drawing.Point(77, 601);
             this.chkRememberMe.Name = "chkRememberMe";
             this.chkRememberMe.Size = new System.Drawing.Size(221, 41);
             this.chkRememberMe.TabIndex = 4;
@@ -146,34 +148,36 @@
             // 
             this.txtPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(94)))), ((int)(((byte)(129)))));
             this.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtPassword.Location = new System.Drawing.Point(99, 421);
+            this.txtPassword.Location = new System.Drawing.Point(77, 542);
+            this.txtPassword.MinimumSize = new System.Drawing.Size(500, 40);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(500, 24);
+            this.txtPassword.Size = new System.Drawing.Size(500, 40);
             this.txtPassword.TabIndex = 6;
             this.txtPassword.UseSystemPasswordChar = true;
             // 
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Font = new System.Drawing.Font("Segoe UI", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPassword.Font = new System.Drawing.Font("Segoe UI", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPassword.ForeColor = System.Drawing.Color.Silver;
-            this.lblPassword.Location = new System.Drawing.Point(99, 381);
+            this.lblPassword.Location = new System.Drawing.Point(77, 502);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(128, 37);
+            this.lblPassword.Size = new System.Drawing.Size(139, 37);
             this.lblPassword.TabIndex = 5;
             this.lblPassword.Text = "Password";
             // 
             // btnLogin
             // 
-            this.btnLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(97)))), ((int)(((byte)(238)))));
-            this.btnLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(97)))), ((int)(((byte)(238)))));
+            this.btnLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.btnLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
             this.btnLogin.BorderColor = System.Drawing.Color.PaleVioletRed;
             this.btnLogin.BorderRadius = 20;
             this.btnLogin.BorderSize = 0;
             this.btnLogin.FlatAppearance.BorderSize = 0;
             this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLogin.Font = new System.Drawing.Font("Segoe UI", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogin.ForeColor = System.Drawing.Color.White;
-            this.btnLogin.Location = new System.Drawing.Point(99, 561);
+            this.btnLogin.Location = new System.Drawing.Point(77, 680);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(500, 65);
             this.btnLogin.TabIndex = 7;
@@ -186,12 +190,12 @@
             // 
             this.llblForgotPW.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             this.llblForgotPW.AutoSize = true;
-            this.llblForgotPW.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.llblForgotPW.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.llblForgotPW.ForeColor = System.Drawing.Color.LightGray;
             this.llblForgotPW.LinkColor = System.Drawing.Color.Silver;
-            this.llblForgotPW.Location = new System.Drawing.Point(279, 681);
+            this.llblForgotPW.Location = new System.Drawing.Point(243, 799);
             this.llblForgotPW.Name = "llblForgotPW";
-            this.llblForgotPW.Size = new System.Drawing.Size(133, 21);
+            this.llblForgotPW.Size = new System.Drawing.Size(184, 30);
             this.llblForgotPW.TabIndex = 8;
             this.llblForgotPW.TabStop = true;
             this.llblForgotPW.Text = "Forgot Password?";
@@ -209,12 +213,22 @@
             this.iconSplitButton1.Size = new System.Drawing.Size(23, 23);
             this.iconSplitButton1.Text = "iconSplitButton1";
             // 
+            // panel2
+            // 
+            this.panel2.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.logo2;
+            this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel2.Location = new System.Drawing.Point(196, 56);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(300, 350);
+            this.panel2.TabIndex = 9;
+            // 
             // LoginForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(59)))), ((int)(((byte)(104)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(700, 900);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.llblForgotPW);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.txtPassword);
@@ -252,5 +266,6 @@
         private RJControls.RJButton btnLogin;
         private System.Windows.Forms.LinkLabel llblForgotPW;
         private FontAwesome.Sharp.IconSplitButton iconSplitButton1;
+        private System.Windows.Forms.Panel panel2;
     }
 }

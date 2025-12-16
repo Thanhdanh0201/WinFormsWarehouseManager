@@ -54,7 +54,7 @@ namespace WinFormsWarehouseManager
                             SELECT NotiID
                             FROM Notifications
                             ORDER BY CreatedAt DESC
-                            LIMIT 50
+                            LIMIT 10
                         )";
                 db.ExecuteNonQuery(query);
 
@@ -271,7 +271,7 @@ namespace WinFormsWarehouseManager
         private void iconButton2_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, RGBColors.color2);
-            //OpenChildForm(new FormInventory());
+            OpenChildForm(new FormProductList());
         }
 
         private void iconButton3_Click(object sender, EventArgs e)

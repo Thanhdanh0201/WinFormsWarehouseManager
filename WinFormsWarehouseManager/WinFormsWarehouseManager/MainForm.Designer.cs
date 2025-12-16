@@ -30,11 +30,11 @@ namespace WinFormsWarehouseManager
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             this.panelMenu = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.iconButton6 = new FontAwesome.Sharp.IconButton();
             this.iconButton5 = new FontAwesome.Sharp.IconButton();
             this.iconButton4 = new FontAwesome.Sharp.IconButton();
@@ -46,14 +46,12 @@ namespace WinFormsWarehouseManager
             this.iconbtnZoom = new FontAwesome.Sharp.IconButton();
             this.iconbtnExit = new FontAwesome.Sharp.IconButton();
             this.btnIconUser = new Guna.UI2.WinForms.Guna2Button();
-            this.iconButton8 = new FontAwesome.Sharp.IconButton();
             this.iconButton7 = new FontAwesome.Sharp.IconButton();
             this.lblChildForm = new System.Windows.Forms.Label();
             this.iconChildForm = new FontAwesome.Sharp.IconPictureBox();
             this.panelDesktop = new System.Windows.Forms.Panel();
             this.panelMenu.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panelTitleBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconChildForm)).BeginInit();
             this.SuspendLayout();
@@ -77,23 +75,21 @@ namespace WinFormsWarehouseManager
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.pictureBox1);
+            this.panel2.Controls.Add(this.panel1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(220, 140);
             this.panel2.TabIndex = 6;
             // 
-            // pictureBox1
+            // panel1
             // 
-            this.pictureBox1.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.bg;
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(220, 140);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.panel1.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.logo;
+            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel1.Location = new System.Drawing.Point(23, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(156, 137);
+            this.panel1.TabIndex = 0;
             // 
             // iconButton6
             // 
@@ -241,14 +237,13 @@ namespace WinFormsWarehouseManager
             this.panelTitleBar.Controls.Add(this.iconbtnZoom);
             this.panelTitleBar.Controls.Add(this.iconbtnExit);
             this.panelTitleBar.Controls.Add(this.btnIconUser);
-            this.panelTitleBar.Controls.Add(this.iconButton8);
             this.panelTitleBar.Controls.Add(this.iconButton7);
             this.panelTitleBar.Controls.Add(this.lblChildForm);
             this.panelTitleBar.Controls.Add(this.iconChildForm);
             this.panelTitleBar.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTitleBar.Location = new System.Drawing.Point(220, 0);
             this.panelTitleBar.Name = "panelTitleBar";
-            this.panelTitleBar.Size = new System.Drawing.Size(1354, 98);
+            this.panelTitleBar.Size = new System.Drawing.Size(1354, 140);
             this.panelTitleBar.TabIndex = 1;
             this.panelTitleBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelTitleBar_MouseDown);
             // 
@@ -264,9 +259,9 @@ namespace WinFormsWarehouseManager
             this.iconbtnMinimize.IconColor = System.Drawing.Color.GhostWhite;
             this.iconbtnMinimize.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconbtnMinimize.IconSize = 20;
-            this.iconbtnMinimize.Location = new System.Drawing.Point(1219, 3);
+            this.iconbtnMinimize.Location = new System.Drawing.Point(1180, 0);
             this.iconbtnMinimize.Name = "iconbtnMinimize";
-            this.iconbtnMinimize.Size = new System.Drawing.Size(45, 25);
+            this.iconbtnMinimize.Size = new System.Drawing.Size(50, 50);
             this.iconbtnMinimize.TabIndex = 8;
             this.iconbtnMinimize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.iconbtnMinimize.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -285,9 +280,9 @@ namespace WinFormsWarehouseManager
             this.iconbtnZoom.IconColor = System.Drawing.Color.GhostWhite;
             this.iconbtnZoom.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconbtnZoom.IconSize = 20;
-            this.iconbtnZoom.Location = new System.Drawing.Point(1261, 3);
+            this.iconbtnZoom.Location = new System.Drawing.Point(1236, 0);
             this.iconbtnZoom.Name = "iconbtnZoom";
-            this.iconbtnZoom.Size = new System.Drawing.Size(45, 25);
+            this.iconbtnZoom.Size = new System.Drawing.Size(50, 50);
             this.iconbtnZoom.TabIndex = 7;
             this.iconbtnZoom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.iconbtnZoom.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -306,9 +301,9 @@ namespace WinFormsWarehouseManager
             this.iconbtnExit.IconColor = System.Drawing.Color.GhostWhite;
             this.iconbtnExit.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconbtnExit.IconSize = 20;
-            this.iconbtnExit.Location = new System.Drawing.Point(1306, 3);
+            this.iconbtnExit.Location = new System.Drawing.Point(1292, 0);
             this.iconbtnExit.Name = "iconbtnExit";
-            this.iconbtnExit.Size = new System.Drawing.Size(45, 25);
+            this.iconbtnExit.Size = new System.Drawing.Size(50, 50);
             this.iconbtnExit.TabIndex = 6;
             this.iconbtnExit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.iconbtnExit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -321,7 +316,7 @@ namespace WinFormsWarehouseManager
             this.btnIconUser.BackColor = System.Drawing.Color.Transparent;
             this.btnIconUser.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.UserIcon;
             this.btnIconUser.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnIconUser.CustomizableEdges = customizableEdges1;
+            this.btnIconUser.CustomizableEdges = customizableEdges3;
             this.btnIconUser.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnIconUser.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnIconUser.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -329,32 +324,12 @@ namespace WinFormsWarehouseManager
             this.btnIconUser.FillColor = System.Drawing.Color.Transparent;
             this.btnIconUser.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnIconUser.ForeColor = System.Drawing.Color.White;
-            this.btnIconUser.Location = new System.Drawing.Point(1257, 26);
+            this.btnIconUser.Location = new System.Drawing.Point(1245, 52);
             this.btnIconUser.Name = "btnIconUser";
-            this.btnIconUser.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            this.btnIconUser.Size = new System.Drawing.Size(97, 69);
+            this.btnIconUser.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            this.btnIconUser.Size = new System.Drawing.Size(97, 85);
             this.btnIconUser.TabIndex = 5;
             this.btnIconUser.Click += new System.EventHandler(this.btnIconUser_Click_1);
-            // 
-            // iconButton8
-            // 
-            this.iconButton8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.iconButton8.FlatAppearance.BorderSize = 0;
-            this.iconButton8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.iconButton8.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.iconButton8.ForeColor = System.Drawing.Color.GhostWhite;
-            this.iconButton8.IconChar = FontAwesome.Sharp.IconChar.Comment;
-            this.iconButton8.IconColor = System.Drawing.Color.GhostWhite;
-            this.iconButton8.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconButton8.IconSize = 40;
-            this.iconButton8.Location = new System.Drawing.Point(1122, 32);
-            this.iconButton8.Name = "iconButton8";
-            this.iconButton8.Size = new System.Drawing.Size(60, 60);
-            this.iconButton8.TabIndex = 4;
-            this.iconButton8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.iconButton8.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.iconButton8.UseVisualStyleBackColor = true;
-            this.iconButton8.Click += new System.EventHandler(this.iconButton8_Click);
             // 
             // iconButton7
             // 
@@ -367,9 +342,9 @@ namespace WinFormsWarehouseManager
             this.iconButton7.IconColor = System.Drawing.Color.GhostWhite;
             this.iconButton7.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconButton7.IconSize = 40;
-            this.iconButton7.Location = new System.Drawing.Point(1188, 32);
+            this.iconButton7.Location = new System.Drawing.Point(1146, 49);
             this.iconButton7.Name = "iconButton7";
-            this.iconButton7.Size = new System.Drawing.Size(60, 60);
+            this.iconButton7.Size = new System.Drawing.Size(93, 85);
             this.iconButton7.TabIndex = 3;
             this.iconButton7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.iconButton7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -379,11 +354,12 @@ namespace WinFormsWarehouseManager
             // lblChildForm
             // 
             this.lblChildForm.AutoSize = true;
-            this.lblChildForm.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblChildForm.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChildForm.ForeColor = System.Drawing.Color.GhostWhite;
-            this.lblChildForm.Location = new System.Drawing.Point(70, 20);
+            this.lblChildForm.Location = new System.Drawing.Point(66, 11);
+            this.lblChildForm.MinimumSize = new System.Drawing.Size(160, 50);
             this.lblChildForm.Name = "lblChildForm";
-            this.lblChildForm.Size = new System.Drawing.Size(139, 31);
+            this.lblChildForm.Size = new System.Drawing.Size(160, 50);
             this.lblChildForm.TabIndex = 1;
             this.lblChildForm.Text = "ChildForm";
             this.lblChildForm.Visible = false;
@@ -396,10 +372,10 @@ namespace WinFormsWarehouseManager
             this.iconChildForm.IconChar = FontAwesome.Sharp.IconChar.ChartColumn;
             this.iconChildForm.IconColor = System.Drawing.Color.Aqua;
             this.iconChildForm.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconChildForm.IconSize = 40;
-            this.iconChildForm.Location = new System.Drawing.Point(24, 20);
+            this.iconChildForm.IconSize = 58;
+            this.iconChildForm.Location = new System.Drawing.Point(0, 3);
             this.iconChildForm.Name = "iconChildForm";
-            this.iconChildForm.Size = new System.Drawing.Size(40, 40);
+            this.iconChildForm.Size = new System.Drawing.Size(69, 58);
             this.iconChildForm.TabIndex = 0;
             this.iconChildForm.TabStop = false;
             this.iconChildForm.Visible = false;
@@ -407,9 +383,9 @@ namespace WinFormsWarehouseManager
             // panelDesktop
             // 
             this.panelDesktop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDesktop.Location = new System.Drawing.Point(220, 98);
+            this.panelDesktop.Location = new System.Drawing.Point(220, 140);
             this.panelDesktop.Name = "panelDesktop";
-            this.panelDesktop.Size = new System.Drawing.Size(1354, 831);
+            this.panelDesktop.Size = new System.Drawing.Size(1354, 789);
             this.panelDesktop.TabIndex = 2;
             this.panelDesktop.Paint += new System.Windows.Forms.PaintEventHandler(this.panelDesktop_Paint);
             // 
@@ -430,7 +406,6 @@ namespace WinFormsWarehouseManager
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.panelMenu.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panelTitleBar.ResumeLayout(false);
             this.panelTitleBar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconChildForm)).EndInit();
@@ -448,16 +423,15 @@ namespace WinFormsWarehouseManager
         private FontAwesome.Sharp.IconButton iconButton6;
         private FontAwesome.Sharp.IconButton iconButton5;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panelTitleBar;
         private FontAwesome.Sharp.IconPictureBox iconChildForm;
         private System.Windows.Forms.Label lblChildForm;
         private System.Windows.Forms.Panel panelDesktop;
-        private FontAwesome.Sharp.IconButton iconButton8;
         private FontAwesome.Sharp.IconButton iconButton7;
         private Guna.UI2.WinForms.Guna2Button btnIconUser;
         private FontAwesome.Sharp.IconButton iconbtnMinimize;
         private FontAwesome.Sharp.IconButton iconbtnZoom;
         private FontAwesome.Sharp.IconButton iconbtnExit;
+        private Panel panel1;
     }
 }
