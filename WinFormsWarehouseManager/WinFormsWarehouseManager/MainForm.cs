@@ -35,7 +35,46 @@ namespace WinFormsWarehouseManager
             this.Padding = new Padding(borderSize);
             this.BackColor = Color.FromArgb(2, 51, 66);
             ResetNotificationsOneTime();
+            this.picUserAvatar.Click += new EventHandler(picUserAvatar_Click);
 
+        }
+        private void picUserAvatar_Click(object sender, EventArgs e)
+        {
+            // 1. Tạo lớp nền tối (Overlay)
+            Form overlay = new Form();
+            overlay.ShowInTaskbar = false;
+            overlay.FormBorderStyle = FormBorderStyle.None;
+            overlay.BackColor = Color.Black;
+            overlay.Opacity = 0.5d; // Độ mờ
+            overlay.StartPosition = FormStartPosition.Manual;
+            overlay.Location = this.Location;
+            overlay.Size = this.Size;
+
+            if (this.WindowState == FormWindowState.Maximized)
+                overlay.WindowState = FormWindowState.Maximized;
+
+            // 2. Chuẩn bị dữ liệu (Ví dụ)
+            string myName = "Admin";
+            string myPhone = "0909.123.456";
+            Image myAvatar = picUserAvatar.Image;
+
+            // 3. Hiển thị
+            try
+            {
+                overlay.Show(this); // Hiện nền tối
+
+                // Tạo form nhỏ và truyền dữ liệu
+                using (UserProfileForm userForm = new UserProfileForm(myName, myPhone, myAvatar))
+                {
+                    // Đảm bảo form nhỏ hiện giữa màn hình
+                    userForm.StartPosition = FormStartPosition.CenterParent;
+                    userForm.ShowDialog(overlay); // Hiện form nhỏ đè lên overlay
+                }
+            }
+            finally
+            {
+                overlay.Dispose(); // Xóa nền tối khi đóng form nhỏ
+            }
         }
 
         private void ResetNotificationsOneTime()
