@@ -232,6 +232,12 @@
     </Compile>
     <Compile Include="db\DatabaseHelper.cs" />
     <Compile Include="db\DbConnection.cs" />
+    <Compile Include="db\FormDeleteConfirmation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="db\FormUpdateProduct.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -246,12 +252,6 @@
     </Compile>
     <Compile Include="Helpers\ActivityLogger.cs" />
     <Compile Include="Helpers\NotificationManager.cs" />
-    <Compile Include="LocationAddingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LocationAddingForm.Designer.cs">
-      <DependentUpon>LocationAddingForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -314,14 +314,14 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="db\FormDeleteConfirmation.resx">
+      <DependentUpon>FormDeleteConfirmation.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormDashboard.resx">
       <DependentUpon>FormDashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormNhapKho.resx">
       <DependentUpon>FormNhapKho.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LocationAddingForm.resx">
-      <DependentUpon>LocationAddingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>

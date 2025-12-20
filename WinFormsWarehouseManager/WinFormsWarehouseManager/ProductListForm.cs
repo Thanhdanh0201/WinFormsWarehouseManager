@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using FontAwesome.Sharp;
@@ -16,12 +17,11 @@ namespace WinFormsWarehouseManager.Forms
         private List<ProductInfo> allProducts;
         private List<ProductInfo> filteredProducts;
         private List<Panel> productCards;
-        private Dictionary<int, bool> selectedProducts; // ProductID -> IsSelected
+        private Dictionary<int, bool> selectedProducts;
 
-        private const int CARDS_PER_PAGE = 10;
+        private const int CARDS_PER_PAGE = 75;
         private int currentLoadedCount = 0;
 
-        // Category colors - Query from database dynamically
         private Dictionary<string, Color> categoryColors;
 
         public FormProductList()
@@ -43,27 +43,74 @@ namespace WinFormsWarehouseManager.Forms
         {
             categoryColors = new Dictionary<string, Color>()
             {
-                { "Thực phẩm", Color.FromArgb(46, 204, 113) },          // Green
-                { "Linh kiện điện tử", Color.FromArgb(230, 126, 34) },  // Orange
-                { "Đồ gia dụng", Color.FromArgb(41, 128, 185) },        // Blue
-                { "Mỹ phẩm", Color.FromArgb(231, 76, 60) },             // Red
-                { "Vật liệu xây dựng", Color.FromArgb(149, 165, 166) }, // Gray
-                { "Đồ dùng văn phòng", Color.FromArgb(142, 68, 173) }   // Purple
+                { "Thực phẩm", Color.FromArgb(46, 204, 113) },
+                { "Linh kiện điện tử", Color.FromArgb(230, 126, 34) },
+                { "Đồ gia dụng", Color.FromArgb(41, 128, 185) },
+                { "Mỹ phẩm", Color.FromArgb(231, 76, 60) },
+                { "Vật liệu xây dựng", Color.FromArgb(149, 165, 166) },
+                { "Đồ dùng văn phòng", Color.FromArgb(142, 68, 173) }
             };
         }
 
         private void InitializeUI()
         {
-            this.BackColor = Color.FromArgb(2, 51, 66);
+            this.BackColor = Color.FromArgb(236, 240, 241);
 
-            // Setup FlowLayoutPanel scroll event for lazy loading
+            panelFilter.BackColor = Color.White;
+            panelButtons.BackColor = Color.White;
+            flowLayoutPanelProducts.BackColor = Color.FromArgb(236, 240, 241);
+
+            // Setup scroll event
             flowLayoutPanelProducts.Scroll += FlowLayoutPanelProducts_Scroll;
 
-            // Initialize ComboBox Sort
+            // Style search textbox
+            txtSearch.ForeColor = Color.Gray;
+            txtSearch.Enter += (s, e) => {
+                if (txtSearch.Text == "Nhập tên sản phẩm...")
+                {
+                    txtSearch.Text = "";
+                    txtSearch.ForeColor = Color.Black;
+                }
+            };
+            txtSearch.Leave += (s, e) => {
+                if (string.IsNullOrWhiteSpace(txtSearch.Text))
+                {
+                    txtSearch.Text = "Nhập tên sản phẩm...";
+                    txtSearch.ForeColor = Color.Gray;
+                }
+            };
+
+            // Initialize sort combo
             cboSort.Items.Clear();
             cboSort.Items.Add("Mới nhất");
             cboSort.Items.Add("Cũ nhất");
             cboSort.SelectedIndex = 0;
+
+            // Style buttons
+            StyleButton(btnSearch, Color.FromArgb(41, 128, 185));
+            StyleButton(btnNhapKho, Color.FromArgb(39, 174, 96));
+            StyleButton(btnXuatKho, Color.FromArgb(41, 128, 185));
+            StyleButton(btnDelete, Color.FromArgb(231, 76, 60));
+            StyleButton(btnCapNhat, Color.FromArgb(230, 126, 34));
+        }
+
+        private void StyleButton(IconButton btn, Color bgColor)
+        {
+            btn.BackColor = bgColor;
+            btn.ForeColor = Color.White;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.Cursor = Cursors.Hand;
+            btn.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btn.IconColor = Color.White;
+
+            // Add hover effect
+            btn.MouseEnter += (s, e) => {
+                btn.BackColor = ControlPaint.Light(bgColor, 0.1f);
+            };
+            btn.MouseLeave += (s, e) => {
+                btn.BackColor = bgColor;
+            };
         }
 
         private void LoadCategoriesToComboBox()
@@ -152,119 +199,228 @@ namespace WinFormsWarehouseManager.Forms
 
         private Panel CreateProductCard(ProductInfo product)
         {
-            // Get category color
             Color categoryColor = categoryColors.ContainsKey(product.CategoryName)
                 ? categoryColors[product.CategoryName]
-                : Color.FromArgb(127, 140, 141); // Default gray
+                : Color.FromArgb(127, 140, 141);
 
-            // Main card panel
-            Panel card = new Panel
+            // Main card panel with rounded corners - INCREASED SIZE
+            Panel card = new RoundedPanel
             {
-                Width = 320,
-                Height = 200,
+                Width = 280,
+                Height = 180,
                 BackColor = Color.White,
-                Margin = new Padding(10),
-                Tag = product
+                Margin = new Padding(8),
+                Tag = product,
+                CornerRadius = 10,
+                Cursor = Cursors.Hand
             };
 
-            // Category color strip (left side)
+            // Add subtle shadow effect
+            card.Paint += (s, e) => {
+                using (var path = GetRoundedRectPath(card.ClientRectangle, 10))
+                {
+                    e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                    using (var pen = new Pen(Color.FromArgb(30, 0, 0, 0), 1))
+                    {
+                        e.Graphics.DrawPath(pen, path);
+                    }
+                }
+            };
+
+            // Hover effects - brighten card
+            card.MouseEnter += (s, e) => {
+                card.BackColor = Color.FromArgb(248, 249, 250);
+            };
+            card.MouseLeave += (s, e) => {
+                card.BackColor = Color.White;
+            };
+
+            // Category color strip (left side, rounded)
             Panel colorStrip = new Panel
             {
-                Width = 8,
-                Height = 200,
+                Width = 5,
+                Height = 180,
                 BackColor = categoryColor,
                 Location = new Point(0, 0)
             };
             card.Controls.Add(colorStrip);
 
-            // Checkbox
+            // Checkbox with custom style
             CheckBox chkSelect = new CheckBox
             {
-                Location = new Point(20, 10),
+                Location = new Point(15, 12),
                 Width = 20,
                 Height = 20,
                 Tag = product.ProductID,
-                Checked = selectedProducts.ContainsKey(product.ProductID)
+                Checked = selectedProducts.ContainsKey(product.ProductID),
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
             };
+            chkSelect.FlatAppearance.BorderColor = Color.FromArgb(189, 195, 199);
+            chkSelect.FlatAppearance.CheckedBackColor = Color.FromArgb(41, 128, 185);
             chkSelect.CheckedChanged += ChkSelect_CheckedChanged;
             card.Controls.Add(chkSelect);
 
-            // Product name
+            // Click anywhere on card to toggle checkbox
+            card.Click += (s, e) => {
+                chkSelect.Checked = !chkSelect.Checked;
+            };
+
+            // Product name (bold, larger) - MULTILINE with auto font resize
             Label lblName = new Label
             {
                 Text = product.ProductName,
-                Location = new Point(50, 10),
-                Width = 250,
-                Font = new Font("Segoe UI", 11, FontStyle.Bold),
-                ForeColor = Color.FromArgb(2, 51, 66)
+                Location = new Point(45, 10),
+                Width = 225,
+                Height = 35,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = Color.FromArgb(44, 62, 80),
+                AutoSize = false,
+                Cursor = Cursors.Hand
             };
+
+            // Auto-resize font if text is too long
+            using (Graphics g = lblName.CreateGraphics())
+            {
+                SizeF textSize = g.MeasureString(product.ProductName, lblName.Font);
+                if (textSize.Width > lblName.Width)
+                {
+                    // Try smaller font sizes
+                    if (textSize.Width > lblName.Width * 1.5)
+                        lblName.Font = new Font("Segoe UI", 7.5F, FontStyle.Bold);
+                    else if (textSize.Width > lblName.Width * 1.2)
+                        lblName.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+                    else
+                        lblName.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+                }
+            }
+
+            lblName.Click += (s, e) => chkSelect.Checked = !chkSelect.Checked;
             card.Controls.Add(lblName);
+
+            // Divider line
+            Panel divider = new Panel
+            {
+                Location = new Point(15, 48),
+                Width = 255,
+                Height = 1,
+                BackColor = Color.FromArgb(236, 240, 241)
+            };
+            card.Controls.Add(divider);
+
+            // Info section - COMPACT
+            int yPos = 56;
 
             // Quantity
             Label lblQuantity = new Label
             {
-                Text = $"Số lượng: {product.SoLuong} {product.DonViTinh}",
-                Location = new Point(50, 40),
-                Width = 250,
-                Font = new Font("Segoe UI", 9),
-                ForeColor = Color.FromArgb(52, 73, 94)
+                Text = $"SL: {product.SoLuong} {product.DonViTinh}",
+                Location = new Point(15, yPos),
+                Width = 255,
+                Height = 20,
+                Font = new Font("Segoe UI", 8.5F),
+                ForeColor = Color.FromArgb(52, 73, 94),
+                AutoEllipsis = true,
+                Cursor = Cursors.Hand
             };
+            lblQuantity.Click += (s, e) => chkSelect.Checked = !chkSelect.Checked;
             card.Controls.Add(lblQuantity);
+            yPos += 22;
 
             // Expiry date
             Label lblExpiry = new Label
             {
                 Text = $"HSD: {product.HanSuDung}",
-                Location = new Point(50, 65),
-                Width = 250,
-                Font = new Font("Segoe UI", 9),
-                ForeColor = Color.FromArgb(52, 73, 94)
+                Location = new Point(15, yPos),
+                Width = 255,
+                Height = 20,
+                Font = new Font("Segoe UI", 8.5F),
+                ForeColor = Color.FromArgb(52, 73, 94),
+                AutoEllipsis = true,
+                Cursor = Cursors.Hand
             };
+            lblExpiry.Click += (s, e) => chkSelect.Checked = !chkSelect.Checked;
             card.Controls.Add(lblExpiry);
+            yPos += 22;
 
             // Import date
             Label lblImportDate = new Label
             {
                 Text = $"Ngày nhập: {product.NgayNhapKho}",
-                Location = new Point(50, 90),
-                Width = 250,
-                Font = new Font("Segoe UI", 9),
-                ForeColor = Color.FromArgb(52, 73, 94)
+                Location = new Point(15, yPos),
+                Width = 255,
+                Height = 20,
+                Font = new Font("Segoe UI", 8.5F),
+                ForeColor = Color.FromArgb(52, 73, 94),
+                AutoEllipsis = true,
+                Cursor = Cursors.Hand
             };
+            lblImportDate.Click += (s, e) => chkSelect.Checked = !chkSelect.Checked;
             card.Controls.Add(lblImportDate);
 
-            // Category badge
-            Panel categoryBadge = new Panel
+            // Category badge (rounded, modern) - SMALLER
+            Panel categoryBadge = new RoundedPanel
             {
-                Location = new Point(50, 120),
-                Width = 130,
-                Height = 25,
-                BackColor = categoryColor
+                Location = new Point(15, 130),
+                Width = 110,
+                Height = 24,
+                BackColor = categoryColor,
+                CornerRadius = 12,
+                Cursor = Cursors.Hand
             };
+            categoryBadge.Click += (s, e) => chkSelect.Checked = !chkSelect.Checked;
+
             Label lblCategory = new Label
             {
                 Text = product.CategoryName,
-                Location = new Point(5, 4),
-                Width = 120,
+                Location = new Point(0, 0),
+                Width = 110,
+                Height = 24,
                 ForeColor = Color.White,
-                Font = new Font("Segoe UI", 8, FontStyle.Bold),
-                TextAlign = ContentAlignment.MiddleCenter
+                Font = new Font("Segoe UI", 7.5F, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleCenter,
+                AutoEllipsis = true,
+                Cursor = Cursors.Hand
             };
+            lblCategory.Click += (s, e) => chkSelect.Checked = !chkSelect.Checked;
             categoryBadge.Controls.Add(lblCategory);
             card.Controls.Add(categoryBadge);
 
-            // Supplier
+            // Supplier (bottom) - SMALLER
             Label lblSupplier = new Label
             {
                 Text = $"NCC: {product.SupplierName}",
-                Location = new Point(50, 155),
-                Width = 250,
-                Font = new Font("Segoe UI", 8),
-                ForeColor = Color.FromArgb(127, 140, 141)
+                Location = new Point(15, 158),
+                Width = 255,
+                Height = 16,
+                Font = new Font("Segoe UI", 7F, FontStyle.Italic),
+                ForeColor = Color.FromArgb(149, 165, 166),
+                AutoEllipsis = true,
+                Cursor = Cursors.Hand
             };
+            lblSupplier.Click += (s, e) => chkSelect.Checked = !chkSelect.Checked;
             card.Controls.Add(lblSupplier);
 
+            // Make color strip also clickable
+            colorStrip.Cursor = Cursors.Hand;
+            colorStrip.Click += (s, e) => chkSelect.Checked = !chkSelect.Checked;
+
             return card;
+        }
+
+        // Helper method for rounded rectangles
+        private GraphicsPath GetRoundedRectPath(Rectangle rect, int radius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            int diameter = radius * 2;
+
+            path.AddArc(rect.X, rect.Y, diameter, diameter, 180, 90);
+            path.AddArc(rect.Right - diameter, rect.Y, diameter, diameter, 270, 90);
+            path.AddArc(rect.Right - diameter, rect.Bottom - diameter, diameter, diameter, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - diameter, diameter, diameter, 90, 90);
+            path.CloseFigure();
+
+            return path;
         }
 
         private void ChkSelect_CheckedChanged(object sender, EventArgs e)
@@ -290,10 +446,7 @@ namespace WinFormsWarehouseManager.Forms
         {
             int selectedCount = selectedProducts.Count;
 
-            // Hide "Nhập kho thêm" button if selection is not exactly 1
             btnNhapKho.Visible = (selectedCount == 1);
-
-            // Enable/disable buttons based on selection
             btnXuatKho.Enabled = (selectedCount > 0);
             btnDelete.Enabled = (selectedCount > 0);
             btnCapNhat.Enabled = (selectedCount == 1);
@@ -301,7 +454,6 @@ namespace WinFormsWarehouseManager.Forms
 
         private void FlowLayoutPanelProducts_Scroll(object sender, ScrollEventArgs e)
         {
-            // Lazy loading when scrolling near bottom
             if (e.NewValue >= flowLayoutPanelProducts.VerticalScroll.Maximum - 100)
             {
                 if (currentLoadedCount < filteredProducts.Count)
@@ -339,17 +491,15 @@ namespace WinFormsWarehouseManager.Forms
         {
             filteredProducts = new List<ProductInfo>(allProducts);
 
-            // Filter by search text
             string searchText = txtSearch.Text.Trim().ToLower();
-            if (!string.IsNullOrEmpty(searchText))
+            if (!string.IsNullOrEmpty(searchText) && searchText != "nhập tên sản phẩm...")
             {
                 filteredProducts = filteredProducts
                     .Where(p => p.ProductName.ToLower().Contains(searchText))
                     .ToList();
             }
 
-            // Filter by category
-            if (cboCategory.SelectedIndex > 0) // Index 0 is "Tất cả"
+            if (cboCategory.SelectedIndex > 0)
             {
                 string selectedCategory = cboCategory.SelectedItem.ToString();
                 filteredProducts = filteredProducts
@@ -357,14 +507,13 @@ namespace WinFormsWarehouseManager.Forms
                     .ToList();
             }
 
-            // Sort
-            if (cboSort.SelectedIndex == 0) // Mới nhất
+            if (cboSort.SelectedIndex == 0)
             {
                 filteredProducts = filteredProducts
                     .OrderByDescending(p => p.NgayNhapKho)
                     .ToList();
             }
-            else if (cboSort.SelectedIndex == 1) // Cũ nhất
+            else if (cboSort.SelectedIndex == 1)
             {
                 filteredProducts = filteredProducts
                     .OrderBy(p => p.NgayNhapKho)
@@ -414,12 +563,7 @@ namespace WinFormsWarehouseManager.Forms
 
             if (product != null)
             {
-                /*
-                // Open FormNhapKho and pass product
-                FormNhapKho formNhapKho = new FormNhapKho(product);
-                formNhapKho.ShowDialog();
-                LoadProducts(); // Refresh after import
-                */
+                // Open FormNhapKho
             }
         }
 
@@ -432,16 +576,11 @@ namespace WinFormsWarehouseManager.Forms
                 return;
             }
 
-            // Get selected products
             List<ProductInfo> selectedProductsList = allProducts
                 .Where(p => selectedProducts.ContainsKey(p.ProductID))
                 .ToList();
-            /*
-            // Open FormXuatKho and pass List<ProductInfo>
-            FormXuatKho formXuatKho = new FormXuatKho(selectedProductsList);
-            formXuatKho.ShowDialog();
-            LoadProducts(); // Refresh after export
-            */
+
+            // Open FormXuatKho
         }
 
         private void BtnDelete_Click(object sender, EventArgs e)
@@ -453,121 +592,37 @@ namespace WinFormsWarehouseManager.Forms
                 return;
             }
 
-            ShowDeleteConfirmationOverlay();
-        }
+            // Get selected products list
+            List<ProductInfo> selectedProductsList = allProducts
+                .Where(p => selectedProducts.ContainsKey(p.ProductID))
+                .ToList();
 
-        private void ShowDeleteConfirmationOverlay()
-        {
-            // Create overlay panel
-            Panel overlayPanel = new Panel
+            // Show modal confirmation
+            using (FormDeleteConfirmation deleteForm = new FormDeleteConfirmation(selectedProductsList))
             {
-                Size = this.ClientSize,
-                Location = new Point(0, 0),
-                BackColor = Color.FromArgb(180, 0, 0, 0), // Semi-transparent black
-                Name = "overlayPanel"
-            };
-
-            // Create confirmation dialog
-            Panel dialogPanel = new Panel
-            {
-                Size = new Size(500, 400),
-                BackColor = Color.White,
-                Location = new Point((this.Width - 500) / 2, (this.Height - 400) / 2)
-            };
-
-            // Title
-            Label lblTitle = new Label
-            {
-                Text = "XÁC NHẬN XÓA SẢN PHẨM",
-                Location = new Point(20, 20),
-                Width = 460,
-                Height = 30,
-                Font = new Font("Segoe UI", 14, FontStyle.Bold),
-                ForeColor = Color.FromArgb(2, 51, 66),
-                TextAlign = ContentAlignment.MiddleCenter
-            };
-            dialogPanel.Controls.Add(lblTitle);
-
-            // Product list
-            ListBox lstProducts = new ListBox
-            {
-                Location = new Point(20, 60),
-                Size = new Size(460, 250),
-                Font = new Font("Segoe UI", 10)
-            };
-
-            foreach (int productID in selectedProducts.Keys)
-            {
-                ProductInfo product = allProducts.FirstOrDefault(p => p.ProductID == productID);
-                if (product != null)
+                if (deleteForm.ShowDialog(this) == DialogResult.OK || deleteForm.IsConfirmed)
                 {
-                    lstProducts.Items.Add($"- {product.ProductName} (SL: {product.SoLuong} {product.DonViTinh})");
-                }
-            }
-            dialogPanel.Controls.Add(lstProducts);
-
-            // Confirm button
-            IconButton btnConfirm = new IconButton
-            {
-                Location = new Point(20, 330),
-                Size = new Size(220, 45),
-                Text = "  Xác nhận xóa",
-                IconChar = IconChar.Check,
-                IconColor = Color.White,
-                IconSize = 24,
-                BackColor = Color.FromArgb(231, 76, 60),
-                ForeColor = Color.White,
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                FlatStyle = FlatStyle.Flat,
-                Cursor = Cursors.Hand
-            };
-            btnConfirm.FlatAppearance.BorderSize = 0;
-            btnConfirm.Click += (s, e) => {
-                ConfirmDelete();
-                this.Controls.Remove(overlayPanel);
-            };
-            dialogPanel.Controls.Add(btnConfirm);
-
-            // Cancel button
-            IconButton btnCancel = new IconButton
-            {
-                Location = new Point(260, 330),
-                Size = new Size(220, 45),
-                Text = "  Hủy",
-                IconChar = IconChar.Times,
-                IconColor = Color.White,
-                IconSize = 24,
-                BackColor = Color.FromArgb(127, 140, 141),
-                ForeColor = Color.White,
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                FlatStyle = FlatStyle.Flat,
-                Cursor = Cursors.Hand
-            };
-            btnCancel.FlatAppearance.BorderSize = 0;
-            btnCancel.Click += (s, e) => this.Controls.Remove(overlayPanel);
-            dialogPanel.Controls.Add(btnCancel);
-
-            overlayPanel.Controls.Add(dialogPanel);
-            this.Controls.Add(overlayPanel);
-            overlayPanel.BringToFront();
-        }
-
-        private void ConfirmDelete()
-        {
-            foreach (int productID in selectedProducts.Keys)
-            {
-                string query = "DELETE FROM Products WHERE ProductID = @ProductID";
-                dbHelper.ExecuteNonQuery(query, new System.Data.SQLite.SQLiteParameter[] {
+                    // Delete confirmed
+                    foreach (int productID in selectedProducts.Keys.ToList())
+                    {
+                        string query = "DELETE FROM Products WHERE ProductID = @ProductID";
+                        dbHelper.ExecuteNonQuery(query, new System.Data.SQLite.SQLiteParameter[] {
                     new System.Data.SQLite.SQLiteParameter("@ProductID", productID)
                 });
-            }
+                    }
 
-            selectedProducts.Clear();
-            chkSelectAll.Checked = false;
-            MessageBox.Show("Đã xóa sản phẩm thành công!", "Thông báo",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-            LoadProducts();
+                    // Clear selection and reload
+                    selectedProducts.Clear();
+                    chkSelectAll.Checked = false;
+
+                    MessageBox.Show("Đã xóa sản phẩm thành công!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    LoadProducts();
+                }
+            }
         }
+
 
         private void BtnCapNhat_Click(object sender, EventArgs e)
         {
@@ -583,147 +638,18 @@ namespace WinFormsWarehouseManager.Forms
 
             if (product != null)
             {
-                ShowUpdateOverlay(product);
+                // Show modal update form
+                using (FormUpdateProduct updateForm = new FormUpdateProduct(product, dbHelper))
+                {
+                    if (updateForm.ShowDialog(this) == DialogResult.OK || updateForm.IsUpdated)
+                    {
+                        // Clear selection and reload
+                        selectedProducts.Clear();
+                        chkSelectAll.Checked = false;
+                        LoadProducts();
+                    }
+                }
             }
-        }
-
-        private void ShowUpdateOverlay(ProductInfo product)
-        {
-            // Create overlay panel
-            Panel overlayPanel = new Panel
-            {
-                Size = this.ClientSize,
-                Location = new Point(0, 0),
-                BackColor = Color.FromArgb(180, 0, 0, 0),
-                Name = "overlayPanelUpdate"
-            };
-
-            // Create update dialog
-            Panel dialogPanel = new Panel
-            {
-                Size = new Size(550, 600),
-                BackColor = Color.White,
-                Location = new Point((this.Width - 550) / 2, (this.Height - 600) / 2),
-                AutoScroll = true
-            };
-
-            // Title
-            Label lblTitle = new Label
-            {
-                Text = "CẬP NHẬT THÔNG TIN SẢN PHẨM",
-                Location = new Point(20, 20),
-                Width = 510,
-                Height = 30,
-                Font = new Font("Segoe UI", 14, FontStyle.Bold),
-                ForeColor = Color.FromArgb(2, 51, 66),
-                TextAlign = ContentAlignment.MiddleCenter
-            };
-            dialogPanel.Controls.Add(lblTitle);
-
-            int yPos = 70;
-            int labelWidth = 120;
-            int inputWidth = 360;
-            int spacing = 50;
-
-            // Product Name
-            Label lblName = new Label { Text = "Tên sản phẩm:", Location = new Point(30, yPos), Width = labelWidth, Font = new Font("Segoe UI", 10) };
-            TextBox txtName = new TextBox { Location = new Point(160, yPos), Width = inputWidth, Font = new Font("Segoe UI", 10), Text = product.ProductName };
-            dialogPanel.Controls.Add(lblName);
-            dialogPanel.Controls.Add(txtName);
-            yPos += spacing;
-
-            // Quantity
-            Label lblQty = new Label { Text = "Số lượng:", Location = new Point(30, yPos), Width = labelWidth, Font = new Font("Segoe UI", 10) };
-            NumericUpDown numQty = new NumericUpDown { Location = new Point(160, yPos), Width = inputWidth, Font = new Font("Segoe UI", 10), Value = product.SoLuong, Maximum = 999999 };
-            dialogPanel.Controls.Add(lblQty);
-            dialogPanel.Controls.Add(numQty);
-            yPos += spacing;
-
-            // Unit
-            Label lblUnit = new Label { Text = "Đơn vị tính:", Location = new Point(30, yPos), Width = labelWidth, Font = new Font("Segoe UI", 10) };
-            TextBox txtUnit = new TextBox { Location = new Point(160, yPos), Width = inputWidth, Font = new Font("Segoe UI", 10), Text = product.DonViTinh };
-            dialogPanel.Controls.Add(lblUnit);
-            dialogPanel.Controls.Add(txtUnit);
-            yPos += spacing;
-
-            // Expiry Date
-            Label lblExpiry = new Label { Text = "Hạn sử dụng:", Location = new Point(30, yPos), Width = labelWidth, Font = new Font("Segoe UI", 10) };
-            DateTimePicker dtpExpiry = new DateTimePicker { Location = new Point(160, yPos), Width = inputWidth, Font = new Font("Segoe UI", 10), Format = DateTimePickerFormat.Short };
-            if (DateTime.TryParse(product.HanSuDung, out DateTime expiry))
-                dtpExpiry.Value = expiry;
-            dialogPanel.Controls.Add(lblExpiry);
-            dialogPanel.Controls.Add(dtpExpiry);
-            yPos += spacing;
-
-            // Import Date (readonly)
-            Label lblImport = new Label { Text = "Ngày nhập kho:", Location = new Point(30, yPos), Width = labelWidth, Font = new Font("Segoe UI", 10) };
-            TextBox txtImport = new TextBox { Location = new Point(160, yPos), Width = inputWidth, Font = new Font("Segoe UI", 10), Text = product.NgayNhapKho, ReadOnly = true, BackColor = Color.LightGray };
-            dialogPanel.Controls.Add(lblImport);
-            dialogPanel.Controls.Add(txtImport);
-            yPos += spacing;
-
-            // Category
-            Label lblCategory = new Label { Text = "Danh mục:", Location = new Point(30, yPos), Width = labelWidth, Font = new Font("Segoe UI", 10) };
-            ComboBox cboCategory = new ComboBox { Location = new Point(160, yPos), Width = inputWidth, Font = new Font("Segoe UI", 10), DropDownStyle = ComboBoxStyle.DropDownList };
-            LoadCategoriesComboBox(cboCategory, product.CategoryName);
-            dialogPanel.Controls.Add(lblCategory);
-            dialogPanel.Controls.Add(cboCategory);
-            yPos += spacing;
-
-            // Supplier
-            Label lblSupplier = new Label { Text = "Nhà cung cấp:", Location = new Point(30, yPos), Width = labelWidth, Font = new Font("Segoe UI", 10) };
-            ComboBox cboSupplier = new ComboBox { Location = new Point(160, yPos), Width = inputWidth, Font = new Font("Segoe UI", 10), DropDownStyle = ComboBoxStyle.DropDownList };
-            LoadSuppliersComboBox(cboSupplier, product.SupplierName);
-            dialogPanel.Controls.Add(lblSupplier);
-            dialogPanel.Controls.Add(cboSupplier);
-            yPos += 70;
-
-            // Save button
-            IconButton btnSave = new IconButton
-            {
-                Location = new Point(30, yPos),
-                Size = new Size(240, 45),
-                Text = "  Lưu thay đổi",
-                IconChar = IconChar.Save,
-                IconColor = Color.White,
-                IconSize = 24,
-                BackColor = Color.FromArgb(39, 174, 96),
-                ForeColor = Color.White,
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                FlatStyle = FlatStyle.Flat,
-                Cursor = Cursors.Hand
-            };
-            btnSave.FlatAppearance.BorderSize = 0;
-            btnSave.Click += (s, e) => {
-                SaveProductUpdate(product.ProductID, txtName.Text, (int)numQty.Value, txtUnit.Text,
-                    dtpExpiry.Value.ToString("yyyy-MM-dd"), cboCategory.SelectedItem.ToString(),
-                    cboSupplier.SelectedItem.ToString());
-                this.Controls.Remove(overlayPanel);
-            };
-            dialogPanel.Controls.Add(btnSave);
-
-            // Cancel button
-            IconButton btnCancel = new IconButton
-            {
-                Location = new Point(290, yPos),
-                Size = new Size(240, 45),
-                Text = "  Hủy",
-                IconChar = IconChar.Times,
-                IconColor = Color.White,
-                IconSize = 24,
-                BackColor = Color.FromArgb(127, 140, 141),
-                ForeColor = Color.White,
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                FlatStyle = FlatStyle.Flat,
-                Cursor = Cursors.Hand
-            };
-            btnCancel.FlatAppearance.BorderSize = 0;
-            btnCancel.Click += (s, e) => this.Controls.Remove(overlayPanel);
-            dialogPanel.Controls.Add(btnCancel);
-
-            overlayPanel.Controls.Add(dialogPanel);
-            this.Controls.Add(overlayPanel);
-            overlayPanel.BringToFront();
         }
 
         private void LoadCategoriesComboBox(ComboBox cbo, string selectedCategory)
@@ -763,21 +689,18 @@ namespace WinFormsWarehouseManager.Forms
         private void SaveProductUpdate(int productID, string name, int quantity, string unit,
             string expiryDate, string categoryName, string supplierName)
         {
-            // Get CategoryID from CategoryName
             string queryCat = "SELECT CategoryID FROM Categories WHERE CategoryName = @CategoryName";
             object catResult = dbHelper.ExecuteScalar(queryCat, new System.Data.SQLite.SQLiteParameter[] {
                 new System.Data.SQLite.SQLiteParameter("@CategoryName", categoryName)
             });
             int categoryID = catResult != null ? Convert.ToInt32(catResult) : 0;
 
-            // Get SupplierID from SupplierName
             string querySup = "SELECT SupplierID FROM Suppliers WHERE SupplierName = @SupplierName";
             object supResult = dbHelper.ExecuteScalar(querySup, new System.Data.SQLite.SQLiteParameter[] {
                 new System.Data.SQLite.SQLiteParameter("@SupplierName", supplierName)
             });
             int supplierID = supResult != null ? Convert.ToInt32(supResult) : 0;
 
-            // Update product
             string queryUpdate = @"
                 UPDATE Products 
                 SET ProductName = @ProductName, 
@@ -809,6 +732,47 @@ namespace WinFormsWarehouseManager.Forms
                 MessageBox.Show("Có lỗi xảy ra khi cập nhật!", "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void flowLayoutPanelProducts_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+    }
+
+    // Helper class for rounded panels
+    public class RoundedPanel : Panel
+    {
+        public int CornerRadius { get; set; } = 10;
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            using (GraphicsPath path = GetRoundedRectPath(this.ClientRectangle, CornerRadius))
+            {
+                this.Region = new Region(path);
+                using (Pen pen = new Pen(this.BackColor, 1))
+                {
+                    e.Graphics.DrawPath(pen, path);
+                }
+            }
+        }
+
+        private GraphicsPath GetRoundedRectPath(Rectangle rect, int radius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            int diameter = radius * 2;
+
+            path.AddArc(rect.X, rect.Y, diameter, diameter, 180, 90);
+            path.AddArc(rect.Right - diameter - 1, rect.Y, diameter, diameter, 270, 90);
+            path.AddArc(rect.Right - diameter - 1, rect.Bottom - diameter - 1, diameter, diameter, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - diameter - 1, diameter, diameter, 90, 90);
+            path.CloseFigure();
+
+            return path;
         }
     }
 }
