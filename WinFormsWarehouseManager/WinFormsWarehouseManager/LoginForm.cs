@@ -145,7 +145,7 @@ namespace WinFormsWarehouseManager
             {
                 string query = @"SELECT UserID, FullName, BirthDate, Email, CreatedAt 
                                FROM Users 
-                               WHERE Email = @Email AND MailboxPassword = @Password";
+                               WHERE Email = @Email AND Password = @Password";
 
                 SQLiteParameter[] parameters = new SQLiteParameter[]
                 {

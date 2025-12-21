@@ -7,44 +7,92 @@ using WinFormsWarehouseManager.Models;
 namespace WinFormsWarehouseManager.Helpers
 {
     /// <summary>
-    /// Class quản lý tự động tạo và xử lý thông báo
+    /// Class quản lý tự động tạo và xử lý thông báo (OPTIMIZED với Cache)
     /// </summary>
     public class NotificationManager
     {
         private static DatabaseHelper dbHelper = new DatabaseHelper();
 
+        // CACHE: Lưu thời gian generate lần cuối
+        private static DateTime? lastGenerateTime = null;
+        private static readonly TimeSpan CACHE_DURATION = TimeSpan.FromMinutes(30);
+
         /// <summary>
-        /// Tạo tất cả các loại thông báo (gọi khi mở app hoặc định kỳ)
+        /// Tạo tất cả các loại thông báo với CACHE 30 phút
         /// </summary>
         public static void GenerateAllNotifications()
         {
-            GenerateExpiredProductNotifications();
-            GenerateOverstockNotifications();
-            GenerateLowStockNotifications();
+            // KIỂM TRA CACHE: Nếu chưa quá 30 phút thì skip
+            if (lastGenerateTime.HasValue &&
+                DateTime.Now - lastGenerateTime.Value < CACHE_DURATION)
+            {
+                System.Diagnostics.Debug.WriteLine("Skip generate notifications - Cache still valid");
+                return;
+            }
+
+            try
+            {
+                // TỐI ƯU: Chỉ tạo thông báo cho USER HIỆN TẠI
+                int userId = UserSession.CurrentUserID;
+                if (userId <= 0) return;
+
+                GenerateExpiredProductNotifications(userId);
+                GenerateOverstockNotifications(userId);
+                GenerateLowStockNotifications(userId);
+
+                // Cập nhật cache time
+                lastGenerateTime = DateTime.Now;
+                System.Diagnostics.Debug.WriteLine($"Generated notifications for UserID: {userId} at {lastGenerateTime}");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Generate all notifications error: {ex.Message}");
+            }
         }
 
         /// <summary>
-        /// 1. Tạo thông báo sản phẩm hết hạn sử dụng
+        /// Force refresh - Bỏ qua cache
         /// </summary>
-        public static void GenerateExpiredProductNotifications()
+        public static void ForceRefreshNotifications()
+        {
+            lastGenerateTime = null;
+            GenerateAllNotifications();
+        }
+
+        /// <summary>
+        /// 1. Tạo thông báo sản phẩm hết hạn sử dụng - CHỈ CHO 1 USER
+        /// </summary>
+        private static void GenerateExpiredProductNotifications(int userId)
         {
             try
             {
                 string query = @"
                     INSERT INTO Notifications (LoaiThongBao, MoTa, RelatedTable, RelatedID, UserID, CreatedAt, IsRead)
                     SELECT 
-                        LoaiThongBao, MoTa, RelatedTable, RelatedID, UserID,
-                        datetime('now'), 0
-                    FROM vw_ExpiredProducts v
-                    WHERE NOT EXISTS (
+                        'Hết hạn sử dụng',
+                        'Sản phẩm ' || p.ProductName || ' (ID: ' || CAST(p.ProductID AS TEXT) || ') đã hết hạn.',
+                        'Products',
+                        p.ProductID,
+                        @UserID,
+                        datetime('now'),
+                        0
+                    FROM Products p
+                    WHERE p.HanSuDung < date('now') 
+                      AND p.SoLuong > 0
+                      AND NOT EXISTS (
                         SELECT 1 FROM Notifications n
-                        WHERE n.UserID = v.UserID 
-                          AND n.RelatedID = v.RelatedID
+                        WHERE n.UserID = @UserID
+                          AND n.RelatedID = p.ProductID
                           AND n.LoaiThongBao = 'Hết hạn sử dụng'
                           AND date(n.CreatedAt) = date('now')
                     )";
 
-                dbHelper.ExecuteNonQuery(query);
+                SQLiteParameter[] parameters = new SQLiteParameter[]
+                {
+                    new SQLiteParameter("@UserID", userId)
+                };
+
+                dbHelper.ExecuteNonQuery(query, parameters);
             }
             catch (Exception ex)
             {
@@ -53,27 +101,40 @@ namespace WinFormsWarehouseManager.Helpers
         }
 
         /// <summary>
-        /// 2. Tạo thông báo sản phẩm quá hạn tồn kho
+        /// 2. Tạo thông báo sản phẩm quá hạn tồn kho - CHỈ CHO 1 USER
         /// </summary>
-        public static void GenerateOverstockNotifications()
+        private static void GenerateOverstockNotifications(int userId)
         {
             try
             {
                 string query = @"
                     INSERT INTO Notifications (LoaiThongBao, MoTa, RelatedTable, RelatedID, UserID, CreatedAt, IsRead)
                     SELECT 
-                        LoaiThongBao, MoTa, RelatedTable, RelatedID, UserID,
-                        datetime('now'), 0
-                    FROM vw_OverstockProducts v
-                    WHERE NOT EXISTS (
+                        'Quá hạn tồn kho',
+                        'Sản phẩm ' || p.ProductName || ' đã lưu kho quá hạn.',
+                        'Products',
+                        p.ProductID,
+                        @UserID,
+                        datetime('now'),
+                        0
+                    FROM Products p
+                    JOIN Categories c ON p.CategoryID = c.CategoryID
+                    WHERE date(p.NgayNhapKho, '+' || c.HanTonKho_Thang || ' months') < date('now')
+                      AND p.SoLuong > 0
+                      AND NOT EXISTS (
                         SELECT 1 FROM Notifications n
-                        WHERE n.UserID = v.UserID 
-                          AND n.RelatedID = v.RelatedID
+                        WHERE n.UserID = @UserID
+                          AND n.RelatedID = p.ProductID
                           AND n.LoaiThongBao = 'Quá hạn tồn kho'
                           AND date(n.CreatedAt) = date('now')
                     )";
 
-                dbHelper.ExecuteNonQuery(query);
+                SQLiteParameter[] parameters = new SQLiteParameter[]
+                {
+                    new SQLiteParameter("@UserID", userId)
+                };
+
+                dbHelper.ExecuteNonQuery(query, parameters);
             }
             catch (Exception ex)
             {
@@ -82,27 +143,39 @@ namespace WinFormsWarehouseManager.Helpers
         }
 
         /// <summary>
-        /// 3. Tạo thông báo sản phẩm sắp hết hàng
+        /// 3. Tạo thông báo sản phẩm sắp hết hàng - CHỈ CHO 1 USER
         /// </summary>
-        public static void GenerateLowStockNotifications()
+        private static void GenerateLowStockNotifications(int userId)
         {
             try
             {
                 string query = @"
                     INSERT INTO Notifications (LoaiThongBao, MoTa, RelatedTable, RelatedID, UserID, CreatedAt, IsRead)
                     SELECT 
-                        LoaiThongBao, MoTa, RelatedTable, RelatedID, UserID,
-                        datetime('now'), 0
-                    FROM vw_LowStockProducts v
-                    WHERE NOT EXISTS (
+                        'Cảnh báo số lượng',
+                        'Sản phẩm ' || p.ProductName || ' sắp hết (còn ' || CAST(p.SoLuong AS TEXT) || ').',
+                        'Products',
+                        p.ProductID,
+                        @UserID,
+                        datetime('now'),
+                        0
+                    FROM Products p
+                    WHERE p.SoLuong <= 5 
+                      AND p.SoLuong > 0
+                      AND NOT EXISTS (
                         SELECT 1 FROM Notifications n
-                        WHERE n.UserID = v.UserID 
-                          AND n.RelatedID = v.RelatedID
+                        WHERE n.UserID = @UserID
+                          AND n.RelatedID = p.ProductID
                           AND n.LoaiThongBao = 'Cảnh báo số lượng'
                           AND date(n.CreatedAt) = date('now')
                     )";
 
-                dbHelper.ExecuteNonQuery(query);
+                SQLiteParameter[] parameters = new SQLiteParameter[]
+                {
+                    new SQLiteParameter("@UserID", userId)
+                };
+
+                dbHelper.ExecuteNonQuery(query, parameters);
             }
             catch (Exception ex)
             {

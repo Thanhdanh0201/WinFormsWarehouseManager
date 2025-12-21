@@ -15,38 +15,52 @@ namespace WinFormsWarehouseManager
 {
     public partial class NotificationForm : Form
     {
+        // CACHE: Lưu DataTable trong memory
+        private DataTable cachedNotifications = null;
+        private bool isResizing = false;
+
+        // Dictionary để track cards theo NotiID
+        private Dictionary<int, Panel> cardDictionary = new Dictionary<int, Panel>();
+
         public NotificationForm()
         {
             InitializeComponent();
-            this.Resize += NotificationForm_Resize;
 
-
+            // Tối ưu resize: Chỉ adjust width, không reload
+            this.ResizeBegin += (s, e) => { isResizing = true; };
+            this.ResizeEnd += (s, e) =>
+            {
+                isResizing = false;
+                AdjustCardsWidth(); // Chỉ adjust width, không tạo lại
+            };
         }
 
         private void NotificationForm_Load(object sender, EventArgs e)
         {
-            NotificationManager.GenerateAllNotifications();
-
-            // Load danh sách thông báo
-            LoadNotifications();
+            // Load danh sách thông báo lần đầu
+            LoadNotifications(forceRefresh: false);
         }
 
-
         /// <summary>
-        /// Load và hiển thị danh sách thông báo
+        /// Load và hiển thị danh sách thông báo với CACHE
         /// </summary>
-        private void LoadNotifications()
+        private void LoadNotifications(bool forceRefresh = false)
         {
             try
             {
-                // Clear panel
+                // CACHE: Chỉ query DB khi cần thiết
+                if (forceRefresh || cachedNotifications == null)
+                {
+                    bool unreadOnly = chkUnreadOnly.Checked;
+
+                    cachedNotifications = NotificationManager.GetUserNotifications(unreadOnly);
+                }
+
+                // Clear panel và dictionary
                 pnlNotifications.Controls.Clear();
+                cardDictionary.Clear();
 
-                // Lấy danh sách thông báo
-                bool unreadOnly = chkUnreadOnly.Checked;
-                DataTable dt = NotificationManager.GetUserNotifications(unreadOnly);
-
-                if (dt == null || dt.Rows.Count == 0)
+                if (cachedNotifications == null || cachedNotifications.Rows.Count == 0)
                 {
                     lblNoData.Visible = true;
                     lblNoData.BringToFront();
@@ -56,12 +70,21 @@ namespace WinFormsWarehouseManager
 
                 lblNoData.Visible = false;
 
+                // Suspend layout để tăng tốc
+                pnlNotifications.SuspendLayout();
+
                 // Tạo card cho mỗi thông báo
-                foreach (DataRow row in dt.Rows)
+                foreach (DataRow row in cachedNotifications.Rows)
                 {
+                    int notiId = Convert.ToInt32(row["NotiID"]);
                     Panel card = CreateNotificationCard(row);
                     pnlNotifications.Controls.Add(card);
+
+                    // Lưu vào dictionary để có thể update sau
+                    cardDictionary[notiId] = card;
                 }
+
+                pnlNotifications.ResumeLayout();
 
                 // Update số lượng chưa đọc
                 UpdateUnreadCount();
@@ -71,6 +94,58 @@ namespace WinFormsWarehouseManager
                 MessageBox.Show($"Lỗi load thông báo: {ex.Message}", "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        /// <summary>
+        /// Chỉ adjust width của cards hiện có, KHÔNG tạo lại
+        /// </summary>
+        private void AdjustCardsWidth()
+        {
+            if (isResizing) return;
+
+            int cardWidth = pnlNotifications.ClientSize.Width - 60;
+            int minWidth = 1000;
+            if (cardWidth < minWidth) cardWidth = minWidth;
+
+            pnlNotifications.SuspendLayout();
+
+            foreach (Panel card in pnlNotifications.Controls.OfType<Panel>())
+            {
+                card.Width = cardWidth;
+
+                // Update vị trí buttons
+                int btnRightMargin = 25;
+                int btnDeleteX = cardWidth - 170 - btnRightMargin;
+                int btnMarkReadX = btnDeleteX - 170 - 15;
+
+                // Tìm và update vị trí buttons
+                foreach (Control ctrl in card.Controls)
+                {
+                    if (ctrl is IconButton btn)
+                    {
+                        if (btn.Text == "Xóa")
+                            btn.Location = new Point(btnDeleteX, btn.Location.Y);
+                        else if (btn.Text == "Đánh dấu" || btn.Text == "Đã đọc")
+                            btn.Location = new Point(btnMarkReadX, btn.Location.Y);
+                    }
+                }
+
+                // Update width của description label
+                int rightButtonsSpace = 400;
+                int contentWidth = cardWidth - 115 - rightButtonsSpace;
+                if (contentWidth < 450) contentWidth = 450;
+
+                foreach (Control ctrl in card.Controls)
+                {
+                    if (ctrl is Label lbl && lbl.Location.X == 115 && lbl.Location.Y == 52)
+                    {
+                        lbl.Width = contentWidth;
+                        break;
+                    }
+                }
+            }
+
+            pnlNotifications.ResumeLayout();
         }
 
         /// <summary>
@@ -84,24 +159,21 @@ namespace WinFormsWarehouseManager
             string createdAt = row["CreatedAt"].ToString();
             bool isRead = Convert.ToInt32(row["IsRead"]) == 1;
 
-            // Tính toán width động dựa trên pnlNotifications
-            int cardWidth = pnlNotifications.ClientSize.Width - 60; // Trừ padding
-
-            // Điều chỉnh width tối thiểu dựa trên container
-            int minWidth = 1000; // Tăng từ 800 lên 1000
+            int cardWidth = pnlNotifications.ClientSize.Width - 60;
+            int minWidth = 1000;
             if (cardWidth < minWidth) cardWidth = minWidth;
 
             // Main Panel
             Panel card = new Panel
             {
                 Width = cardWidth,
-                Height = 180, 
+                Height = 180,
                 Margin = new Padding(0, 0, 0, 20),
                 BackColor = isRead ? Color.FromArgb(236, 240, 241) : Color.White,
-                Cursor = Cursors.Hand
+                Cursor = Cursors.Hand,
+                Tag = notiId // Lưu NotiID vào Tag
             };
-  
-            // Border effect
+
             card.Paint += (s, e) =>
             {
                 using (Pen pen = new Pen(Color.FromArgb(189, 195, 199), 2))
@@ -109,7 +181,6 @@ namespace WinFormsWarehouseManager
                     e.Graphics.DrawRectangle(pen, 0, 0, card.Width - 1, card.Height - 1);
                 }
             };
-           
 
             // Left color bar
             Panel colorBar = new Panel
@@ -117,7 +188,8 @@ namespace WinFormsWarehouseManager
                 Width = 8,
                 Height = 130,
                 Location = new Point(0, 0),
-                BackColor = NotificationManager.GetNotificationColor(loaiThongBao)
+                BackColor = NotificationManager.GetNotificationColor(loaiThongBao),
+                Tag = "colorBar"
             };
             card.Controls.Add(colorBar);
 
@@ -128,58 +200,58 @@ namespace WinFormsWarehouseManager
                 Font = new Font("Segoe UI", 32F),
                 Location = new Point(25, 35),
                 Size = new Size(70, 70),
-                TextAlign = ContentAlignment.MiddleCenter
+                TextAlign = ContentAlignment.MiddleCenter,
+                Tag = "icon"
             };
             card.Controls.Add(lblIcon);
 
-            // Type label - responsive width với multiline
-            int rightButtonsSpace = 400; // Khoảng trống cho 2 buttons bên phải
-            int contentWidth = cardWidth - 115 - rightButtonsSpace; // 115 = icon space
-            if (contentWidth < 450) contentWidth = 400; // Tăng minimum từ 400 lên 450
+            int rightButtonsSpace = 400;
+            int contentWidth = cardWidth - 115 - rightButtonsSpace;
+            if (contentWidth < 450) contentWidth = 450;
 
             Label lblType = new Label
             {
                 Text = loaiThongBao,
-                Font = new Font("Segoe UI", 9F, FontStyle.Bold), // Tăng từ 13F lên 14F
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
                 ForeColor = NotificationManager.GetNotificationColor(loaiThongBao),
                 Location = new Point(120, 18),
                 Size = new Size(240, 40),
                 AutoSize = false,
-                AutoEllipsis = true
+                AutoEllipsis = true,
+                Tag = "type"
             };
             card.Controls.Add(lblType);
 
-            // Description - responsive width với multiline và ellipsis
             Label lblDesc = new Label
             {
                 Text = moTa,
-                Font = new Font("Segoe UI", 11F), // Tăng từ 11.5F lên 12F
+                Font = new Font("Segoe UI", 11F),
                 ForeColor = Color.FromArgb(52, 73, 94),
                 Location = new Point(115, 52),
-                Size = new Size(contentWidth, 40), // Giảm từ 70 xuống 50
+                Size = new Size(contentWidth, 40),
                 AutoSize = false,
-                AutoEllipsis = false
+                AutoEllipsis = false,
+                Tag = "desc"
             };
             card.Controls.Add(lblDesc);
 
-            // Time label
             Label lblTime = new Label
             {
                 Text = FormatDateTime(createdAt),
                 Font = new Font("Segoe UI", 6F, FontStyle.Italic),
                 ForeColor = Color.FromArgb(149, 165, 166),
-                Location = new Point(115, 135), // Điều chỉnh vị trí
+                Location = new Point(115, 135),
                 Size = new Size(220, 30),
-                AutoSize = false
+                AutoSize = false,
+                Tag = "time"
             };
             card.Controls.Add(lblTime);
 
-            // Tính toán vị trí buttons từ bên phải
             int btnRightMargin = 25;
-            int btnDeleteX = cardWidth - 170 - btnRightMargin; // Giảm width button
-            int btnMarkReadX = btnDeleteX - 170 - 15; // Giảm width button
+            int btnDeleteX = cardWidth - 170 - btnRightMargin;
+            int btnMarkReadX = btnDeleteX - 170 - 15;
 
-            // Mark as read button với IconButton
+            // Mark as read button
             IconButton btnMarkRead = new IconButton
             {
                 Text = isRead ? "Đã đọc" : "Đánh dấu",
@@ -196,19 +268,25 @@ namespace WinFormsWarehouseManager
                 IconSize = 35,
                 ImageAlign = ContentAlignment.MiddleLeft,
                 TextAlign = ContentAlignment.MiddleRight,
-                Padding = new Padding(10, 0, 10, 0)
+                Padding = new Padding(10, 0, 10, 0),
+                Tag = "btnMarkRead"
             };
             btnMarkRead.FlatAppearance.BorderSize = 0;
             btnMarkRead.Click += (s, e) =>
             {
+                // CHỈ UPDATE UI, KHÔNG RELOAD
                 if (NotificationManager.MarkAsRead(notiId))
                 {
-                    LoadNotifications();
+                    UpdateCardAsRead(card, btnMarkRead);
+                    UpdateUnreadCount();
+
+                    // Update cache
+                    UpdateCacheRowAsRead(notiId);
                 }
             };
             card.Controls.Add(btnMarkRead);
 
-            // Delete button với IconButton
+            // Delete button
             IconButton btnDelete = new IconButton
             {
                 Text = "Xóa",
@@ -224,9 +302,9 @@ namespace WinFormsWarehouseManager
                 IconSize = 35,
                 ImageAlign = ContentAlignment.MiddleLeft,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Padding = new Padding(10, 0, 10, 0)
+                Padding = new Padding(10, 0, 10, 0),
+                Tag = "btnDelete"
             };
-
             btnDelete.FlatAppearance.BorderSize = 0;
             btnDelete.Click += (s, e) =>
             {
@@ -236,7 +314,12 @@ namespace WinFormsWarehouseManager
                 {
                     if (NotificationManager.DeleteNotification(notiId))
                     {
-                        LoadNotifications();
+                        // XÓA CARD KHỎI UI, KHÔNG RELOAD
+                        RemoveCard(notiId);
+                        UpdateUnreadCount();
+
+                        // Update cache
+                        RemoveCacheRow(notiId);
                     }
                 }
             };
@@ -247,8 +330,12 @@ namespace WinFormsWarehouseManager
             {
                 if (!isRead)
                 {
-                    NotificationManager.MarkAsRead(notiId);
-                    LoadNotifications();
+                    if (NotificationManager.MarkAsRead(notiId))
+                    {
+                        UpdateCardAsRead(card, btnMarkRead);
+                        UpdateUnreadCount();
+                        UpdateCacheRowAsRead(notiId);
+                    }
                 }
             };
 
@@ -256,8 +343,75 @@ namespace WinFormsWarehouseManager
         }
 
         /// <summary>
-        /// Format datetime thân thiện
+        /// CHỈ UPDATE UI CỦA 1 CARD thành đã đọc - KHÔNG RELOAD
         /// </summary>
+        private void UpdateCardAsRead(Panel card, IconButton btnMarkRead)
+        {
+            card.BackColor = Color.FromArgb(236, 240, 241);
+            btnMarkRead.Text = "Đã đọc";
+            btnMarkRead.BackColor = Color.FromArgb(149, 165, 166);
+            btnMarkRead.IconChar = IconChar.CheckCircle;
+            btnMarkRead.Enabled = false;
+        }
+
+        /// <summary>
+        /// XÓA 1 CARD KHỎI UI - KHÔNG RELOAD
+        /// </summary>
+        private void RemoveCard(int notiId)
+        {
+            if (cardDictionary.ContainsKey(notiId))
+            {
+                Panel card = cardDictionary[notiId];
+                pnlNotifications.Controls.Remove(card);
+                cardDictionary.Remove(notiId);
+                card.Dispose();
+
+                // Kiểm tra nếu không còn card nào
+                if (pnlNotifications.Controls.Count == 0)
+                {
+                    lblNoData.Visible = true;
+                    lblNoData.BringToFront();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update cache khi mark as read
+        /// </summary>
+        private void UpdateCacheRowAsRead(int notiId)
+        {
+            if (cachedNotifications != null)
+            {
+                foreach (DataRow row in cachedNotifications.Rows)
+                {
+                    if (Convert.ToInt32(row["NotiID"]) == notiId)
+                    {
+                        row["IsRead"] = 1;
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Xóa row khỏi cache
+        /// </summary>
+        private void RemoveCacheRow(int notiId)
+        {
+            if (cachedNotifications != null)
+            {
+                foreach (DataRow row in cachedNotifications.Rows)
+                {
+                    if (Convert.ToInt32(row["NotiID"]) == notiId)
+                    {
+                        row.Delete();
+                        cachedNotifications.AcceptChanges();
+                        break;
+                    }
+                }
+            }
+        }
+
         private string FormatDateTime(string dateTimeStr)
         {
             try
@@ -282,18 +436,24 @@ namespace WinFormsWarehouseManager
             }
         }
 
-        /// <summary>
-        /// Cập nhật số lượng thông báo chưa đọc
-        /// </summary>
         private void UpdateUnreadCount()
         {
             int count = NotificationManager.GetUnreadCount();
             lblUnreadCount.Text = $"Chưa đọc: {count}";
         }
+
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+            // Force refresh cache trong NotificationManager
+
+            // Reload với force refresh
             NotificationManager.GenerateAllNotifications();
-            LoadNotifications();
+            // Force refresh cache trong NotificationManager
+            NotificationManager.ForceRefreshNotifications();
+
+            // Reload với force refresh
+            LoadNotifications(forceRefresh: true);
+
             MessageBox.Show("Đã làm mới thông báo!", "Thông báo",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -306,7 +466,30 @@ namespace WinFormsWarehouseManager
             if (result == DialogResult.Yes)
             {
                 NotificationManager.MarkAllAsRead();
-                LoadNotifications();
+
+                // Update UI tất cả cards thay vì reload
+                foreach (var kvp in cardDictionary)
+                {
+                    Panel card = kvp.Value;
+                    IconButton btnMarkRead = card.Controls.OfType<IconButton>()
+                        .FirstOrDefault(b => b.Tag?.ToString() == "btnMarkRead");
+
+                    if (btnMarkRead != null)
+                    {
+                        UpdateCardAsRead(card, btnMarkRead);
+                    }
+                }
+
+                // Update cache
+                if (cachedNotifications != null)
+                {
+                    foreach (DataRow row in cachedNotifications.Rows)
+                    {
+                        row["IsRead"] = 1;
+                    }
+                }
+
+                UpdateUnreadCount();
             }
         }
 
@@ -318,13 +501,41 @@ namespace WinFormsWarehouseManager
             if (result == DialogResult.Yes)
             {
                 NotificationManager.DeleteAllRead();
-                LoadNotifications();
+
+                // Xóa cards đã đọc khỏi UI
+                var readCards = cardDictionary.Where(kvp =>
+                {
+                    Panel card = kvp.Value;
+                    return card.BackColor == Color.FromArgb(236, 240, 241);
+                }).Select(kvp => kvp.Key).ToList();
+
+                foreach (int notiId in readCards)
+                {
+                    RemoveCard(notiId);
+                }
+
+                // Update cache
+                if (cachedNotifications != null)
+                {
+                    var rowsToDelete = cachedNotifications.AsEnumerable()
+                        .Where(r => Convert.ToInt32(r["IsRead"]) == 1)
+                        .ToList();
+
+                    foreach (var row in rowsToDelete)
+                    {
+                        row.Delete();
+                    }
+                    cachedNotifications.AcceptChanges();
+                }
+
+                UpdateUnreadCount();
             }
         }
-        
+
         private void chkUnreadOnly_CheckedChanged(object sender, EventArgs e)
         {
-            LoadNotifications();
+            // Phải force refresh vì filter thay đổi
+            LoadNotifications(forceRefresh: true);
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -334,25 +545,14 @@ namespace WinFormsWarehouseManager
 
         private void NotificationForm_Load_1(object sender, EventArgs e)
         {
-
         }
 
         private void lblNoData_Click(object sender, EventArgs e)
         {
-
         }
 
-        /// <summary>
-        /// Xử lý khi resize form - reload lại cards với width mới
-        /// </summary>
-        private void NotificationForm_Resize(object sender, EventArgs e)
+        private void lblNoData_Click_1(object sender, EventArgs e)
         {
-            // Chỉ reload nếu có thông báo
-            if (pnlNotifications.Controls.Count > 0)
-            {
-                LoadNotifications();
-            }
         }
-
     }
 }

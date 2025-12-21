@@ -338,6 +338,9 @@
     <EmbeddedResource Include="RJControls\CustomDateTimePicker.resx">
       <DependentUpon>CustomDateTimePicker.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="RJControls\RJComboBox.resx">
+      <DependentUpon>RJComboBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RJControls\RJDateTimePicker.resx">
       <DependentUpon>RJDateTimePicker.cs</DependentUpon>
     </EmbeddedResource>
@@ -370,7 +373,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="SQLite.db">
+    <None Include="SQLiteWmp.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

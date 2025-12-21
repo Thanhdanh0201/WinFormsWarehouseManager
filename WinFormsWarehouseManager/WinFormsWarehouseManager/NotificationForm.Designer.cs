@@ -208,6 +208,7 @@
             this.lblNoData.Text = "📭 Không có thông báo nào";
             this.lblNoData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblNoData.Visible = false;
+            this.lblNoData.Click += new System.EventHandler(this.lblNoData_Click_1);
             // 
             // NotificationForm
             // 

@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using WinFormsWarehouseManager.db;
 using WinFormsWarehouseManager.Services;
 using WinFormsWarehouseManager.Forms;
+using WinFormsWarehouseManager.Helpers;
 using Panel = System.Windows.Forms.Panel;
 
 namespace WinFormsWarehouseManager
@@ -34,42 +35,9 @@ namespace WinFormsWarehouseManager
             panelMenu.Controls.Add(leftBorderBtn);
             this.Padding = new Padding(borderSize);
             this.BackColor = Color.FromArgb(2, 51, 66);
-            ResetNotificationsOneTime();
+            NotificationManager.GenerateAllNotifications();
+            
 
-        }
-
-        private void ResetNotificationsOneTime()
-        {
-            try
-            {
-                DatabaseHelper db = new DatabaseHelper();
-
-                // Đánh dấu tất cả là đã đọc
-                db.ExecuteNonQuery("UPDATE Notifications SET IsRead = 1");
-
-                // Đánh dấu 50 mới nhất là chưa đọc
-                string query = @"UPDATE Notifications
-                        SET IsRead = 0
-                        WHERE NotiID IN (
-                            SELECT NotiID
-                            FROM Notifications
-                            ORDER BY CreatedAt DESC
-                            LIMIT 10
-                        )";
-                db.ExecuteNonQuery(query);
-
-                MessageBox.Show("✅ Đã reset notifications thành công!\n(Xóa code này sau khi chạy xong)",
-                               "Thông báo",
-                               MessageBoxButtons.OK,
-                               MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi reset notifications: {ex.Message}",
-                               "Lỗi",
-                               MessageBoxButtons.OK,
-                               MessageBoxIcon.Error);
-            }
         }
 
         //Drag Form

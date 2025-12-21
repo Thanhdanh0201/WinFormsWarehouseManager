@@ -15,7 +15,7 @@ namespace WinFormsWarehouseManager.db
         public DbConnection()
         {
             // Đường dẫn đến file SQLite.db trong thư mục bin\Debug
-            string dbPath = System.IO.Path.Combine(Application.StartupPath, "SQLite.db");
+            string dbPath = System.IO.Path.Combine(Application.StartupPath, "SQLiteWmp.db");
             connectionString = $"Data Source={dbPath};Version=3;";
         }
 
