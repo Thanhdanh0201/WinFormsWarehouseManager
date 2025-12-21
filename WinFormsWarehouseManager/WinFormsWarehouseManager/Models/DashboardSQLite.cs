@@ -240,7 +240,7 @@ namespace WinFormsWarehouseManager.Models
                   GROUP BY c.CategoryName
                   HAVING COUNT(p.ProductID) > 0
                   ORDER BY ProductCount DESC
-                  LIMIT 5",
+                  LIMIT 6",
                 new SQLiteParameter("@from", startDate.ToString("yyyy-MM-dd")),
                 new SQLiteParameter("@to", endDate.ToString("yyyy-MM-dd"))
             );

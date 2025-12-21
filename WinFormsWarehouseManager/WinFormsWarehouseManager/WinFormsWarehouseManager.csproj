@@ -250,6 +250,12 @@
     <Compile Include="FormNhapKho.Designer.cs">
       <DependentUpon>FormNhapKho.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormXuatKho.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormXuatKho.Designer.cs">
+      <DependentUpon>FormXuatKho.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\ActivityLogger.cs" />
     <Compile Include="Helpers\NotificationManager.cs" />
     <Compile Include="LoginForm.cs">
@@ -322,6 +328,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormNhapKho.resx">
       <DependentUpon>FormNhapKho.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormXuatKho.resx">
+      <DependentUpon>FormXuatKho.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>

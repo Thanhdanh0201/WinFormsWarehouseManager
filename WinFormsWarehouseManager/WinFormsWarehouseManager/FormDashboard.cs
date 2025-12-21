@@ -89,8 +89,9 @@ namespace WinFormsWarehouseManager
                 Color.FromArgb(231, 76, 60),    // Red - Linh kiện điện tử
                 Color.FromArgb(26, 188, 156),   // Teal - Vật liệu xây dựng
                 Color.FromArgb(149, 165, 166),  // Gray - Mỹ phẩm
+                Color.FromArgb(46, 204, 113),   // Green - Thực phẩm
+
                 Color.FromArgb(155, 89, 182),   // Purple
-                Color.FromArgb(46, 204, 113),   // Green
                 Color.FromArgb(230, 126, 34)    // Orange
             };
 
@@ -100,7 +101,8 @@ namespace WinFormsWarehouseManager
                 "Đồ dùng văn phòng",
                 "Linh kiện điện tử",
                 "Vật liệu xây dựng",
-                "Mỹ phẩm"
+                "Mỹ phẩm",
+                "Thực phẩm"
             };
 
 
