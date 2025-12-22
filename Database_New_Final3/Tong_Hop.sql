@@ -1,6 +1,6 @@
-﻿CREATE DATABASE QuanLy_Kho4;
+﻿CREATE DATABASE QuanLy_Kho;
 GO
-USE QuanLy_Kho4;
+USE QuanLy_Kho;
 GO
 
 
@@ -15,6 +15,7 @@ CREATE TABLE Users (
     BirthDate DATE,
     Phone varchar(15),
     Email VARCHAR(100) UNIQUE NOT NULL,
+    Password VARCHAR(255) NOT NULL,
     MailboxPassword VARCHAR(255),
     CreatedAt DATETIME DEFAULT GETDATE()
 );
@@ -299,11 +300,11 @@ GO
 -- =============================================
 
 -- Tạo Admin với 3 User
-INSERT INTO Users (FullName, BirthDate, Phone, Email, MailboxPassword) VALUES 
-(N'Nguyễn Anh Kiệt', '2006-01-01', '0987654321', 'kietnguyenbienhoa141106@gmail.com', 'admin_pass_123'),
-(N'Nguyễn Thành Danh', '2006-05-15', '0907654321', 'hoa418109@gmail.com', 'manager_pass_456'),                
-(N'Nguyễn Ngọc Duy', '2003-08-20', '0980654321', 'vultdeus42@gmail.com', 'ketoan_pass_789');
-
+INSERT INTO Users (FullName, BirthDate, Phone, Email, Password, MailboxPassword) VALUES 
+('Nguyễn Anh Kiệt', '2006-01-01', '0901234567', 'kietnguyenbienhoa141106@gmail.com', 'adminpass123', 'hvxluhrtcysqcuqh'),
+('Nguyễn Thành Danh', '2006-05-15', '0911234567','wmdanhnguyenthanh24520264@gmail.com', 'adminpass123', 'mbxvlnhksegqchdf'),                
+('Nguyễn Ngọc Duy', '2003-08-20', '0921234567', 'vultdeus42@gmail.com', 'adminpass123', 'axiceapuudafyvhg');
+    
 -- 6 Danh mục
 INSERT INTO Categories (CategoryName, HanTonKho_Thang) VALUES 
 (N'Thực phẩm', 6), (N'Linh kiện điện tử', 24), (N'Đồ gia dụng', 24),
@@ -598,4 +599,5 @@ SELECT * FROM ImportReceipts;
 SELECT * FROM ExportReceipts;
 
 -- Phải ghi log đầy đủ 
+
 SELECT * FROM ActivityLog
