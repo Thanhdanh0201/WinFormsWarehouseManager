@@ -9,6 +9,7 @@ CREATE TABLE Users (
     BirthDate DATE,
     Phone varchar(15),
     Email VARCHAR(100) UNIQUE NOT NULL,
+    Password VARCHAR(255) NOT NULL,
     MailboxPassword VARCHAR(255),
     CreatedAt DATETIME DEFAULT GETDATE()
 );
@@ -98,3 +99,4 @@ CREATE TABLE Notifications (
     UserID INT REFERENCES Users(UserID)
 );
 GO
+
