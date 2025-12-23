@@ -408,7 +408,7 @@ namespace WinFormsWarehouseManager.Forms
                 Text = timeText,
                 ForeColor = Color.FromArgb(108, 117, 125),
                 Font = new Font("Segoe UI", 8.5F),
-                Location = new Point(45, 33),
+                Location = new Point(45, 36),
                 AutoSize = true
             };
 
