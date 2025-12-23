@@ -238,6 +238,12 @@
     <Compile Include="db\FormUpdateProduct.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="db\FormUserProfileModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="db\FormUserProfileModal.Designer.cs">
+      <DependentUpon>FormUserProfileModal.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -322,6 +328,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="db\FormDeleteConfirmation.resx">
       <DependentUpon>FormDeleteConfirmation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="db\FormUserProfileModal.resx">
+      <DependentUpon>FormUserProfileModal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormDashboard.resx">
       <DependentUpon>FormDashboard.cs</DependentUpon>

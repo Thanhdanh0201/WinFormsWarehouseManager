@@ -284,7 +284,7 @@ namespace WinFormsWarehouseManager
             ActivateButton(sender, RGBColors.color7);
             iconChildForm.Visible = false;
             lblChildForm.Visible = false;
-            //OpenChildForm(new FormMessage());
+            
         }
 
         private void iconButton7_Click(object sender, EventArgs e)
@@ -297,7 +297,8 @@ namespace WinFormsWarehouseManager
 
         private void btnIconUser_Click_1(object sender, EventArgs e)
         {
-
+            UserProfileModal modal = new UserProfileModal();
+            modal.ShowDialog(this);
         }
 
         private void panelTitleBar_MouseDown(object sender, MouseEventArgs e)
