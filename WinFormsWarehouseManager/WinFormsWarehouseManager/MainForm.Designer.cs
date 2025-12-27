@@ -30,8 +30,8 @@ namespace WinFormsWarehouseManager
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             this.panelMenu = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -69,7 +69,7 @@ namespace WinFormsWarehouseManager
             this.panelMenu.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelMenu.Location = new System.Drawing.Point(0, 0);
             this.panelMenu.Name = "panelMenu";
-            this.panelMenu.Size = new System.Drawing.Size(220, 929);
+            this.panelMenu.Size = new System.Drawing.Size(220, 1079);
             this.panelMenu.TabIndex = 0;
             this.panelMenu.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -103,7 +103,7 @@ namespace WinFormsWarehouseManager
             this.iconButton6.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconButton6.IconSize = 40;
             this.iconButton6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.iconButton6.Location = new System.Drawing.Point(0, 869);
+            this.iconButton6.Location = new System.Drawing.Point(0, 1019);
             this.iconButton6.Name = "iconButton6";
             this.iconButton6.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.iconButton6.Size = new System.Drawing.Size(220, 60);
@@ -243,7 +243,7 @@ namespace WinFormsWarehouseManager
             this.panelTitleBar.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTitleBar.Location = new System.Drawing.Point(220, 0);
             this.panelTitleBar.Name = "panelTitleBar";
-            this.panelTitleBar.Size = new System.Drawing.Size(1354, 140);
+            this.panelTitleBar.Size = new System.Drawing.Size(1554, 140);
             this.panelTitleBar.TabIndex = 1;
             this.panelTitleBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelTitleBar_MouseDown);
             // 
@@ -259,7 +259,7 @@ namespace WinFormsWarehouseManager
             this.iconbtnMinimize.IconColor = System.Drawing.Color.GhostWhite;
             this.iconbtnMinimize.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconbtnMinimize.IconSize = 20;
-            this.iconbtnMinimize.Location = new System.Drawing.Point(1180, 0);
+            this.iconbtnMinimize.Location = new System.Drawing.Point(1380, 0);
             this.iconbtnMinimize.Name = "iconbtnMinimize";
             this.iconbtnMinimize.Size = new System.Drawing.Size(50, 50);
             this.iconbtnMinimize.TabIndex = 8;
@@ -280,7 +280,7 @@ namespace WinFormsWarehouseManager
             this.iconbtnZoom.IconColor = System.Drawing.Color.GhostWhite;
             this.iconbtnZoom.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconbtnZoom.IconSize = 20;
-            this.iconbtnZoom.Location = new System.Drawing.Point(1236, 0);
+            this.iconbtnZoom.Location = new System.Drawing.Point(1436, 0);
             this.iconbtnZoom.Name = "iconbtnZoom";
             this.iconbtnZoom.Size = new System.Drawing.Size(50, 50);
             this.iconbtnZoom.TabIndex = 7;
@@ -301,7 +301,7 @@ namespace WinFormsWarehouseManager
             this.iconbtnExit.IconColor = System.Drawing.Color.GhostWhite;
             this.iconbtnExit.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconbtnExit.IconSize = 20;
-            this.iconbtnExit.Location = new System.Drawing.Point(1292, 0);
+            this.iconbtnExit.Location = new System.Drawing.Point(1492, 0);
             this.iconbtnExit.Name = "iconbtnExit";
             this.iconbtnExit.Size = new System.Drawing.Size(50, 50);
             this.iconbtnExit.TabIndex = 6;
@@ -316,7 +316,7 @@ namespace WinFormsWarehouseManager
             this.btnIconUser.BackColor = System.Drawing.Color.Transparent;
             this.btnIconUser.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.UserIcon;
             this.btnIconUser.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnIconUser.CustomizableEdges = customizableEdges3;
+            this.btnIconUser.CustomizableEdges = customizableEdges1;
             this.btnIconUser.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnIconUser.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnIconUser.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -324,9 +324,9 @@ namespace WinFormsWarehouseManager
             this.btnIconUser.FillColor = System.Drawing.Color.Transparent;
             this.btnIconUser.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnIconUser.ForeColor = System.Drawing.Color.White;
-            this.btnIconUser.Location = new System.Drawing.Point(1245, 52);
+            this.btnIconUser.Location = new System.Drawing.Point(1445, 52);
             this.btnIconUser.Name = "btnIconUser";
-            this.btnIconUser.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            this.btnIconUser.ShadowDecoration.CustomizableEdges = customizableEdges2;
             this.btnIconUser.Size = new System.Drawing.Size(97, 85);
             this.btnIconUser.TabIndex = 5;
             this.btnIconUser.Click += new System.EventHandler(this.btnIconUser_Click_1);
@@ -342,7 +342,7 @@ namespace WinFormsWarehouseManager
             this.iconButton7.IconColor = System.Drawing.Color.GhostWhite;
             this.iconButton7.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconButton7.IconSize = 40;
-            this.iconButton7.Location = new System.Drawing.Point(1146, 49);
+            this.iconButton7.Location = new System.Drawing.Point(1346, 49);
             this.iconButton7.Name = "iconButton7";
             this.iconButton7.Size = new System.Drawing.Size(93, 85);
             this.iconButton7.TabIndex = 3;
@@ -385,7 +385,7 @@ namespace WinFormsWarehouseManager
             this.panelDesktop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelDesktop.Location = new System.Drawing.Point(220, 140);
             this.panelDesktop.Name = "panelDesktop";
-            this.panelDesktop.Size = new System.Drawing.Size(1354, 789);
+            this.panelDesktop.Size = new System.Drawing.Size(1554, 939);
             this.panelDesktop.TabIndex = 2;
             this.panelDesktop.Paint += new System.Windows.Forms.PaintEventHandler(this.panelDesktop_Paint);
             // 
@@ -394,7 +394,7 @@ namespace WinFormsWarehouseManager
             this.AutoScaleDimensions = new System.Drawing.SizeF(192F, 192F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1574, 929);
+            this.ClientSize = new System.Drawing.Size(1774, 1079);
             this.Controls.Add(this.panelDesktop);
             this.Controls.Add(this.panelTitleBar);
             this.Controls.Add(this.panelMenu);

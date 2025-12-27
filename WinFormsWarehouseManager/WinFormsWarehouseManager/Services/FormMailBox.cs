@@ -45,15 +45,35 @@ namespace WinFormsWarehouseManager.Forms
         {
             try
             {
-                _emailService = new EmailService("wmdanhnguyenthanh24520264@gmail.com", "kuzcfeqdiwmcwuia");
+                // Kiểm tra user đã đăng nhập chưa
+                if (!UserSession.IsLoggedIn)
+                {
+                    MessageBox.Show("Vui lòng đăng nhập trước khi sử dụng chức năng email.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Lấy email và password từ UserSession
+                string email = UserSession.CurrentUserEmail;
+                string mailboxPassword = UserSession.CurrentUserMailboxPassword;
+
+                // Kiểm tra xem user đã cấu hình mailbox chưa
+                if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(mailboxPassword))
+                {
+                    MessageBox.Show("Bạn chưa cấu hình thông tin mailbox.\nVui lòng cập nhật trong phần cài đặt tài khoản.",
+                        "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Khởi tạo EmailService với thông tin từ database
+                _emailService = new EmailService(email, mailboxPassword);
                 _emailService.Connect();
                 LoadEmails();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"ERROR in InitializeMailbox:\n{ex.Message}\n\nStack:\n{ex.StackTrace}",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                throw;
+                MessageBox.Show($"Lỗi khi khởi tạo mailbox:\n{ex.Message}",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

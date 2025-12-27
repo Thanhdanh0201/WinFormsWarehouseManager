@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.Drawing;
 using System.Windows.Forms;
+using WinFormsWarehouseManager.Forms;
 using WinFormsWarehouseManager.db;
 using WinFormsWarehouseManager.Models;
 
@@ -781,12 +782,12 @@ namespace WinFormsWarehouseManager
             dgvDanhSachNhap.MultiSelect = false;
 
             dgvDanhSachNhap.EnableHeadersVisualStyles = false;
-            dgvDanhSachNhap.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(2, 51, 66);
+            dgvDanhSachNhap.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(4, 119, 154);
             dgvDanhSachNhap.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvDanhSachNhap.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             dgvDanhSachNhap.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dgvDanhSachNhap.ColumnHeadersDefaultCellStyle.Padding = new Padding(10, 8, 10, 8);
-            dgvDanhSachNhap.ColumnHeadersHeight = 40;
+            dgvDanhSachNhap.ColumnHeadersHeight = 55;
             dgvDanhSachNhap.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
 
             dgvDanhSachNhap.DefaultCellStyle.BackColor = Color.White;
@@ -831,6 +832,21 @@ namespace WinFormsWarehouseManager
         private void FormNhapKho_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void dtpHanSuDung_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void iconButton1_Click(object sender, EventArgs e)
+        {
+
+            //ImportHistoryModal modal = new ImportHistoryModal();
+            //modal.ShowDialog(this);
+            // Mở modal từ form chính hoặc menu
+            ExportHistoryModal modal = new ExportHistoryModal();
+            modal.ShowDialog(this);
         }
     }
 }

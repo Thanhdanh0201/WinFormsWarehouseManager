@@ -70,7 +70,7 @@
             this.btnSearch.Location = new System.Drawing.Point(669, 47);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(5);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(189, 63);
+            this.btnSearch.Size = new System.Drawing.Size(189, 66);
             this.btnSearch.TabIndex = 7;
             this.btnSearch.Text = " Tìm";
             this.btnSearch.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -83,6 +83,7 @@
             this.txtSearch.ForeColor = System.Drawing.Color.Gray;
             this.txtSearch.Location = new System.Drawing.Point(223, 53);
             this.txtSearch.Margin = new System.Windows.Forms.Padding(5);
+            this.txtSearch.MinimumSize = new System.Drawing.Size(426, 66);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(426, 47);
             this.txtSearch.TabIndex = 6;
@@ -108,6 +109,7 @@
             this.cboSort.FormattingEnabled = true;
             this.cboSort.Location = new System.Drawing.Point(1509, 53);
             this.cboSort.Margin = new System.Windows.Forms.Padding(5);
+            this.cboSort.MinimumSize = new System.Drawing.Size(271, 0);
             this.cboSort.Name = "cboSort";
             this.cboSort.Size = new System.Drawing.Size(271, 46);
             this.cboSort.TabIndex = 4;
@@ -132,6 +134,7 @@
             this.cboCategory.FormattingEnabled = true;
             this.cboCategory.Location = new System.Drawing.Point(1071, 53);
             this.cboCategory.Margin = new System.Windows.Forms.Padding(5);
+            this.cboCategory.MinimumSize = new System.Drawing.Size(263, 0);
             this.cboCategory.Name = "cboCategory";
             this.cboCategory.Size = new System.Drawing.Size(263, 46);
             this.cboCategory.TabIndex = 2;
@@ -156,8 +159,9 @@
             this.chkSelectAll.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this.chkSelectAll.Location = new System.Drawing.Point(1817, 58);
             this.chkSelectAll.Margin = new System.Windows.Forms.Padding(5);
+            this.chkSelectAll.MinimumSize = new System.Drawing.Size(200, 66);
             this.chkSelectAll.Name = "chkSelectAll";
-            this.chkSelectAll.Size = new System.Drawing.Size(198, 42);
+            this.chkSelectAll.Size = new System.Drawing.Size(200, 66);
             this.chkSelectAll.TabIndex = 0;
             this.chkSelectAll.Text = "Chọn tất cả";
             this.chkSelectAll.UseVisualStyleBackColor = true;

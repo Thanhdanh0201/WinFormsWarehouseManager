@@ -44,11 +44,11 @@ namespace WinFormsWarehouseManager.Forms
             categoryColors = new Dictionary<string, Color>()
             {
                 { "Thực phẩm", Color.FromArgb(46, 204, 113) },
-                { "Linh kiện điện tử", Color.FromArgb(230, 126, 34) },
-                { "Đồ gia dụng", Color.FromArgb(41, 128, 185) },
-                { "Mỹ phẩm", Color.FromArgb(231, 76, 60) },
-                { "Vật liệu xây dựng", Color.FromArgb(149, 165, 166) },
-                { "Đồ dùng văn phòng", Color.FromArgb(142, 68, 173) }
+                { "Linh kiện điện tử", Color.FromArgb(231, 76, 60) },
+                { "Đồ gia dụng", Color.FromArgb(52, 152, 219) },
+                { "Mỹ phẩm", Color.FromArgb(149, 165, 166) },
+                { "Vật liệu xây dựng", Color.FromArgb(26, 188, 156) },
+                { "Đồ dùng văn phòng", Color.FromArgb(241, 196, 15) }
             };
         }
 
@@ -207,7 +207,7 @@ namespace WinFormsWarehouseManager.Forms
             Panel card = new RoundedPanel
             {
                 Width = 280,
-                Height = 180,
+                Height = 220,
                 BackColor = Color.White,
                 Margin = new Padding(8),
                 Tag = product,
@@ -239,7 +239,7 @@ namespace WinFormsWarehouseManager.Forms
             Panel colorStrip = new Panel
             {
                 Width = 5,
-                Height = 180,
+                Height = 190,
                 BackColor = categoryColor,
                 Location = new Point(0, 0)
             };
@@ -256,8 +256,8 @@ namespace WinFormsWarehouseManager.Forms
                 FlatStyle = FlatStyle.Flat,
                 Cursor = Cursors.Hand
             };
-            chkSelect.FlatAppearance.BorderColor = Color.FromArgb(189, 195, 199);
-            chkSelect.FlatAppearance.CheckedBackColor = Color.FromArgb(41, 128, 185);
+            chkSelect.FlatAppearance.BorderColor = Color.FromArgb(2, 51, 66);
+            chkSelect.FlatAppearance.CheckedBackColor = Color.FromArgb(2, 51, 66);
             chkSelect.CheckedChanged += ChkSelect_CheckedChanged;
             card.Controls.Add(chkSelect);
 
@@ -270,7 +270,7 @@ namespace WinFormsWarehouseManager.Forms
             Label lblName = new Label
             {
                 Text = product.ProductName,
-                Location = new Point(45, 10),
+                Location = new Point(37, 10),
                 Width = 225,
                 Height = 35,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
@@ -315,10 +315,10 @@ namespace WinFormsWarehouseManager.Forms
             Label lblQuantity = new Label
             {
                 Text = $"SL: {product.SoLuong} {product.DonViTinh}",
-                Location = new Point(15, yPos),
+                Location = new Point(15, yPos-10),
                 Width = 255,
-                Height = 20,
-                Font = new Font("Segoe UI", 8.5F),
+                Height = 23,
+                Font = new Font("Segoe UI", 7.5F),
                 ForeColor = Color.FromArgb(52, 73, 94),
                 AutoEllipsis = true,
                 Cursor = Cursors.Hand
@@ -331,10 +331,10 @@ namespace WinFormsWarehouseManager.Forms
             Label lblExpiry = new Label
             {
                 Text = $"HSD: {product.HanSuDung}",
-                Location = new Point(15, yPos),
+                Location = new Point(15, yPos-7),
                 Width = 255,
-                Height = 20,
-                Font = new Font("Segoe UI", 8.5F),
+                Height = 23,
+                Font = new Font("Segoe UI", 7.5F),
                 ForeColor = Color.FromArgb(52, 73, 94),
                 AutoEllipsis = true,
                 Cursor = Cursors.Hand
@@ -347,10 +347,10 @@ namespace WinFormsWarehouseManager.Forms
             Label lblImportDate = new Label
             {
                 Text = $"Ngày nhập: {product.NgayNhapKho}",
-                Location = new Point(15, yPos),
+                Location = new Point(15, yPos-5),
                 Width = 255,
-                Height = 20,
-                Font = new Font("Segoe UI", 8.5F),
+                Height = 23,
+                Font = new Font("Segoe UI", 7F),
                 ForeColor = Color.FromArgb(52, 73, 94),
                 AutoEllipsis = true,
                 Cursor = Cursors.Hand
@@ -361,8 +361,8 @@ namespace WinFormsWarehouseManager.Forms
             // Category badge (rounded, modern) - SMALLER
             Panel categoryBadge = new RoundedPanel
             {
-                Location = new Point(15, 130),
-                Width = 110,
+                Location = new Point(15, 130-5),
+                Width = 130,
                 Height = 24,
                 BackColor = categoryColor,
                 CornerRadius = 12,
@@ -377,7 +377,7 @@ namespace WinFormsWarehouseManager.Forms
                 Width = 110,
                 Height = 24,
                 ForeColor = Color.White,
-                Font = new Font("Segoe UI", 7.5F, FontStyle.Bold),
+                Font = new Font("Segoe UI", 6.5F, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleCenter,
                 AutoEllipsis = true,
                 Cursor = Cursors.Hand
@@ -390,10 +390,10 @@ namespace WinFormsWarehouseManager.Forms
             Label lblSupplier = new Label
             {
                 Text = $"NCC: {product.SupplierName}",
-                Location = new Point(15, 158),
+                Location = new Point(15, 154 -3),
                 Width = 255,
-                Height = 16,
-                Font = new Font("Segoe UI", 7F, FontStyle.Italic),
+                Height = 23,
+                Font = new Font("Segoe UI", 6F, FontStyle.Italic),
                 ForeColor = Color.FromArgb(149, 165, 166),
                 AutoEllipsis = true,
                 Cursor = Cursors.Hand

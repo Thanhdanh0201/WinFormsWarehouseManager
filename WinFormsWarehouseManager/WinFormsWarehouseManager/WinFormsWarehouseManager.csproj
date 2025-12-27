@@ -232,6 +232,15 @@
     </Compile>
     <Compile Include="db\DatabaseHelper.cs" />
     <Compile Include="db\DbConnection.cs" />
+    <Compile Include="db\ExportHistoryModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="db\ForgotPasswordModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="db\ForgotPasswordModal.Designer.cs">
+      <DependentUpon>ForgotPasswordModal.cs</DependentUpon>
+    </Compile>
     <Compile Include="db\FormDeleteConfirmation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -243,6 +252,9 @@
     </Compile>
     <Compile Include="db\FormUserProfileModal.Designer.cs">
       <DependentUpon>FormUserProfileModal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="db\ImportHistoryModal.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormDashboard.cs">
       <SubType>Form</SubType>
@@ -296,6 +308,9 @@
     <Compile Include="RJControls\CustomDateTimePicker.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="RJControls\CustomTextbox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="RJControls\RJButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -326,11 +341,17 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="db\ForgotPasswordModal.resx">
+      <DependentUpon>ForgotPasswordModal.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="db\FormDeleteConfirmation.resx">
       <DependentUpon>FormDeleteConfirmation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="db\FormUserProfileModal.resx">
       <DependentUpon>FormUserProfileModal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="db\ImportHistoryModal.resx">
+      <DependentUpon>ImportHistoryModal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormDashboard.resx">
       <DependentUpon>FormDashboard.cs</DependentUpon>

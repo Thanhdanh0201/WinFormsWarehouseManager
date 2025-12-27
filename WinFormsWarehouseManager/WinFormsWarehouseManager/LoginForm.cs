@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinFormsWarehouseManager.db;
 using WinFormsWarehouseManager.Models;
+using WinFormsWarehouseManager.Forms;
+using WinFormsWarehouseManager.Services;
 
 namespace WinFormsWarehouseManager
 {
@@ -18,6 +20,7 @@ namespace WinFormsWarehouseManager
     {
         private DatabaseHelper dbHelper;
         private const string REMEMBER_FILE = "remember.dat";
+
         public LoginForm()
         {
             InitializeComponent();
@@ -31,7 +34,6 @@ namespace WinFormsWarehouseManager
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
         private extern static void SendMessage(System.IntPtr hWnd, int wMsg, int wParam, int lParam);
 
-
         private void LoginForm_Load(object sender, EventArgs e)
         {
             if (!dbHelper.TestConnection())
@@ -40,16 +42,6 @@ namespace WinFormsWarehouseManager
                     "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void iconbtnAddSP_Click(object sender, EventArgs e)
@@ -76,9 +68,8 @@ namespace WinFormsWarehouseManager
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-
-            string email = txtUsername.Text.Trim();
-            string password = txtPassword.Text;
+            string email = txtUsername.Texts.Trim();
+            string password = txtPassword.Texts;
 
             // Validate input
             if (string.IsNullOrEmpty(email))
@@ -131,8 +122,141 @@ namespace WinFormsWarehouseManager
             {
                 MessageBox.Show("Email hoặc Password không chính xác!",
                     "Đăng nhập thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtPassword.Clear();
+                txtPassword.Texts = "";
                 txtPassword.Focus();
+            }
+        }
+
+        /// <summary>
+        /// Xử lý khi click vào link Forgot Password
+        /// </summary>
+        private void llblForgotPW_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            // Mở modal form để nhập email
+            ForgotPasswordModal modal = new ForgotPasswordModal();
+
+            if (modal.ShowDialog() == DialogResult.OK)
+            {
+                string email = modal.EmailEntered;
+
+                // Kiểm tra email có tồn tại trong database không
+                User user = GetUserByEmail(email);
+
+                if (user != null)
+                {
+                    // Gửi password về email
+                    SendPasswordToEmail(user);
+                }
+                else
+                {
+                    MessageBox.Show("Email không tồn tại trong hệ thống!",
+                        "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Lấy thông tin user theo email
+        /// </summary>
+        private User GetUserByEmail(string email)
+        {
+            try
+            {
+                string query = @"SELECT UserID, FullName, BirthDate, Email, Password, MailboxPassword, CreatedAt 
+                               FROM Users 
+                               WHERE Email = @Email";
+
+                SQLiteParameter[] parameters = new SQLiteParameter[]
+                {
+                    new SQLiteParameter("@Email", email)
+                };
+
+                var dt = dbHelper.ExecuteQuery(query, parameters);
+
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    var row = dt.Rows[0];
+                    return new User
+                    {
+                        UserID = Convert.ToInt32(row["UserID"]),
+                        FullName = row["FullName"].ToString(),
+                        BirthDate = row["BirthDate"] != DBNull.Value
+                            ? Convert.ToDateTime(row["BirthDate"])
+                            : (DateTime?)null,
+                        Email = row["Email"].ToString(),
+                        Password = row["Password"].ToString(),
+                        MailboxPassword = row["MailboxPassword"] != DBNull.Value
+                            ? row["MailboxPassword"].ToString()
+                            : "",
+                        CreatedAt = Convert.ToDateTime(row["CreatedAt"])
+                    };
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi truy vấn database: {ex.Message}", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gửi password về email của user
+        /// </summary>
+        private void SendPasswordToEmail(User user)
+        {
+            try
+            {
+                // Kiểm tra user có MailboxPassword không
+                if (string.IsNullOrEmpty(user.MailboxPassword))
+                {
+                    MessageBox.Show("Tài khoản này chưa cấu hình MailboxPassword để gửi email!",
+                        "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Hiển thị loading
+                this.Cursor = Cursors.WaitCursor;
+                this.Enabled = false;
+
+                // Sử dụng EmailService để gửi mail
+                using (EmailService emailService = new EmailService(user.Email, user.MailboxPassword))
+                {
+                    string subject = "Khôi phục mật khẩu - Warehouse Manager";
+                    string body = $@"Xin chào {user.FullName},
+
+Bạn đã yêu cầu khôi phục mật khẩu cho tài khoản: {user.Email}
+
+Mật khẩu của bạn là: {user.Password}
+
+Vui lòng đăng nhập và đổi mật khẩu mới để bảo mật tài khoản.
+
+Trân trọng,
+Warehouse Manager System";
+
+                    emailService.SendEmail(user.Email, subject, body);
+
+                    // Ghi log
+                    LogActivity(user.UserID, "Quên mật khẩu", $"User yêu cầu gửi lại mật khẩu về email {user.Email}");
+
+                    MessageBox.Show($"Mật khẩu đã được gửi về email: {user.Email}\nVui lòng kiểm tra hộp thư!",
+                        "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi gửi email: {ex.Message}\n\nVui lòng kiểm tra:\n" +
+                    "1. MailboxPassword (App Password) đã được cấu hình đúng\n" +
+                    "2. Kết nối Internet\n" +
+                    "3. Cài đặt bảo mật Gmail",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
+                this.Enabled = true;
             }
         }
 
@@ -143,9 +267,9 @@ namespace WinFormsWarehouseManager
         {
             try
             {
-                string query = @"SELECT UserID, FullName, BirthDate, Email, CreatedAt 
-                               FROM Users 
-                               WHERE Email = @Email AND Password = @Password";
+                string query = @"SELECT UserID, FullName, BirthDate, Email, MailboxPassword, CreatedAt 
+                       FROM Users 
+                       WHERE Email = @Email AND Password = @Password";
 
                 SQLiteParameter[] parameters = new SQLiteParameter[]
                 {
@@ -162,9 +286,14 @@ namespace WinFormsWarehouseManager
                     {
                         UserID = Convert.ToInt32(row["UserID"]),
                         FullName = row["FullName"].ToString(),
-                        BirthDate = row["BirthDate"].ToString(),
+                        BirthDate = row["BirthDate"] != DBNull.Value
+                            ? Convert.ToDateTime(row["BirthDate"])
+                            : (DateTime?)null,
                         Email = row["Email"].ToString(),
-                        CreatedAt = row["CreatedAt"].ToString()
+                        MailboxPassword = row["MailboxPassword"] != DBNull.Value
+                            ? row["MailboxPassword"].ToString()
+                            : "",
+                        CreatedAt = Convert.ToDateTime(row["CreatedAt"])
                     };
                 }
 
@@ -199,12 +328,9 @@ namespace WinFormsWarehouseManager
             }
             catch (Exception ex)
             {
-                // Log lỗi nhưng không hiển thị cho user
                 System.Diagnostics.Debug.WriteLine($"Log error: {ex.Message}");
             }
         }
-
-
 
         /// <summary>
         /// Lưu thông tin Remember Me vào file
@@ -244,8 +370,8 @@ namespace WinFormsWarehouseManager
                     string[] parts = decodedData.Split('|');
                     if (parts.Length == 2)
                     {
-                        txtUsername.Text = parts[0];
-                        txtPassword.Text = parts[1];
+                        txtUsername.Texts = parts[0];
+                        txtPassword.Texts = parts[1];
                         chkRememberMe.Checked = true;
                     }
                 }
@@ -274,7 +400,5 @@ namespace WinFormsWarehouseManager
                 System.Diagnostics.Debug.WriteLine($"Clear remember error: {ex.Message}");
             }
         }
-
-
     }
 }

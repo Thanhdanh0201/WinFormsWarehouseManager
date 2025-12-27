@@ -17,6 +17,7 @@ namespace WinFormsWarehouseManager.Forms
         private bool dragging = false;
         private Point dragCursorPoint;
         private Point dragFormPoint;
+        private IconButton iconbtnExit;
 
         public UserProfileModal()
         {
@@ -287,7 +288,7 @@ namespace WinFormsWarehouseManager.Forms
                 Text = value,
                 ForeColor = Color.FromArgb(33, 37, 41),
                 Font = new Font("Segoe UI", 8F),
-                Location = new Point(170, yPos-5),
+                Location = new Point(170, yPos - 5),
                 AutoSize = true,
                 MaximumSize = new Size(450, 0),
                 TextAlign = ContentAlignment.MiddleLeft
@@ -480,6 +481,11 @@ namespace WinFormsWarehouseManager.Forms
                 return timestamp.ToString("dd/MM/yyyy");
         }
 
+        private void IconbtnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
         private void BtnClose_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
@@ -513,6 +519,33 @@ namespace WinFormsWarehouseManager.Forms
         {
             base.OnLoad(e);
 
+            // Đổi màu panelHeader thành teal
+            panelHeader.BackColor = Color.FromArgb(0, 162, 173);
+
+            // Tạo Exit button SAU KHI form đã load
+            iconbtnExit = new IconButton
+            {
+                BackColor = Color.Transparent,
+                Cursor = Cursors.Hand,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = Color.White,
+                IconChar = IconChar.X,
+                IconColor = Color.White,
+                IconFont = IconFont.Auto,
+                IconSize = 30,
+                Size = new Size(45, 45),
+                Location = new Point(this.Width - 50, 7),
+                TextAlign = ContentAlignment.MiddleLeft,
+                TextImageRelation = TextImageRelation.ImageBeforeText,
+                UseVisualStyleBackColor = false,
+                Anchor = AnchorStyles.Top | AnchorStyles.Right
+            };
+            iconbtnExit.FlatAppearance.BorderSize = 0;
+            iconbtnExit.Click += IconbtnExit_Click;
+
+            // Thêm vào panelHeader
+            panelHeader.Controls.Add(iconbtnExit);
+
             panelHeader.MouseDown += (s, ev) =>
             {
                 dragging = true;
@@ -531,9 +564,8 @@ namespace WinFormsWarehouseManager.Forms
 
             panelHeader.MouseUp += (s, ev) => { dragging = false; };
 
-
-            // Đảm bảo nút close luôn hiển thị và có thể click
-            btnClose.BringToFront();
+            // Đảm bảo nút exit luôn hiển thị và có thể click - QUAN TRỌNG
+            iconbtnExit.BringToFront();
         }
     }
 }
