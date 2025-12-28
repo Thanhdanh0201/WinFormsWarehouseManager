@@ -19,11 +19,11 @@
         {
             this.panelFilter = new System.Windows.Forms.Panel();
             this.btnSearch = new FontAwesome.Sharp.IconButton();
-            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.txtSearch = new WinFormsWarehouseManager.RJControls.RJTextBox();
             this.lblSearch = new System.Windows.Forms.Label();
-            this.cboSort = new System.Windows.Forms.ComboBox();
+            this.cboSort = new WinFormsWarehouseManager.RJControls.RJComboBox();
             this.lblSort = new System.Windows.Forms.Label();
-            this.cboCategory = new System.Windows.Forms.ComboBox();
+            this.cboCategory = new WinFormsWarehouseManager.RJControls.RJComboBox();
             this.lblCategory = new System.Windows.Forms.Label();
             this.chkSelectAll = new System.Windows.Forms.CheckBox();
             this.panelButtons = new System.Windows.Forms.Panel();
@@ -57,14 +57,15 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnSearch.BackColor = System.Drawing.Color.Transparent;
             this.btnSearch.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSearch.FlatAppearance.BorderSize = 0;
+            this.btnSearch.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.btnSearch.FlatAppearance.BorderSize = 3;
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnSearch.ForeColor = System.Drawing.Color.White;
+            this.btnSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             this.btnSearch.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlass;
-            this.btnSearch.IconColor = System.Drawing.Color.White;
+            this.btnSearch.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             this.btnSearch.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btnSearch.IconSize = 22;
             this.btnSearch.Location = new System.Drawing.Point(669, 47);
@@ -79,15 +80,25 @@
             // 
             // txtSearch
             // 
-            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtSearch.ForeColor = System.Drawing.Color.Gray;
-            this.txtSearch.Location = new System.Drawing.Point(223, 53);
+            this.txtSearch.BackColor = System.Drawing.SystemColors.Window;
+            this.txtSearch.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.txtSearch.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(35)))), ((int)(((byte)(44)))));
+            this.txtSearch.BorderRadius = 5;
+            this.txtSearch.BorderSize = 2;
+            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.txtSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.txtSearch.Location = new System.Drawing.Point(223, 47);
             this.txtSearch.Margin = new System.Windows.Forms.Padding(5);
-            this.txtSearch.MinimumSize = new System.Drawing.Size(426, 66);
+            this.txtSearch.Multiline = false;
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(426, 47);
+            this.txtSearch.Padding = new System.Windows.Forms.Padding(13, 9, 13, 9);
+            this.txtSearch.PasswordChar = false;
+            this.txtSearch.PlaceholderColor = System.Drawing.Color.DarkGray;
+            this.txtSearch.PlaceholderText = "Nhập tên sản phẩm...";
+            this.txtSearch.Size = new System.Drawing.Size(426, 59);
             this.txtSearch.TabIndex = 6;
-            this.txtSearch.Text = "Nhập tên sản phẩm...";
+            this.txtSearch.Texts = "";
+            this.txtSearch.UnderlinedStyle = false;
             this.txtSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtSearch_KeyPress);
             // 
             // lblSearch
@@ -104,16 +115,25 @@
             // 
             // cboSort
             // 
+            this.cboSort.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.cboSort.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.cboSort.BorderRadius = 8;
+            this.cboSort.BorderSize = 2;
             this.cboSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboSort.Font = new System.Drawing.Font("Segoe UI", 10.5F);
-            this.cboSort.FormattingEnabled = true;
-            this.cboSort.Location = new System.Drawing.Point(1509, 53);
+            this.cboSort.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.cboSort.ForeColor = System.Drawing.Color.White;
+            this.cboSort.IconColor = System.Drawing.Color.White;
+            this.cboSort.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.cboSort.ListTextColor = System.Drawing.Color.White;
+            this.cboSort.Location = new System.Drawing.Point(1509, 47);
             this.cboSort.Margin = new System.Windows.Forms.Padding(5);
-            this.cboSort.MinimumSize = new System.Drawing.Size(271, 0);
+            this.cboSort.MinimumSize = new System.Drawing.Size(267, 38);
             this.cboSort.Name = "cboSort";
-            this.cboSort.Size = new System.Drawing.Size(271, 46);
+            this.cboSort.Padding = new System.Windows.Forms.Padding(2);
+            this.cboSort.Size = new System.Drawing.Size(267, 66);
             this.cboSort.TabIndex = 4;
-            this.cboSort.SelectedIndexChanged += new System.EventHandler(this.CboSort_SelectedIndexChanged);
+            this.cboSort.Texts = "";
+            this.cboSort.OnSelectedIndexChanged += new System.EventHandler(this.CboSort_SelectedIndexChanged);
             // 
             // lblSort
             // 
@@ -129,16 +149,25 @@
             // 
             // cboCategory
             // 
+            this.cboCategory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.cboCategory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.cboCategory.BorderRadius = 8;
+            this.cboCategory.BorderSize = 2;
             this.cboCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboCategory.Font = new System.Drawing.Font("Segoe UI", 10.5F);
-            this.cboCategory.FormattingEnabled = true;
-            this.cboCategory.Location = new System.Drawing.Point(1071, 53);
+            this.cboCategory.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.cboCategory.ForeColor = System.Drawing.Color.White;
+            this.cboCategory.IconColor = System.Drawing.Color.White;
+            this.cboCategory.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.cboCategory.ListTextColor = System.Drawing.Color.White;
+            this.cboCategory.Location = new System.Drawing.Point(1071, 47);
             this.cboCategory.Margin = new System.Windows.Forms.Padding(5);
-            this.cboCategory.MinimumSize = new System.Drawing.Size(263, 0);
+            this.cboCategory.MinimumSize = new System.Drawing.Size(267, 38);
             this.cboCategory.Name = "cboCategory";
-            this.cboCategory.Size = new System.Drawing.Size(263, 46);
+            this.cboCategory.Padding = new System.Windows.Forms.Padding(2);
+            this.cboCategory.Size = new System.Drawing.Size(267, 66);
             this.cboCategory.TabIndex = 2;
-            this.cboCategory.SelectedIndexChanged += new System.EventHandler(this.CboCategory_SelectedIndexChanged);
+            this.cboCategory.Texts = "";
+            this.cboCategory.OnSelectedIndexChanged += new System.EventHandler(this.CboCategory_SelectedIndexChanged);
             // 
             // lblCategory
             // 
@@ -184,14 +213,15 @@
             // 
             // btnNhapKho
             // 
-            this.btnNhapKho.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(174)))), ((int)(((byte)(96)))));
+            this.btnNhapKho.BackColor = System.Drawing.Color.Transparent;
             this.btnNhapKho.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnNhapKho.FlatAppearance.BorderSize = 0;
+            this.btnNhapKho.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.btnNhapKho.FlatAppearance.BorderSize = 3;
             this.btnNhapKho.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNhapKho.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnNhapKho.ForeColor = System.Drawing.Color.White;
+            this.btnNhapKho.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             this.btnNhapKho.IconChar = FontAwesome.Sharp.IconChar.ArrowDown;
-            this.btnNhapKho.IconColor = System.Drawing.Color.White;
+            this.btnNhapKho.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             this.btnNhapKho.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btnNhapKho.IconSize = 26;
             this.btnNhapKho.Location = new System.Drawing.Point(51, 28);
@@ -207,15 +237,16 @@
             // 
             // btnXuatKho
             // 
-            this.btnXuatKho.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnXuatKho.BackColor = System.Drawing.Color.Transparent;
             this.btnXuatKho.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnXuatKho.Enabled = false;
-            this.btnXuatKho.FlatAppearance.BorderSize = 0;
+            this.btnXuatKho.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnXuatKho.FlatAppearance.BorderSize = 3;
             this.btnXuatKho.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXuatKho.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnXuatKho.ForeColor = System.Drawing.Color.White;
+            this.btnXuatKho.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             this.btnXuatKho.IconChar = FontAwesome.Sharp.IconChar.ArrowUp;
-            this.btnXuatKho.IconColor = System.Drawing.Color.White;
+            this.btnXuatKho.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
             this.btnXuatKho.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btnXuatKho.IconSize = 26;
             this.btnXuatKho.Location = new System.Drawing.Point(411, 28);
@@ -267,7 +298,7 @@
             this.btnCapNhat.Location = new System.Drawing.Point(977, 28);
             this.btnCapNhat.Margin = new System.Windows.Forms.Padding(5);
             this.btnCapNhat.Name = "btnCapNhat";
-            this.btnCapNhat.Size = new System.Drawing.Size(274, 80);
+            this.btnCapNhat.Size = new System.Drawing.Size(223, 80);
             this.btnCapNhat.TabIndex = 3;
             this.btnCapNhat.Text = "  Cập nhật";
             this.btnCapNhat.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -309,11 +340,11 @@
         #endregion
         private System.Windows.Forms.Panel panelFilter;
         private System.Windows.Forms.CheckBox chkSelectAll;
-        private System.Windows.Forms.ComboBox cboCategory;
+        private WinFormsWarehouseManager.RJControls.RJComboBox cboCategory;
         private System.Windows.Forms.Label lblCategory;
-        private System.Windows.Forms.ComboBox cboSort;
+        private WinFormsWarehouseManager.RJControls.RJComboBox cboSort;
         private System.Windows.Forms.Label lblSort;
-        private System.Windows.Forms.TextBox txtSearch;
+        private WinFormsWarehouseManager.RJControls.RJTextBox txtSearch;
         private System.Windows.Forms.Label lblSearch;
         private FontAwesome.Sharp.IconButton btnSearch;
         private System.Windows.Forms.Panel panelButtons;

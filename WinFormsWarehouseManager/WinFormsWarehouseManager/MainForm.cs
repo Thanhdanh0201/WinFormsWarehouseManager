@@ -8,13 +8,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using WinFormsWarehouseManager.db;
 using WinFormsWarehouseManager.Services;
 using WinFormsWarehouseManager.Forms;
 using WinFormsWarehouseManager.Helpers;
-using Panel = System.Windows.Forms.Panel;
 
 namespace WinFormsWarehouseManager
 {
@@ -27,6 +25,9 @@ namespace WinFormsWarehouseManager
         private Form currChildForm;
         private int borderSize = 2;
 
+        private System.Windows.Forms.Label badgeNhapKho;
+        private System.Windows.Forms.Label badgeXuatKho;
+        private System.Windows.Forms.Timer timerUpdateBadges;
         public MainForm()
         {
             InitializeComponent();
@@ -36,10 +37,144 @@ namespace WinFormsWarehouseManager
             this.Padding = new Padding(borderSize);
             this.BackColor = Color.FromArgb(2, 51, 66);
             NotificationManager.GenerateAllNotifications();
-            
 
+            InitializeBadges();
+            InitializeBadgeTimer();
         }
 
+        private void InitializeBadges()
+        {
+            // Badge cho Nhập Kho (iconButton3)
+            badgeNhapKho = new Label
+            {
+                AutoSize = false,
+                Size = new Size(24, 24),
+                BackColor = Color.FromArgb(4, 119, 154), // Màu của iconButton3
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 8F, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Visible = false,
+                Location = new Point(iconButton3.Right - 30, iconButton3.Top + 5)
+            };
+
+            // Bo tròn badge
+            badgeNhapKho.Paint += (s, e) => {
+                Label lbl = s as Label;
+                System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+                path.AddEllipse(0, 0, lbl.Width - 1, lbl.Height - 1);
+                lbl.Region = new Region(path);
+
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                using (Pen pen = new Pen(Color.FromArgb(2, 51, 66), 2))
+                {
+                    e.Graphics.DrawEllipse(pen, 0, 0, lbl.Width - 1, lbl.Height - 1);
+                }
+            };
+
+            panelMenu.Controls.Add(badgeNhapKho);
+            badgeNhapKho.BringToFront();
+
+            // Badge cho Xuất Kho (iconButton4)
+            badgeXuatKho = new Label
+            {
+                AutoSize = false,
+                Size = new Size(24, 24),
+                BackColor = Color.FromArgb(220, 53, 69), // Màu của iconButton4
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 8F, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Visible = false,
+                Location = new Point(iconButton4.Right - 30, iconButton4.Top + 5)
+            };
+
+            badgeXuatKho.Paint += (s, e) => {
+                Label lbl = s as Label;
+                System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+                path.AddEllipse(0, 0, lbl.Width - 1, lbl.Height - 1);
+                lbl.Region = new Region(path);
+
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                using (Pen pen = new Pen(Color.FromArgb(2, 51, 66), 2))
+                {
+                    e.Graphics.DrawEllipse(pen, 0, 0, lbl.Width - 1, lbl.Height - 1);
+                }
+            };
+
+            panelMenu.Controls.Add(badgeXuatKho);
+            badgeXuatKho.BringToFront();
+        }
+
+        private void InitializeBadgeTimer()
+        {
+            timerUpdateBadges = new System.Windows.Forms.Timer();
+            timerUpdateBadges.Interval = 500; // Update mỗi 0.5 giây
+            timerUpdateBadges.Tick += TimerUpdateBadges_Tick;
+            timerUpdateBadges.Start();
+        }
+
+        private void TimerUpdateBadges_Tick(object sender, EventArgs e)
+        {
+            UpdateBadges();
+        }
+
+        private void UpdateBadges()
+        {
+            // Update badge Nhập Kho
+            int nhapKhoCount = GetTempImportCount();
+            if (nhapKhoCount > 0)
+            {
+                badgeNhapKho.Text = nhapKhoCount > 99 ? "99+" : nhapKhoCount.ToString();
+                badgeNhapKho.Visible = true;
+            }
+            else
+            {
+                badgeNhapKho.Visible = false;
+            }
+
+            // Update badge Xuất Kho
+            int xuatKhoCount = GetTempExportCount();
+            if (xuatKhoCount > 0)
+            {
+                badgeXuatKho.Text = xuatKhoCount > 99 ? "99+" : xuatKhoCount.ToString();
+                badgeXuatKho.Visible = true;
+            }
+            else
+            {
+                badgeXuatKho.Visible = false;
+            }
+        }
+
+        private int GetTempImportCount()
+        {
+            try
+            {
+                var tempData = WinFormsWarehouseManager.Utils.TempImportManager.Load();
+                return tempData?.Items?.Count ?? 0;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        private int GetTempExportCount()
+        {
+            try
+            {
+                var tempData = WinFormsWarehouseManager.Utils.TempExportManager.Load();
+                return tempData?.Items?.Count ?? 0;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+    
+        public void RefreshBadges()
+        {
+            UpdateBadges();
+        }
         //Drag Form
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
@@ -191,8 +326,8 @@ namespace WinFormsWarehouseManager
         {
             public static Color color1 = Color.FromArgb(172, 126, 241);
             public static Color color2 = Color.FromArgb(249, 118, 176);
-            public static Color color3 = Color.FromArgb(253, 138, 114);
-            public static Color color4 = Color.FromArgb(95, 77, 221);
+            public static Color color3 = Color.FromArgb(4, 119, 154);
+            public static Color color4 = Color.FromArgb(220, 53, 69);
             public static Color color5 = Color.FromArgb(249, 88, 155);
             public static Color color6 = Color.FromArgb(24, 161, 251);
             public static Color color7 = Color.Aqua;

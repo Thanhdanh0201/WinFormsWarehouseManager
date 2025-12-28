@@ -1,13 +1,14 @@
-﻿using System;
+﻿using FontAwesome.Sharp;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
-using FontAwesome.Sharp;
 using WinFormsWarehouseManager.db;
 using WinFormsWarehouseManager.Models;
+using WinFormsWarehouseManager.Utils;
 
 namespace WinFormsWarehouseManager.Forms
 {
@@ -38,6 +39,18 @@ namespace WinFormsWarehouseManager.Forms
             LoadCategoriesToComboBox();
             LoadProducts();
         }
+        private void TxtSearch_Paint(object sender, PaintEventArgs e)
+        {
+            TextBox txt = sender as TextBox;
+            if (txt == null) return;
+
+            // Draw custom border
+            using (Pen pen = new Pen(Color.FromArgb(2, 51, 66), 2))
+            {
+                Rectangle rect = new Rectangle(0, 0, txt.Width - 1, txt.Height - 1);
+                e.Graphics.DrawRectangle(pen, rect);
+            }
+        }
 
         private void InitializeCategoryColors()
         {
@@ -51,6 +64,24 @@ namespace WinFormsWarehouseManager.Forms
                 { "Đồ dùng văn phòng", Color.FromArgb(241, 196, 15) }
             };
         }
+        private void WrapComboBoxWithBorder(ComboBox cbo, Panel parentPanel)
+        {
+            // Tạo panel wrapper cho border
+            Panel borderPanel = new Panel
+            {
+                Location = new Point(cbo.Location.X - 2, cbo.Location.Y - 2),
+                Size = new Size(cbo.Width + 4, cbo.Height + 4),
+                BackColor = Color.FromArgb(2, 51, 66),
+                Padding = new Padding(2)
+            };
+
+            // Di chuyển combobox vào panel
+            parentPanel.Controls.Remove(cbo);
+            cbo.Location = new Point(2, 2);
+            borderPanel.Controls.Add(cbo);
+            parentPanel.Controls.Add(borderPanel);
+            borderPanel.BringToFront();
+        }
 
         private void InitializeUI()
         {
@@ -63,36 +94,28 @@ namespace WinFormsWarehouseManager.Forms
             // Setup scroll event
             flowLayoutPanelProducts.Scroll += FlowLayoutPanelProducts_Scroll;
 
-            // Style search textbox
-            txtSearch.ForeColor = Color.Gray;
-            txtSearch.Enter += (s, e) => {
-                if (txtSearch.Text == "Nhập tên sản phẩm...")
-                {
-                    txtSearch.Text = "";
-                    txtSearch.ForeColor = Color.Black;
-                }
-            };
-            txtSearch.Leave += (s, e) => {
-                if (string.IsNullOrWhiteSpace(txtSearch.Text))
-                {
-                    txtSearch.Text = "Nhập tên sản phẩm...";
-                    txtSearch.ForeColor = Color.Gray;
-                }
+            // Style search textbox - CẬP NHẬT cho RJTextBox
+            txtSearch.PlaceholderText = "Nhập tên sản phẩm...";
+            txtSearch.PlaceholderColor = Color.Gray;
+            txtSearch._TextChanged += (s, e) => {
+                // Optional: handle text changed
             };
 
-            // Initialize sort combo
+            // Initialize sort combo - CẬP NHẬT
             cboSort.Items.Clear();
             cboSort.Items.Add("Mới nhất");
             cboSort.Items.Add("Cũ nhất");
             cboSort.SelectedIndex = 0;
 
-            // Style buttons
-            StyleButton(btnSearch, Color.FromArgb(41, 128, 185));
-            StyleButton(btnNhapKho, Color.FromArgb(39, 174, 96));
-            StyleButton(btnXuatKho, Color.FromArgb(41, 128, 185));
+            // Style buttons - CẬP NHẬT màu cho btnSearch, btnNhapKho, btnXuatKho
+            Color primaryColor = Color.FromArgb(2, 51, 66);
+            //StyleButton(btnSearch, primaryColor);
+            //StyleButton(btnNhapKho, primaryColor);
+            //StyleButton(btnXuatKho, primaryColor);
             StyleButton(btnDelete, Color.FromArgb(231, 76, 60));
             StyleButton(btnCapNhat, Color.FromArgb(230, 126, 34));
         }
+
 
         private void StyleButton(IconButton btn, Color bgColor)
         {
@@ -203,7 +226,7 @@ namespace WinFormsWarehouseManager.Forms
                 ? categoryColors[product.CategoryName]
                 : Color.FromArgb(127, 140, 141);
 
-            // Main card panel with rounded corners - INCREASED SIZE
+            // Main card panel with rounded corners
             Panel card = new RoundedPanel
             {
                 Width = 280,
@@ -227,7 +250,7 @@ namespace WinFormsWarehouseManager.Forms
                 }
             };
 
-            // Hover effects - brighten card
+            // Hover effects
             card.MouseEnter += (s, e) => {
                 card.BackColor = Color.FromArgb(248, 249, 250);
             };
@@ -235,7 +258,7 @@ namespace WinFormsWarehouseManager.Forms
                 card.BackColor = Color.White;
             };
 
-            // Category color strip (left side, rounded)
+            // Category color strip
             Panel colorStrip = new Panel
             {
                 Width = 5,
@@ -245,7 +268,7 @@ namespace WinFormsWarehouseManager.Forms
             };
             card.Controls.Add(colorStrip);
 
-            // Checkbox with custom style
+            // ===== CUSTOM CHECKBOX WITH COLOR =====
             CheckBox chkSelect = new CheckBox
             {
                 Location = new Point(15, 12),
@@ -254,19 +277,52 @@ namespace WinFormsWarehouseManager.Forms
                 Tag = product.ProductID,
                 Checked = selectedProducts.ContainsKey(product.ProductID),
                 FlatStyle = FlatStyle.Flat,
-                Cursor = Cursors.Hand
+                Cursor = Cursors.Hand,
+                Appearance = Appearance.Button,
+                BackColor = Color.FromArgb(189, 195, 199), // Màu mờ khi chưa chọn
+                ForeColor = Color.White
             };
-            chkSelect.FlatAppearance.BorderColor = Color.FromArgb(2, 51, 66);
+
+            // Style checkbox
+            chkSelect.FlatAppearance.BorderSize = 0;
             chkSelect.FlatAppearance.CheckedBackColor = Color.FromArgb(2, 51, 66);
-            chkSelect.CheckedChanged += ChkSelect_CheckedChanged;
+
+            // Custom paint để vẽ dấu tick
+            chkSelect.Paint += (s, e) => {
+                CheckBox cb = s as CheckBox;
+                if (cb.Checked)
+                {
+                    // Vẽ dấu tick trắng
+                    using (Pen pen = new Pen(Color.White, 2))
+                    {
+                        e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                        // Vẽ dấu tick
+                        e.Graphics.DrawLine(pen, 5, 10, 8, 14);
+                        e.Graphics.DrawLine(pen, 8, 14, 15, 6);
+                    }
+                }
+            };
+
+            chkSelect.CheckedChanged += (s, e) => {
+                CheckBox cb = s as CheckBox;
+                // Đổi màu khi check/uncheck
+                cb.BackColor = cb.Checked
+                    ? Color.FromArgb(2, 51, 66)
+                    : Color.FromArgb(189, 195, 199);
+                cb.Invalidate(); // Vẽ lại để hiện dấu tick
+
+                ChkSelect_CheckedChanged(s, e);
+            };
+
             card.Controls.Add(chkSelect);
+            // ===== END CUSTOM CHECKBOX =====
 
             // Click anywhere on card to toggle checkbox
             card.Click += (s, e) => {
                 chkSelect.Checked = !chkSelect.Checked;
             };
 
-            // Product name (bold, larger) - MULTILINE with auto font resize
+            // Product name
             Label lblName = new Label
             {
                 Text = product.ProductName,
@@ -285,7 +341,6 @@ namespace WinFormsWarehouseManager.Forms
                 SizeF textSize = g.MeasureString(product.ProductName, lblName.Font);
                 if (textSize.Width > lblName.Width)
                 {
-                    // Try smaller font sizes
                     if (textSize.Width > lblName.Width * 1.5)
                         lblName.Font = new Font("Segoe UI", 7.5F, FontStyle.Bold);
                     else if (textSize.Width > lblName.Width * 1.2)
@@ -308,14 +363,14 @@ namespace WinFormsWarehouseManager.Forms
             };
             card.Controls.Add(divider);
 
-            // Info section - COMPACT
+            // Info section
             int yPos = 56;
 
             // Quantity
             Label lblQuantity = new Label
             {
                 Text = $"SL: {product.SoLuong} {product.DonViTinh}",
-                Location = new Point(15, yPos-10),
+                Location = new Point(15, yPos - 10),
                 Width = 255,
                 Height = 23,
                 Font = new Font("Segoe UI", 7.5F),
@@ -331,7 +386,7 @@ namespace WinFormsWarehouseManager.Forms
             Label lblExpiry = new Label
             {
                 Text = $"HSD: {product.HanSuDung}",
-                Location = new Point(15, yPos-7),
+                Location = new Point(15, yPos - 7),
                 Width = 255,
                 Height = 23,
                 Font = new Font("Segoe UI", 7.5F),
@@ -347,7 +402,7 @@ namespace WinFormsWarehouseManager.Forms
             Label lblImportDate = new Label
             {
                 Text = $"Ngày nhập: {product.NgayNhapKho}",
-                Location = new Point(15, yPos-5),
+                Location = new Point(15, yPos - 5),
                 Width = 255,
                 Height = 23,
                 Font = new Font("Segoe UI", 7F),
@@ -358,10 +413,10 @@ namespace WinFormsWarehouseManager.Forms
             lblImportDate.Click += (s, e) => chkSelect.Checked = !chkSelect.Checked;
             card.Controls.Add(lblImportDate);
 
-            // Category badge (rounded, modern) - SMALLER
+            // Category badge
             Panel categoryBadge = new RoundedPanel
             {
-                Location = new Point(15, 130-5),
+                Location = new Point(15, 130 - 5),
                 Width = 130,
                 Height = 24,
                 BackColor = categoryColor,
@@ -386,11 +441,11 @@ namespace WinFormsWarehouseManager.Forms
             categoryBadge.Controls.Add(lblCategory);
             card.Controls.Add(categoryBadge);
 
-            // Supplier (bottom) - SMALLER
+            // Supplier
             Label lblSupplier = new Label
             {
                 Text = $"NCC: {product.SupplierName}",
-                Location = new Point(15, 154 -3),
+                Location = new Point(15, 154 - 3),
                 Width = 255,
                 Height = 23,
                 Font = new Font("Segoe UI", 6F, FontStyle.Italic),
@@ -444,9 +499,10 @@ namespace WinFormsWarehouseManager.Forms
 
         private void UpdateButtonStates()
         {
+
             int selectedCount = selectedProducts.Count;
 
-            btnNhapKho.Visible = (selectedCount == 1);
+            btnNhapKho.Visible = (selectedCount > 0);  
             btnXuatKho.Enabled = (selectedCount > 0);
             btnDelete.Enabled = (selectedCount > 0);
             btnCapNhat.Enabled = (selectedCount == 1);
@@ -491,7 +547,8 @@ namespace WinFormsWarehouseManager.Forms
         {
             filteredProducts = new List<ProductInfo>(allProducts);
 
-            string searchText = txtSearch.Text.Trim().ToLower();
+            // Lấy text từ RJTextBox - CẬP NHẬT
+            string searchText = txtSearch.Texts.Trim().ToLower();
             if (!string.IsNullOrEmpty(searchText) && searchText != "nhập tên sản phẩm...")
             {
                 filteredProducts = filteredProducts
@@ -499,6 +556,7 @@ namespace WinFormsWarehouseManager.Forms
                     .ToList();
             }
 
+            // RJComboBox vẫn dùng SelectedIndex bình thường
             if (cboCategory.SelectedIndex > 0)
             {
                 string selectedCategory = cboCategory.SelectedItem.ToString();
@@ -551,21 +609,93 @@ namespace WinFormsWarehouseManager.Forms
 
         private void BtnNhapKho_Click(object sender, EventArgs e)
         {
-            if (selectedProducts.Count != 1)
+            if (selectedProducts.Count == 0)
             {
-                MessageBox.Show("Vui lòng chọn 1 sản phẩm để nhập kho!", "Thông báo",
+                MessageBox.Show("Vui lòng chọn ít nhất 1 sản phẩm để nhập kho!", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            int productID = selectedProducts.Keys.First();
-            ProductInfo product = allProducts.FirstOrDefault(p => p.ProductID == productID);
-
-            if (product != null)
+            try
             {
-                // Open FormNhapKho
+                // Lấy danh sách sản phẩm đã chọn
+                List<ProductInfo> productsToImport = allProducts
+                    .Where(p => selectedProducts.ContainsKey(p.ProductID))
+                    .ToList();
+
+                // Lọc ra các sản phẩm KHÔNG có nhà cung cấp
+                var productsWithoutSupplier = productsToImport
+                    .Where(p => p.SupplierID <= 0)
+                    .ToList();
+
+                // Lọc ra các sản phẩm CÓ nhà cung cấp
+                var validProducts = productsToImport
+                    .Where(p => p.SupplierID > 0)
+                    .ToList();
+
+                // Nếu không có sản phẩm hợp lệ nào
+                if (validProducts.Count == 0)
+                {
+                    MessageBox.Show("Các sản phẩm đã chọn chưa có nhà cung cấp!\nVui lòng cập nhật nhà cung cấp trước khi nhập kho.",
+                        "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Nếu có sản phẩm bị loại bỏ, thông báo cho user
+                if (productsWithoutSupplier.Count > 0)
+                {
+                    string skippedList = string.Join("\n", productsWithoutSupplier.Select(p => $"- {p.ProductName}"));
+                    MessageBox.Show(
+                        $"Đã bỏ qua {productsWithoutSupplier.Count} sản phẩm chưa có nhà cung cấp:\n\n{skippedList}\n\n" +
+                        $"Sẽ tiếp tục nhập {validProducts.Count} sản phẩm còn lại.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+                // Lấy nhà cung cấp đầu tiên làm default (hoặc có thể để null)
+                int defaultSupplierID = validProducts.First().SupplierID;
+                string defaultSupplierName = validProducts.First().SupplierName;
+
+                // Tạo TempImportData với supplier mặc định
+                TempImportData tempData = new TempImportData(defaultSupplierID, defaultSupplierName);
+
+                // Thêm TẤT CẢ sản phẩm hợp lệ vào temp
+                foreach (var product in validProducts)
+                {
+                    TempImportItem item = new TempImportItem(
+                        product.ProductID,
+                        product.ProductName,
+                        product.CategoryID,
+                        product.CategoryName,
+                        1, // Số lượng mặc định = 1
+                        product.DonViTinh,
+                        product.HanSuDung,
+                        false, // Không phải sản phẩm mới
+                        product.SupplierID,
+                        product.SupplierName
+                    );
+
+                    tempData.Items.Add(item);
+                }
+
+                // Lưu vào file temp
+                TempImportManager.Save(tempData);
+
+                // Mở FormNhapKho
+                FormNhapKho formNhapKho = new FormNhapKho();
+                formNhapKho.ShowDialog(this);
+
+                // Sau khi đóng form, reload lại products
+                selectedProducts.Clear();
+                chkSelectAll.Checked = false;
+                LoadProducts();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        
 
         private void BtnXuatKho_Click(object sender, EventArgs e)
         {
@@ -576,11 +706,61 @@ namespace WinFormsWarehouseManager.Forms
                 return;
             }
 
-            List<ProductInfo> selectedProductsList = allProducts
-                .Where(p => selectedProducts.ContainsKey(p.ProductID))
-                .ToList();
+            try
+            {
+                // 1. Lấy người nhận gần nhất
+                int defaultReceiverID = GetLastReceiverID();
+                string defaultReceiverName = GetReceiverName(defaultReceiverID);
 
-            // Open FormXuatKho
+                if (defaultReceiverID <= 0)
+                {
+                    MessageBox.Show("Không tìm thấy lịch sử người nhận!", "Lỗi",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // 2. Tạo TempExportData
+                TempExportData tempData = new TempExportData(defaultReceiverID, defaultReceiverName);
+
+                // 3. Thêm các sản phẩm đã chọn vào temp
+                foreach (int productID in selectedProducts.Keys)
+                {
+                    ProductInfo product = allProducts.FirstOrDefault(p => p.ProductID == productID);
+                    if (product != null && product.SoLuong > 0)
+                    {
+                        TempExportItem item = new TempExportItem(
+                            product.ProductID,
+                            product.ProductName,
+                            product.CategoryID,
+                            product.CategoryName,
+                            1, // Số lượng mặc định = 1
+                            product.DonViTinh,
+                            product.SoLuong,
+                            defaultReceiverID,
+                            defaultReceiverName
+                        );
+
+                        tempData.Items.Add(item);
+                    }
+                }
+
+                // 4. Lưu vào file temp
+                TempExportManager.Save(tempData);
+
+                // 5. Mở FormXuatKho
+                FormXuatKho formXuatKho = new FormXuatKho();
+                formXuatKho.ShowDialog(this);
+
+                // 6. Sau khi đóng form, reload lại products
+                selectedProducts.Clear();
+                chkSelectAll.Checked = false;
+                LoadProducts();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void BtnDelete_Click(object sender, EventArgs e)
@@ -650,6 +830,57 @@ namespace WinFormsWarehouseManager.Forms
                     }
                 }
             }
+        }
+
+        private int GetLastReceiverID()
+        {
+            try
+            {
+                string query = @"SELECT ReceiverID 
+                        FROM ExportReceipts 
+                        ORDER BY ExportDate DESC 
+                        LIMIT 1";
+
+                object result = dbHelper.ExecuteScalar(query);
+
+                if (result != null && result != DBNull.Value)
+                {
+                    return Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting last receiver: {ex.Message}");
+            }
+
+            return 0;
+        }
+
+        private string GetReceiverName(int receiverID)
+        {
+            if (receiverID <= 0)
+                return "N/A";
+
+            try
+            {
+                string query = "SELECT ReceiverName FROM Receivers WHERE ReceiverID = @ReceiverID";
+                System.Data.SQLite.SQLiteParameter[] parameters = {
+            new System.Data.SQLite.SQLiteParameter("@ReceiverID", receiverID)
+        };
+
+                object result = dbHelper.ExecuteScalar(query, parameters);
+
+                if (result != null && result != DBNull.Value)
+                {
+                    return result.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting receiver name: {ex.Message}");
+            }
+
+            return "N/A";
         }
 
         private void LoadCategoriesComboBox(ComboBox cbo, string selectedCategory)

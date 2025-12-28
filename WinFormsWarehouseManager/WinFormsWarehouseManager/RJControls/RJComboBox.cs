@@ -8,10 +8,10 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.ComponentModel;
 using System.Drawing.Design;
+
 namespace WinFormsWarehouseManager.RJControls
 {
     [DefaultEvent("OnSelectedIndexChanged")]
-
     class RJComboBox : UserControl
     {
         //Fields
@@ -21,6 +21,8 @@ namespace WinFormsWarehouseManager.RJControls
         private Color listTextColor = Color.DimGray;
         private Color borderColor = Color.MediumSlateBlue;
         private int borderSize = 1;
+        private int borderRadius = 0; // NEW: Border radius field
+
         //Items
         private ComboBox cmbList;
         private Label lblText;
@@ -91,7 +93,6 @@ namespace WinFormsWarehouseManager.RJControls
         }
 
         //Event methods
-
         //-> Default event
         private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -197,6 +198,7 @@ namespace WinFormsWarehouseManager.RJControls
             {
                 borderColor = value;
                 base.BackColor = borderColor; //Border Color
+                this.Invalidate();
             }
         }
 
@@ -209,6 +211,21 @@ namespace WinFormsWarehouseManager.RJControls
                 borderSize = value;
                 this.Padding = new Padding(borderSize);//Border Size
                 AdjustComboBoxDimensions();
+            }
+        }
+
+        // NEW: Border Radius Property
+        [Category("RJ Code - Appearance")]
+        public int BorderRadius
+        {
+            get { return borderRadius; }
+            set
+            {
+                if (value >= 0)
+                {
+                    borderRadius = value;
+                    this.Invalidate(); // Redraw control
+                }
             }
         }
 
@@ -360,6 +377,65 @@ namespace WinFormsWarehouseManager.RJControls
         {
             base.OnResize(e);
             AdjustComboBoxDimensions();
+        }
+
+        // NEW: Override OnPaint to draw rounded rectangle
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            Graphics graph = e.Graphics;
+
+            if (borderRadius > 1)
+            {
+                // Draw rounded rectangle
+                var rectSurface = Rectangle.Inflate(this.ClientRectangle, -1, -1);
+                var rectBorder = Rectangle.Inflate(rectSurface, borderSize, borderSize);
+                int smoothSize = borderSize > 0 ? borderSize : 1;
+
+                using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius))
+                using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius))
+                using (Pen penSurface = new Pen(this.Parent.BackColor, smoothSize))
+                using (Pen penBorder = new Pen(borderColor, borderSize))
+                {
+                    this.Region = new Region(pathBorder);
+                    graph.SmoothingMode = SmoothingMode.AntiAlias;
+                    penBorder.Alignment = PenAlignment.Center;
+
+                    if (borderSize >= 1)
+                    {
+                        graph.DrawPath(penBorder, pathBorder);
+                    }
+                    graph.DrawPath(penSurface, pathSurface);
+                }
+            }
+            else
+            {
+                // Draw normal rectangle
+                this.Region = new Region(this.ClientRectangle);
+                if (borderSize >= 1)
+                {
+                    using (Pen penBorder = new Pen(borderColor, borderSize))
+                    {
+                        penBorder.Alignment = PenAlignment.Inset;
+                        graph.DrawRectangle(penBorder, 0, 0, this.Width - 1, this.Height - 1);
+                    }
+                }
+            }
+        }
+
+        // NEW: Helper method to create rounded rectangle path
+        private GraphicsPath GetFigurePath(Rectangle rect, int radius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            float curveSize = radius * 2F;
+
+            path.StartFigure();
+            path.AddArc(rect.X, rect.Y, curveSize, curveSize, 180, 90);
+            path.AddArc(rect.Right - curveSize, rect.Y, curveSize, curveSize, 270, 90);
+            path.AddArc(rect.Right - curveSize, rect.Bottom - curveSize, curveSize, curveSize, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - curveSize, curveSize, curveSize, 90, 90);
+            path.CloseFigure();
+            return path;
         }
     }
 }

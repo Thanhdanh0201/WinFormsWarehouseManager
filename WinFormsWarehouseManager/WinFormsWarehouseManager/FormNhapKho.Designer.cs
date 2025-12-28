@@ -172,7 +172,6 @@ namespace WinFormsWarehouseManager
             this.dgvDanhSachNhap.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvDanhSachNhap.Size = new System.Drawing.Size(694, 737);
             this.dgvDanhSachNhap.TabIndex = 2;
-            this.dgvDanhSachNhap.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDanhSachNhap_CellContentClick);
             // 
             // ColTenSP
             // 
@@ -413,29 +412,35 @@ namespace WinFormsWarehouseManager
             // 
             // dtpHanSuDung
             // 
-            this.dtpHanSuDung.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.dtpHanSuDung.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.dtpHanSuDung.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.dtpHanSuDung.BorderRadius = 8;
             this.dtpHanSuDung.BorderSize = 2;
-            this.dtpHanSuDung.CalendarFont = new System.Drawing.Font("Segoe UI", 25F);
-            this.dtpHanSuDung.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpHanSuDung.CustomFormat = null;
+            this.dtpHanSuDung.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpHanSuDung.ForeColor = System.Drawing.Color.White;
             this.dtpHanSuDung.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpHanSuDung.Location = new System.Drawing.Point(593, 238);
+            this.dtpHanSuDung.Location = new System.Drawing.Point(593, 245);
             this.dtpHanSuDung.Margin = new System.Windows.Forms.Padding(4);
-            this.dtpHanSuDung.MinimumSize = new System.Drawing.Size(485, 45);
+            this.dtpHanSuDung.MinimumSize = new System.Drawing.Size(200, 40);
             this.dtpHanSuDung.Name = "dtpHanSuDung";
+            this.dtpHanSuDung.Padding = new System.Windows.Forms.Padding(2);
             this.dtpHanSuDung.Size = new System.Drawing.Size(485, 45);
-            this.dtpHanSuDung.SkinColor = System.Drawing.Color.White;
+            this.dtpHanSuDung.SkinColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
             this.dtpHanSuDung.TabIndex = 9;
-            this.dtpHanSuDung.TextColor = System.Drawing.Color.DimGray;
+            this.dtpHanSuDung.TextColor = System.Drawing.Color.White;
+            this.dtpHanSuDung.Value = new System.DateTime(2025, 12, 28, 10, 8, 47, 740);
             this.dtpHanSuDung.ValueChanged += new System.EventHandler(this.dtpHanSuDung_ValueChanged);
             // 
             // txtSoLuong
             // 
             this.txtSoLuong.BackColor = System.Drawing.SystemColors.Window;
-            this.txtSoLuong.BorderColor = System.Drawing.Color.Transparent;
-            this.txtSoLuong.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.txtSoLuong.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.txtSoLuong.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(173)))));
             this.txtSoLuong.BorderRadius = 5;
             this.txtSoLuong.BorderSize = 2;
-            this.txtSoLuong.ForeColor = System.Drawing.Color.DimGray;
+            this.txtSoLuong.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular);
+            this.txtSoLuong.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.txtSoLuong.Location = new System.Drawing.Point(47, 238);
             this.txtSoLuong.Margin = new System.Windows.Forms.Padding(4);
             this.txtSoLuong.Multiline = false;
@@ -444,7 +449,7 @@ namespace WinFormsWarehouseManager
             this.txtSoLuong.PasswordChar = false;
             this.txtSoLuong.PlaceholderColor = System.Drawing.Color.DarkGray;
             this.txtSoLuong.PlaceholderText = "Nhập số lượng";
-            this.txtSoLuong.Size = new System.Drawing.Size(487, 61);
+            this.txtSoLuong.Size = new System.Drawing.Size(487, 59);
             this.txtSoLuong.TabIndex = 8;
             this.txtSoLuong.Texts = "";
             this.txtSoLuong.UnderlinedStyle = false;
@@ -452,62 +457,65 @@ namespace WinFormsWarehouseManager
             // 
             // cbbDonViTinh
             // 
-            this.cbbDonViTinh.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.cbbDonViTinh.BorderColor = System.Drawing.Color.Transparent;
+            this.cbbDonViTinh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.cbbDonViTinh.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.cbbDonViTinh.BorderRadius = 8;
             this.cbbDonViTinh.BorderSize = 2;
             this.cbbDonViTinh.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbbDonViTinh.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cbbDonViTinh.ForeColor = System.Drawing.Color.DimGray;
-            this.cbbDonViTinh.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.cbbDonViTinh.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(228)))), ((int)(((byte)(245)))));
-            this.cbbDonViTinh.ListTextColor = System.Drawing.Color.DimGray;
+            this.cbbDonViTinh.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.cbbDonViTinh.ForeColor = System.Drawing.Color.White;
+            this.cbbDonViTinh.IconColor = System.Drawing.Color.White;
+            this.cbbDonViTinh.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.cbbDonViTinh.ListTextColor = System.Drawing.Color.White;
             this.cbbDonViTinh.Location = new System.Drawing.Point(593, 138);
             this.cbbDonViTinh.Margin = new System.Windows.Forms.Padding(4);
             this.cbbDonViTinh.MinimumSize = new System.Drawing.Size(267, 38);
             this.cbbDonViTinh.Name = "cbbDonViTinh";
-            this.cbbDonViTinh.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.cbbDonViTinh.Size = new System.Drawing.Size(487, 48);
+            this.cbbDonViTinh.Padding = new System.Windows.Forms.Padding(2);
+            this.cbbDonViTinh.Size = new System.Drawing.Size(487, 50);
             this.cbbDonViTinh.TabIndex = 7;
             this.cbbDonViTinh.Texts = "";
             // 
             // cbbTenSP
             // 
-            this.cbbTenSP.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.cbbTenSP.BorderColor = System.Drawing.Color.Transparent;
+            this.cbbTenSP.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.cbbTenSP.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.cbbTenSP.BorderRadius = 8;
             this.cbbTenSP.BorderSize = 2;
             this.cbbTenSP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbbTenSP.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cbbTenSP.ForeColor = System.Drawing.Color.DimGray;
-            this.cbbTenSP.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.cbbTenSP.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(228)))), ((int)(((byte)(245)))));
-            this.cbbTenSP.ListTextColor = System.Drawing.Color.DimGray;
+            this.cbbTenSP.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.cbbTenSP.ForeColor = System.Drawing.Color.White;
+            this.cbbTenSP.IconColor = System.Drawing.Color.White;
+            this.cbbTenSP.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.cbbTenSP.ListTextColor = System.Drawing.Color.White;
             this.cbbTenSP.Location = new System.Drawing.Point(47, 138);
             this.cbbTenSP.Margin = new System.Windows.Forms.Padding(4);
             this.cbbTenSP.MinimumSize = new System.Drawing.Size(267, 38);
             this.cbbTenSP.Name = "cbbTenSP";
-            this.cbbTenSP.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.cbbTenSP.Size = new System.Drawing.Size(487, 48);
+            this.cbbTenSP.Padding = new System.Windows.Forms.Padding(2);
+            this.cbbTenSP.Size = new System.Drawing.Size(487, 50);
             this.cbbTenSP.TabIndex = 6;
             this.cbbTenSP.Texts = "";
             this.cbbTenSP.OnSelectedIndexChanged += new System.EventHandler(this.cbbTenSP_OnSelectedIndexChanged);
             // 
             // cbbDanhMuc
             // 
-            this.cbbDanhMuc.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.cbbDanhMuc.BorderColor = System.Drawing.Color.Transparent;
+            this.cbbDanhMuc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.cbbDanhMuc.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.cbbDanhMuc.BorderRadius = 8;
             this.cbbDanhMuc.BorderSize = 2;
             this.cbbDanhMuc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbbDanhMuc.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cbbDanhMuc.ForeColor = System.Drawing.Color.DimGray;
-            this.cbbDanhMuc.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.cbbDanhMuc.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(228)))), ((int)(((byte)(245)))));
-            this.cbbDanhMuc.ListTextColor = System.Drawing.Color.DimGray;
+            this.cbbDanhMuc.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.cbbDanhMuc.ForeColor = System.Drawing.Color.White;
+            this.cbbDanhMuc.IconColor = System.Drawing.Color.White;
+            this.cbbDanhMuc.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.cbbDanhMuc.ListTextColor = System.Drawing.Color.White;
             this.cbbDanhMuc.Location = new System.Drawing.Point(47, 38);
             this.cbbDanhMuc.Margin = new System.Windows.Forms.Padding(4);
             this.cbbDanhMuc.MinimumSize = new System.Drawing.Size(267, 38);
             this.cbbDanhMuc.Name = "cbbDanhMuc";
-            this.cbbDanhMuc.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.cbbDanhMuc.Size = new System.Drawing.Size(487, 48);
+            this.cbbDanhMuc.Padding = new System.Windows.Forms.Padding(2);
+            this.cbbDanhMuc.Size = new System.Drawing.Size(487, 50);
             this.cbbDanhMuc.TabIndex = 5;
             this.cbbDanhMuc.Texts = "";
             this.cbbDanhMuc.OnSelectedIndexChanged += new System.EventHandler(this.cbbDanhMuc_OnSelectedIndexChanged);
@@ -656,12 +664,13 @@ namespace WinFormsWarehouseManager
             // txtDiaChi
             // 
             this.txtDiaChi.BackColor = System.Drawing.SystemColors.Window;
-            this.txtDiaChi.BorderColor = System.Drawing.Color.Transparent;
-            this.txtDiaChi.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.txtDiaChi.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.txtDiaChi.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(173)))));
             this.txtDiaChi.BorderRadius = 5;
             this.txtDiaChi.BorderSize = 2;
             this.txtDiaChi.Enabled = false;
-            this.txtDiaChi.ForeColor = System.Drawing.Color.DimGray;
+            this.txtDiaChi.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtDiaChi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.txtDiaChi.Location = new System.Drawing.Point(593, 275);
             this.txtDiaChi.Margin = new System.Windows.Forms.Padding(4);
             this.txtDiaChi.Multiline = false;
@@ -670,7 +679,7 @@ namespace WinFormsWarehouseManager
             this.txtDiaChi.PasswordChar = false;
             this.txtDiaChi.PlaceholderColor = System.Drawing.Color.DarkGray;
             this.txtDiaChi.PlaceholderText = "Địa chỉ";
-            this.txtDiaChi.Size = new System.Drawing.Size(487, 49);
+            this.txtDiaChi.Size = new System.Drawing.Size(487, 59);
             this.txtDiaChi.TabIndex = 9;
             this.txtDiaChi.Texts = "";
             this.txtDiaChi.UnderlinedStyle = false;
@@ -678,12 +687,13 @@ namespace WinFormsWarehouseManager
             // txtSDT
             // 
             this.txtSDT.BackColor = System.Drawing.SystemColors.Window;
-            this.txtSDT.BorderColor = System.Drawing.Color.Transparent;
-            this.txtSDT.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.txtSDT.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.txtSDT.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(173)))));
             this.txtSDT.BorderRadius = 5;
             this.txtSDT.BorderSize = 2;
             this.txtSDT.Enabled = false;
-            this.txtSDT.ForeColor = System.Drawing.Color.DimGray;
+            this.txtSDT.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtSDT.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.txtSDT.Location = new System.Drawing.Point(47, 275);
             this.txtSDT.Margin = new System.Windows.Forms.Padding(4);
             this.txtSDT.Multiline = false;
@@ -692,7 +702,7 @@ namespace WinFormsWarehouseManager
             this.txtSDT.PasswordChar = false;
             this.txtSDT.PlaceholderColor = System.Drawing.Color.DarkGray;
             this.txtSDT.PlaceholderText = "Số điện thoại";
-            this.txtSDT.Size = new System.Drawing.Size(487, 49);
+            this.txtSDT.Size = new System.Drawing.Size(487, 59);
             this.txtSDT.TabIndex = 8;
             this.txtSDT.Texts = "";
             this.txtSDT.UnderlinedStyle = false;
@@ -700,12 +710,13 @@ namespace WinFormsWarehouseManager
             // txtEmail
             // 
             this.txtEmail.BackColor = System.Drawing.SystemColors.Window;
-            this.txtEmail.BorderColor = System.Drawing.Color.Transparent;
-            this.txtEmail.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.txtEmail.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.txtEmail.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(173)))));
             this.txtEmail.BorderRadius = 5;
             this.txtEmail.BorderSize = 2;
             this.txtEmail.Enabled = false;
-            this.txtEmail.ForeColor = System.Drawing.Color.DimGray;
+            this.txtEmail.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtEmail.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.txtEmail.Location = new System.Drawing.Point(593, 175);
             this.txtEmail.Margin = new System.Windows.Forms.Padding(4);
             this.txtEmail.Multiline = false;
@@ -714,20 +725,22 @@ namespace WinFormsWarehouseManager
             this.txtEmail.PasswordChar = false;
             this.txtEmail.PlaceholderColor = System.Drawing.Color.DarkGray;
             this.txtEmail.PlaceholderText = "Email";
-            this.txtEmail.Size = new System.Drawing.Size(487, 49);
+            this.txtEmail.Size = new System.Drawing.Size(487, 59);
             this.txtEmail.TabIndex = 7;
             this.txtEmail.Texts = "";
             this.txtEmail.UnderlinedStyle = false;
+
             // 
             // txtTenNCC
             // 
             this.txtTenNCC.BackColor = System.Drawing.SystemColors.Window;
-            this.txtTenNCC.BorderColor = System.Drawing.Color.Transparent;
-            this.txtTenNCC.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
+            this.txtTenNCC.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.txtTenNCC.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(173)))));
             this.txtTenNCC.BorderRadius = 5;
             this.txtTenNCC.BorderSize = 2;
             this.txtTenNCC.Enabled = false;
-            this.txtTenNCC.ForeColor = System.Drawing.Color.DimGray;
+            this.txtTenNCC.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTenNCC.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.txtTenNCC.Location = new System.Drawing.Point(47, 175);
             this.txtTenNCC.Margin = new System.Windows.Forms.Padding(4);
             this.txtTenNCC.Multiline = false;
@@ -736,28 +749,29 @@ namespace WinFormsWarehouseManager
             this.txtTenNCC.PasswordChar = false;
             this.txtTenNCC.PlaceholderColor = System.Drawing.Color.DarkGray;
             this.txtTenNCC.PlaceholderText = "Tên nhà cung cấp";
-            this.txtTenNCC.Size = new System.Drawing.Size(487, 49);
+            this.txtTenNCC.Size = new System.Drawing.Size(487, 59);
             this.txtTenNCC.TabIndex = 6;
             this.txtTenNCC.Texts = "";
             this.txtTenNCC.UnderlinedStyle = false;
             // 
             // cbbNhaCungCap
             // 
-            this.cbbNhaCungCap.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.cbbNhaCungCap.BorderColor = System.Drawing.Color.Transparent;
+            this.cbbNhaCungCap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.cbbNhaCungCap.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.cbbNhaCungCap.BorderRadius = 8;
             this.cbbNhaCungCap.BorderSize = 2;
             this.cbbNhaCungCap.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbbNhaCungCap.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbbNhaCungCap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
-            this.cbbNhaCungCap.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(51)))), ((int)(((byte)(66)))));
-            this.cbbNhaCungCap.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(228)))), ((int)(((byte)(245)))));
-            this.cbbNhaCungCap.ListTextColor = System.Drawing.Color.DimGray;
+            this.cbbNhaCungCap.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.cbbNhaCungCap.ForeColor = System.Drawing.Color.White;
+            this.cbbNhaCungCap.IconColor = System.Drawing.Color.White;
+            this.cbbNhaCungCap.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(119)))), ((int)(((byte)(154)))));
+            this.cbbNhaCungCap.ListTextColor = System.Drawing.Color.White;
             this.cbbNhaCungCap.Location = new System.Drawing.Point(47, 75);
             this.cbbNhaCungCap.Margin = new System.Windows.Forms.Padding(4);
             this.cbbNhaCungCap.MinimumSize = new System.Drawing.Size(267, 38);
             this.cbbNhaCungCap.Name = "cbbNhaCungCap";
-            this.cbbNhaCungCap.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.cbbNhaCungCap.Size = new System.Drawing.Size(487, 48);
+            this.cbbNhaCungCap.Padding = new System.Windows.Forms.Padding(2);
+            this.cbbNhaCungCap.Size = new System.Drawing.Size(487, 50);
             this.cbbNhaCungCap.TabIndex = 5;
             this.cbbNhaCungCap.Texts = "";
             this.cbbNhaCungCap.OnSelectedIndexChanged += new System.EventHandler(this.cbbNhaCungCap_OnSelectedIndexChanged);

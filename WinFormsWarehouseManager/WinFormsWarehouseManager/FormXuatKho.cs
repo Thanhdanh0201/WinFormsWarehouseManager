@@ -3,8 +3,11 @@ using System.Data;
 using System.Data.SQLite;
 using System.Drawing;
 using System.Windows.Forms;
+using FontAwesome.Sharp;
+using WinFormsWarehouseManager.Forms;
 using WinFormsWarehouseManager.db;
 using WinFormsWarehouseManager.Models;
+using WinFormsWarehouseManager.Utils;
 
 namespace WinFormsWarehouseManager
 {
@@ -12,7 +15,11 @@ namespace WinFormsWarehouseManager
     {
         private DatabaseHelper dbHelper;
         private bool isAddingNewReceiver = false;
-        private int currentStockQuantity = 0; // Số lượng tồn kho hiện tại
+        private TempExportData tempData;
+
+        // NEW: Controls được tạo lại hoàn toàn
+        private FlowLayoutPanel flowItemsList;
+        private Panel panelReceiverInfo;
 
         public FormXuatKho()
         {
@@ -25,8 +32,7 @@ namespace WinFormsWarehouseManager
         {
             LoadNguoiNhan();
             LoadDanhMuc();
-            StyleDataGridView();
-            SetupDataGridView();
+            RebuildRightPanel(); // NEW: Rebuild UI
             ResetForm();
         }
 
@@ -60,9 +66,40 @@ namespace WinFormsWarehouseManager
             }
         }
 
+        /// <summary>
+        /// Lấy tên người nhận từ database theo ReceiverID
+        /// </summary>
+        private string GetReceiverName(int receiverID)
+        {
+            if (receiverID <= 0)
+                return "Chưa chọn người nhận";
+
+            try
+            {
+                string query = "SELECT ReceiverName FROM Receivers WHERE ReceiverID = @ReceiverID";
+                SQLiteParameter[] parameters = {
+                    new SQLiteParameter("@ReceiverID", receiverID)
+                };
+
+                DataTable dt = dbHelper.ExecuteQuery(query, parameters);
+
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    return dt.Rows[0]["ReceiverName"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting receiver name: {ex.Message}");
+            }
+
+            return "N/A";
+        }
+
         private void LoadSanPhamTheoDanhMuc(int categoryID)
         {
-            string query = @"SELECT ProductID, ProductName, SoLuong 
+            // Chỉ load sản phẩm còn hàng (SoLuong > 0)
+            string query = @"SELECT ProductID, ProductName, DonViTinh, SoLuong 
                            FROM Products 
                            WHERE CategoryID = @CategoryID AND SoLuong > 0
                            ORDER BY ProductName";
@@ -149,7 +186,7 @@ namespace WinFormsWarehouseManager
             if (dt != null && dt.Rows.Count > 0)
             {
                 DataRow row = dt.Rows[0];
-                txtTenNguoiNhan.Texts = row["ReceiverName"].ToString();
+                txtTenNN.Texts = row["ReceiverName"].ToString();
                 txtEmail.Texts = row["Email"].ToString();
                 txtSDT.Texts = row["Phone"].ToString();
                 txtDiaChi.Texts = row["Address"].ToString();
@@ -167,11 +204,9 @@ namespace WinFormsWarehouseManager
 
             LoadSanPhamTheoDanhMuc(categoryID.Value);
 
-            // Reset thông tin sản phẩm
-            cbbTenSP.SelectedIndex = -1;
+            // Reset tồn kho label
+            lblTonKhoHienTai.Text = "Tồn kho hiện tại: 0";
             txtSoLuong.Texts = "";
-            lblTonKho.Text = "Tồn kho hiện tại: 0";
-            currentStockQuantity = 0;
         }
 
         private void cbbTenSP_OnSelectedIndexChanged(object sender, EventArgs e)
@@ -180,43 +215,104 @@ namespace WinFormsWarehouseManager
                 return;
 
             DataRowView drv = (DataRowView)cbbTenSP.SelectedItem;
-            currentStockQuantity = Convert.ToInt32(drv["SoLuong"]);
+            int soLuongTon = Convert.ToInt32(drv["SoLuong"]);
+            string donViTinh = drv["DonViTinh"].ToString();
 
-            lblTonKho.Text = $"Tồn kho hiện tại: {currentStockQuantity}";
-            lblTonKho.ForeColor = currentStockQuantity > 5
-                ? Color.FromArgb(2, 51, 66)
-                : Color.FromArgb(220, 53, 69);
+            lblTonKhoHienTai.Text = $"Tồn kho hiện tại: {soLuongTon} {donViTinh}";
+            lblTonKhoHienTai.ForeColor = Color.FromArgb(40, 167, 69);
+
+            txtSoLuong.Texts = "";
         }
 
         #endregion
 
         #region Toggle New Receiver Mode
 
+        private FontAwesome.Sharp.IconButton btnLuuNN;
+
         private void btnNguoiNhanMoi_Click(object sender, EventArgs e)
         {
             if (!isAddingNewReceiver)
             {
-                // Chuyển sang chế độ thêm mới
                 isAddingNewReceiver = true;
                 btnNguoiNhanMoi.Text = "Hủy";
-                btnNguoiNhanMoi.IconChar = FontAwesome.Sharp.IconChar.Xmark;
 
-                // Ẩn ComboBox, enable TextBoxes
                 cbbNguoiNhan.Visible = false;
-                txtTenNguoiNhan.Enabled = true;
+                txtTenNN.Enabled = true;
                 txtEmail.Enabled = true;
                 txtSDT.Enabled = true;
                 txtDiaChi.Enabled = true;
 
-                // Clear textboxes
-                txtTenNguoiNhan.Texts = "";
+                txtTenNN.Texts = "";
                 txtEmail.Texts = "";
                 txtSDT.Texts = "";
                 txtDiaChi.Texts = "";
+
+                ShowSaveReceiverButton();
             }
             else
             {
-                // Hủy - quay lại chế độ chọn
+                CancelNewReceiver();
+            }
+        }
+
+        private void ShowSaveReceiverButton()
+        {
+            if (btnLuuNN == null)
+            {
+                btnLuuNN = new FontAwesome.Sharp.IconButton
+                {
+                    Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                    BackColor = Color.FromArgb(220, 53, 69),
+                    FlatStyle = FlatStyle.Flat,
+                    Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
+                    ForeColor = Color.White,
+                    IconChar = IconChar.Save,
+                    IconColor = Color.White,
+                    IconFont = IconFont.Auto,
+                    IconSize = 28,
+                    ImageAlign = ContentAlignment.MiddleLeft,
+                    Location = new Point(590, 12),
+                    Size = new Size(240, 50),
+                    Text = "Lưu",
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    TextImageRelation = TextImageRelation.ImageBeforeText,
+                    UseVisualStyleBackColor = false,
+                    Cursor = Cursors.Hand,
+                    Padding = new Padding(7, 0, 0, 0)
+                };
+                btnLuuNN.FlatAppearance.BorderSize = 0;
+                btnLuuNN.Click += BtnLuuNN_Click;
+
+                btnLuuNN.MouseEnter += (s, e) => btnLuuNN.BackColor = Color.FromArgb(192, 57, 43);
+                btnLuuNN.MouseLeave += (s, e) => btnLuuNN.BackColor = Color.FromArgb(220, 53, 69);
+
+                panelNNTop.Controls.Add(btnLuuNN);
+            }
+            btnLuuNN.Visible = true;
+            btnLuuNN.BringToFront();
+        }
+
+        private void BtnLuuNN_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtTenNN.Texts))
+            {
+                MessageBox.Show("Vui lòng nhập tên người nhận!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTenNN.Focus();
+                return;
+            }
+
+            int receiverID = SaveNewReceiver();
+
+            if (receiverID > 0)
+            {
+                MessageBox.Show($"Đã lưu người nhận: {txtTenNN.Texts.Trim()}", "Thành công",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                LoadNguoiNhan();
+                SetComboBoxValue(cbbNguoiNhan, "ReceiverID", receiverID);
+                LoadReceiverInfo(receiverID);
                 CancelNewReceiver();
             }
         }
@@ -225,127 +321,26 @@ namespace WinFormsWarehouseManager
         {
             isAddingNewReceiver = false;
             btnNguoiNhanMoi.Text = "Người nhận mới";
-            btnNguoiNhanMoi.IconChar = FontAwesome.Sharp.IconChar.Edit;
 
-            // Hiện ComboBox, disable TextBoxes
             cbbNguoiNhan.Visible = true;
-            txtTenNguoiNhan.Enabled = false;
+            txtTenNN.Enabled = false;
             txtEmail.Enabled = false;
             txtSDT.Enabled = false;
             txtDiaChi.Enabled = false;
 
-            // Clear textboxes
-            txtTenNguoiNhan.Texts = "";
-            txtEmail.Texts = "";
-            txtSDT.Texts = "";
-            txtDiaChi.Texts = "";
+            if (btnLuuNN != null)
+            {
+                btnLuuNN.Visible = false;
+            }
         }
 
         #endregion
 
-        #region Add to List
-
-        private void btnThemVaoDanhSach_Click(object sender, EventArgs e)
-        {
-            // Validation
-            if (!ValidateInput())
-                return;
-
-            int? productIDNullable = GetComboBoxValue(cbbTenSP, "ProductID");
-            if (!productIDNullable.HasValue)
-            {
-                MessageBox.Show("Vui lòng chọn sản phẩm!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            int productID = productIDNullable.Value;
-            string tenSP = cbbTenSP.Text;
-            string danhMuc = cbbDanhMuc.Text;
-            int soLuong = int.Parse(txtSoLuong.Texts);
-
-            // Kiểm tra số lượng xuất có vượt quá tồn kho không
-            if (soLuong > currentStockQuantity)
-            {
-                MessageBox.Show($"Số lượng xuất vượt quá tồn kho!\nTồn kho hiện tại: {currentStockQuantity}",
-                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Kiểm tra sản phẩm đã có trong danh sách chưa
-            foreach (DataGridViewRow row in dgvDanhSachXuat.Rows)
-            {
-                if (Convert.ToInt32(row.Tag) == productID)
-                {
-                    MessageBox.Show("Sản phẩm đã có trong danh sách!", "Thông báo",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-            }
-
-            // Thêm vào DataGridView
-            dgvDanhSachXuat.Rows.Add(tenSP, danhMuc, soLuong, "Xóa");
-
-            // Lưu ProductID vào Tag của row
-            dgvDanhSachXuat.Rows[dgvDanhSachXuat.Rows.Count - 1].Tag = productID;
-
-            // Cập nhật tổng số lượng
-            UpdateTongSoLuong();
-
-            // Reset form sản phẩm
-            ResetProductPanel();
-        }
-
-        private bool ValidateInput()
-        {
-            // Kiểm tra người nhận
-            if (!isAddingNewReceiver && cbbNguoiNhan.SelectedIndex == -1)
-            {
-                MessageBox.Show("Vui lòng chọn người nhận!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (isAddingNewReceiver)
-            {
-                if (string.IsNullOrWhiteSpace(txtTenNguoiNhan.Texts))
-                {
-                    MessageBox.Show("Vui lòng nhập tên người nhận!", "Thông báo",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return false;
-                }
-            }
-
-            // Kiểm tra danh mục
-            if (cbbDanhMuc.SelectedIndex == -1)
-            {
-                MessageBox.Show("Vui lòng chọn danh mục!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            // Kiểm tra sản phẩm
-            if (cbbTenSP.SelectedIndex == -1)
-            {
-                MessageBox.Show("Vui lòng chọn sản phẩm!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            // Kiểm tra số lượng
-            if (!int.TryParse(txtSoLuong.Texts, out int soLuong) || soLuong <= 0)
-            {
-                MessageBox.Show("Số lượng phải là số nguyên dương!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            return true;
-        }
+        #region Save New Receiver
 
         private int SaveNewReceiver()
         {
-            string tenNguoiNhan = txtTenNguoiNhan.Texts.Trim();
+            string tenNN = txtTenNN.Texts.Trim();
             string email = txtEmail.Texts.Trim();
             string sdt = txtSDT.Texts.Trim();
             string diaChi = txtDiaChi.Texts.Trim();
@@ -355,7 +350,7 @@ namespace WinFormsWarehouseManager
                            SELECT last_insert_rowid();";
 
             SQLiteParameter[] parameters = {
-                new SQLiteParameter("@ReceiverName", tenNguoiNhan),
+                new SQLiteParameter("@ReceiverName", tenNN),
                 new SQLiteParameter("@Email", email),
                 new SQLiteParameter("@Phone", sdt),
                 new SQLiteParameter("@Address", diaChi)
@@ -365,95 +360,180 @@ namespace WinFormsWarehouseManager
 
             if (result != null)
             {
-                int receiverID = Convert.ToInt32(result);
-
-                // Reload ComboBox và select người nhận vừa tạo
-                LoadNguoiNhan();
-                SetComboBoxValue(cbbNguoiNhan, "ReceiverID", receiverID);
-
-                // Reset chế độ thêm mới
-                CancelNewReceiver();
-
-                return receiverID;
+                return Convert.ToInt32(result);
             }
 
-            MessageBox.Show("Lỗi khi thêm người nhận mới!", "Lỗi",
+            MessageBox.Show("❌ Lỗi khi thêm người nhận mới!", "Lỗi",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             return -1;
         }
 
         #endregion
 
-        #region DataGridView
+        #region Add to Temp List
 
-        private void SetupDataGridView()
+        private void btnThemVaoDanhSach_Click(object sender, EventArgs e)
         {
-            dgvDanhSachXuat.Rows.Clear();
+            if (!ValidateInput())
+                return;
+
+            int receiverID = GetOrCreateReceiverID();
+            if (receiverID == -1)
+                return;
+
+            TempExportItem newItem = CreateTempExportItem(receiverID);
+            if (newItem == null)
+                return;
+
+            AddItemToList(newItem);
+            SaveTempDataToFile();
+            ResetProductPanel();
+        }
+
+        private bool ValidateInput()
+        {
+            if (!isAddingNewReceiver && cbbNguoiNhan.SelectedIndex == -1)
+            {
+                MessageBox.Show("Vui lòng chọn người nhận!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (isAddingNewReceiver)
+            {
+                if (string.IsNullOrWhiteSpace(txtTenNN.Texts))
+                {
+                    MessageBox.Show("Vui lòng nhập tên người nhận!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+            }
+
+            if (cbbDanhMuc.SelectedIndex == -1)
+            {
+                MessageBox.Show("Vui lòng chọn danh mục!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (cbbTenSP.SelectedIndex == -1)
+            {
+                MessageBox.Show("Vui lòng chọn sản phẩm!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (!int.TryParse(txtSoLuong.Texts, out int soLuong) || soLuong <= 0)
+            {
+                MessageBox.Show("Số lượng phải là số nguyên dương!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            // Kiểm tra tồn kho
+            DataRowView drv = (DataRowView)cbbTenSP.SelectedItem;
+            int soLuongTon = Convert.ToInt32(drv["SoLuong"]);
+
+            if (soLuong > soLuongTon)
+            {
+                MessageBox.Show($"Số lượng xuất ({soLuong}) vượt quá tồn kho ({soLuongTon})!",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        private int GetOrCreateReceiverID()
+        {
+            if (isAddingNewReceiver)
+            {
+                int receiverID = SaveNewReceiver();
+                if (receiverID == -1)
+                    return -1;
+
+                if (tempData == null)
+                {
+                    tempData = new TempExportData(receiverID, txtTenNN.Texts.Trim());
+                }
+                else
+                {
+                    tempData.ReceiverID = receiverID;
+                    tempData.ReceiverName = txtTenNN.Texts.Trim();
+                }
+
+                return receiverID;
+            }
+            else
+            {
+                int? receiverID = GetComboBoxValue(cbbNguoiNhan, "ReceiverID");
+                if (!receiverID.HasValue)
+                    return -1;
+
+                DataRowView drv = (DataRowView)cbbNguoiNhan.SelectedItem;
+                string receiverName = drv["ReceiverName"].ToString();
+
+                if (tempData == null)
+                {
+                    tempData = new TempExportData(receiverID.Value, receiverName);
+                }
+                else
+                {
+                    tempData.ReceiverID = receiverID.Value;
+                    tempData.ReceiverName = receiverName;
+                }
+
+                return receiverID.Value;
+            }
+        }
+
+        private TempExportItem CreateTempExportItem(int receiverID)
+        {
+            int? categoryID = GetComboBoxValue(cbbDanhMuc, "CategoryID");
+            if (!categoryID.HasValue)
+                return null;
+
+            DataRowView drvCategory = (DataRowView)cbbDanhMuc.SelectedItem;
+            string categoryName = drvCategory["CategoryName"].ToString();
+
+            int? productID = GetComboBoxValue(cbbTenSP, "ProductID");
+            if (!productID.HasValue)
+                return null;
+
+            DataRowView drvProduct = (DataRowView)cbbTenSP.SelectedItem;
+            string productName = drvProduct["ProductName"].ToString();
+            string donViTinh = drvProduct["DonViTinh"].ToString();
+            int soLuongTon = Convert.ToInt32(drvProduct["SoLuong"]);
+
+            int quantity = int.Parse(txtSoLuong.Texts);
+            string receiverName = GetReceiverName(receiverID);
+
+            return new TempExportItem(
+                productID.Value,
+                productName,
+                categoryID.Value,
+                categoryName,
+                quantity,
+                donViTinh,
+                soLuongTon,
+                receiverID,
+                receiverName
+            );
+        }
+
+        private void AddItemToList(TempExportItem item)
+        {
+            AddItemCard(item);
+            tempData.Items.Add(item);
             UpdateTongSoLuong();
         }
 
-        private void dgvDanhSachXuat_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void SaveTempDataToFile()
         {
-            // Load thông tin khi click vào row
-            if (e.RowIndex >= 0 && e.ColumnIndex != dgvDanhSachXuat.Columns["ColXoa"].Index)
+            if (tempData != null && tempData.Items.Count > 0)
             {
-                DataGridViewRow row = dgvDanhSachXuat.Rows[e.RowIndex];
-
-                // Load thông tin sản phẩm lên form
-                string tenSP = row.Cells["ColTenSP"].Value.ToString();
-                string danhMuc = row.Cells["ColDanhMuc"].Value.ToString();
-                int soLuong = Convert.ToInt32(row.Cells["ColSoLuong"].Value);
-                int productID = Convert.ToInt32(row.Tag);
-
-                // Set danh mục
-                for (int i = 0; i < cbbDanhMuc.Items.Count; i++)
-                {
-                    DataRowView drv = (DataRowView)cbbDanhMuc.Items[i];
-                    if (drv["CategoryName"].ToString() == danhMuc)
-                    {
-                        cbbDanhMuc.SelectedIndex = i;
-                        break;
-                    }
-                }
-
-                // Set sản phẩm
-                SetComboBoxValue(cbbTenSP, "ProductID", productID);
-
-                // Set số lượng
-                txtSoLuong.Texts = soLuong.ToString();
+                TempExportManager.Save(tempData);
             }
-        }
-
-        private void dgvDanhSachXuat_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            // Xử lý click button Xóa
-            if (e.ColumnIndex == dgvDanhSachXuat.Columns["ColXoa"].Index && e.RowIndex >= 0)
-            {
-                DialogResult result = MessageBox.Show(
-                    "Bạn có chắc muốn xóa sản phẩm này khỏi danh sách?",
-                    "Xác nhận",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
-
-                if (result == DialogResult.Yes)
-                {
-                    dgvDanhSachXuat.Rows.RemoveAt(e.RowIndex);
-                    UpdateTongSoLuong();
-                }
-            }
-        }
-
-        private void UpdateTongSoLuong()
-        {
-            int tongSP = dgvDanhSachXuat.Rows.Count;
-            int tongSoLuong = 0;
-
-            foreach (DataGridViewRow row in dgvDanhSachXuat.Rows)
-            {
-                tongSoLuong += Convert.ToInt32(row.Cells["ColSoLuong"].Value);
-            }
-
-            lblTongSoLuong.Text = $"Tổng số lượng: {tongSoLuong} ({tongSP} SP)";
         }
 
         #endregion
@@ -462,17 +542,15 @@ namespace WinFormsWarehouseManager
 
         private void btnDongY_Click(object sender, EventArgs e)
         {
-            // Validation
-            if (dgvDanhSachXuat.Rows.Count == 0)
+            if (flowItemsList.Controls.Count == 0)
             {
                 MessageBox.Show("Danh sách xuất trống! Vui lòng thêm sản phẩm.", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Xác nhận
             DialogResult result = MessageBox.Show(
-                $"Xác nhận xuất {dgvDanhSachXuat.Rows.Count} sản phẩm khỏi kho?",
+                $"Xác nhận xuất {flowItemsList.Controls.Count} sản phẩm ra khỏi kho?",
                 "Xác nhận xuất kho",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
@@ -480,18 +558,19 @@ namespace WinFormsWarehouseManager
             if (result != DialogResult.Yes)
                 return;
 
-            // Lưu từng dòng vào ExportReceipts
-            bool success = SaveExportReceipts();
+            bool success = SaveToDatabase();
 
             if (success)
             {
                 MessageBox.Show("Xuất kho thành công!", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                TempExportManager.Delete();
                 ResetForm();
             }
         }
 
-        private bool SaveExportReceipts()
+        private bool SaveToDatabase()
         {
             try
             {
@@ -503,49 +582,20 @@ namespace WinFormsWarehouseManager
                     return false;
                 }
 
-                // Lấy ReceiverID
-                int receiverID;
-                if (isAddingNewReceiver)
+                foreach (TempExportItem item in tempData.Items)
                 {
-                    receiverID = SaveNewReceiver();
-                    if (receiverID == -1)
+                    if (item == null)
+                        continue;
+
+                    bool insertResult = InsertExportReceipt(
+                        userID,
+                        item.ReceiverID,
+                        item.ProductID,
+                        item.Quantity
+                    );
+
+                    if (!insertResult)
                         return false;
-                }
-                else
-                {
-                    int? receiverIDNullable = GetComboBoxValue(cbbNguoiNhan, "ReceiverID");
-                    if (!receiverIDNullable.HasValue)
-                    {
-                        MessageBox.Show("Vui lòng chọn người nhận!", "Thông báo",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return false;
-                    }
-                    receiverID = receiverIDNullable.Value;
-                }
-
-                string query = @"INSERT INTO ExportReceipts (ExportDate, UserID, ReceiverID, ProductID, Quantity)
-                               VALUES (datetime('now'), @UserID, @ReceiverID, @ProductID, @Quantity)";
-
-                foreach (DataGridViewRow row in dgvDanhSachXuat.Rows)
-                {
-                    int productID = Convert.ToInt32(row.Tag);
-                    int quantity = Convert.ToInt32(row.Cells["ColSoLuong"].Value);
-
-                    SQLiteParameter[] parameters = {
-                        new SQLiteParameter("@UserID", userID),
-                        new SQLiteParameter("@ReceiverID", receiverID),
-                        new SQLiteParameter("@ProductID", productID),
-                        new SQLiteParameter("@Quantity", quantity)
-                    };
-
-                    int result = dbHelper.ExecuteNonQuery(query, parameters);
-
-                    if (result <= 0)
-                    {
-                        MessageBox.Show("Lỗi khi lưu phiếu xuất!", "Lỗi",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return false;
-                    }
                 }
 
                 return true;
@@ -558,6 +608,30 @@ namespace WinFormsWarehouseManager
             }
         }
 
+        private bool InsertExportReceipt(int userID, int receiverID, int productID, int quantity)
+        {
+            string query = @"INSERT INTO ExportReceipts (ExportDate, UserID, ReceiverID, ProductID, Quantity)
+                           VALUES (datetime('now'), @UserID, @ReceiverID, @ProductID, @Quantity)";
+
+            SQLiteParameter[] parameters = {
+                new SQLiteParameter("@UserID", userID),
+                new SQLiteParameter("@ReceiverID", receiverID),
+                new SQLiteParameter("@ProductID", productID),
+                new SQLiteParameter("@Quantity", quantity)
+            };
+
+            int result = dbHelper.ExecuteNonQuery(query, parameters);
+
+            if (result <= 0)
+            {
+                MessageBox.Show("Lỗi khi lưu phiếu xuất!", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            return true;
+        }
+
         private void btnHuy_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show(
@@ -568,6 +642,7 @@ namespace WinFormsWarehouseManager
 
             if (result == DialogResult.Yes)
             {
+                TempExportManager.Delete();
                 ResetForm();
             }
         }
@@ -578,73 +653,66 @@ namespace WinFormsWarehouseManager
 
         private void ResetForm()
         {
-            // Reset Người nhận
             CancelNewReceiver();
             cbbNguoiNhan.SelectedIndex = -1;
 
-            // Reset Sản phẩm
             cbbDanhMuc.SelectedIndex = -1;
             cbbTenSP.DataSource = null;
             txtSoLuong.Texts = "";
-            lblTonKho.Text = "Tồn kho hiện tại: 0";
-            currentStockQuantity = 0;
+            lblTonKhoHienTai.Text = "Tồn kho hiện tại: 0";
 
-            // Reset DataGridView
-            dgvDanhSachXuat.Rows.Clear();
+            flowItemsList.Controls.Clear();
             UpdateTongSoLuong();
+
+            tempData = null;
         }
 
         private void ResetProductPanel()
         {
             cbbTenSP.SelectedIndex = -1;
             txtSoLuong.Texts = "";
-            lblTonKho.Text = "Tồn kho hiện tại: 0";
-            currentStockQuantity = 0;
-        }
-
-        private void StyleDataGridView()
-        {
-            dgvDanhSachXuat.BorderStyle = BorderStyle.None;
-            dgvDanhSachXuat.BackgroundColor = Color.White;
-            dgvDanhSachXuat.GridColor = Color.FromArgb(240, 244, 247);
-            dgvDanhSachXuat.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvDanhSachXuat.AllowUserToResizeRows = false;
-            dgvDanhSachXuat.RowHeadersVisible = false;
-            dgvDanhSachXuat.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvDanhSachXuat.MultiSelect = false;
-
-            dgvDanhSachXuat.EnableHeadersVisualStyles = false;
-            dgvDanhSachXuat.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(2, 51, 66);
-            dgvDanhSachXuat.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvDanhSachXuat.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            dgvDanhSachXuat.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgvDanhSachXuat.ColumnHeadersDefaultCellStyle.Padding = new Padding(10, 8, 10, 8);
-            dgvDanhSachXuat.ColumnHeadersHeight = 40;
-            dgvDanhSachXuat.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-
-            dgvDanhSachXuat.DefaultCellStyle.BackColor = Color.White;
-            dgvDanhSachXuat.DefaultCellStyle.ForeColor = Color.FromArgb(2, 51, 66);
-            dgvDanhSachXuat.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
-            dgvDanhSachXuat.DefaultCellStyle.SelectionBackColor = Color.FromArgb(232, 240, 254);
-            dgvDanhSachXuat.DefaultCellStyle.SelectionForeColor = Color.FromArgb(2, 51, 66);
-            dgvDanhSachXuat.DefaultCellStyle.Padding = new Padding(10, 5, 10, 5);
-            dgvDanhSachXuat.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dgvDanhSachXuat.RowTemplate.Height = 50;
-
-            dgvDanhSachXuat.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 249, 250);
-            dgvDanhSachXuat.AlternatingRowsDefaultCellStyle.ForeColor = Color.FromArgb(2, 51, 66);
-            dgvDanhSachXuat.AlternatingRowsDefaultCellStyle.SelectionBackColor = Color.FromArgb(232, 240, 254);
-            dgvDanhSachXuat.AlternatingRowsDefaultCellStyle.SelectionForeColor = Color.FromArgb(2, 51, 66);
-
-            dgvDanhSachXuat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            lblTonKhoHienTai.Text = "Tồn kho hiện tại: 0";
         }
 
         private void txtSoLuong_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Chỉ cho phép nhập số
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
+            }
+        }
+
+        private void txtSoLuong_TextChanged(object sender, EventArgs e)
+        {
+            if (cbbTenSP.SelectedIndex == -1)
+                return;
+
+            DataRowView drv = (DataRowView)cbbTenSP.SelectedItem;
+            int soLuongTon = Convert.ToInt32(drv["SoLuong"]);
+            string donViTinh = drv["DonViTinh"].ToString();
+
+            if (int.TryParse(txtSoLuong.Texts, out int soLuongXuat) && soLuongXuat > 0)
+            {
+                int conLai = soLuongTon - soLuongXuat;
+                lblTonKhoHienTai.Text = $"Tồn kho: {soLuongTon} {donViTinh} → Còn lại: {conLai} {donViTinh}";
+
+                if (conLai < 0)
+                {
+                    lblTonKhoHienTai.ForeColor = Color.FromArgb(220, 53, 69);
+                }
+                else if (conLai < 5)
+                {
+                    lblTonKhoHienTai.ForeColor = Color.FromArgb(255, 193, 7);
+                }
+                else
+                {
+                    lblTonKhoHienTai.ForeColor = Color.FromArgb(40, 167, 69);
+                }
+            }
+            else
+            {
+                lblTonKhoHienTai.Text = $"Tồn kho hiện tại: {soLuongTon} {donViTinh}";
+                lblTonKhoHienTai.ForeColor = Color.FromArgb(40, 167, 69);
             }
         }
 
@@ -652,7 +720,341 @@ namespace WinFormsWarehouseManager
 
         private void FormXuatKho_Load(object sender, EventArgs e)
         {
-
+            LoadTempDataIfExists();
         }
+
+        private void LoadTempDataIfExists()
+        {
+            if (TempExportManager.Exists())
+            {
+                tempData = TempExportManager.Load();
+
+                if (tempData != null)
+                {
+                    // Tự động load luôn, không cần xác nhận
+                    foreach (var item in tempData.Items)
+                    {
+                        AddItemCard(item);
+                    }
+                    UpdateTongSoLuong();
+                }
+            }
+        }
+        
+
+        private void btnLichSuXuatHang_Click(object sender, EventArgs e)
+        {
+            ExportHistoryModal modal = new ExportHistoryModal();
+            modal.ShowDialog(this);
+        }
+
+        #region REBUILD RIGHT PANEL - CLEAN & RESPONSIVE
+
+        private void RebuildRightPanel()
+        {
+            panelDanhSach.Controls.Clear();
+
+            // 1. PANEL TOP
+            panelDanhSachTop.Dock = DockStyle.Top;
+            panelDanhSach.Controls.Add(panelDanhSachTop);
+
+            // 2. PANEL BOTTOM
+            panelDanhSachBottom.Dock = DockStyle.Bottom;
+            panelDanhSach.Controls.Add(panelDanhSachBottom);
+
+            // 3. PANEL RECEIVER INFO
+
+
+            // 4. FLOW PANEL
+            flowItemsList = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
+                AutoScroll = true,
+                BackColor = Color.White,
+                Padding = new Padding(15, 10, 15, 10)
+            };
+
+            flowItemsList.Resize += FlowItemsList_Resize;
+            flowItemsList.ClientSizeChanged += FlowItemsList_Resize;
+
+            panelDanhSach.Controls.Add(flowItemsList);
+
+            panelDanhSachTop.BringToFront();
+            flowItemsList.BringToFront();
+            panelDanhSachBottom.BringToFront();
+        }
+
+        private void FlowItemsList_Resize(object sender, EventArgs e)
+        {
+            if (flowItemsList == null) return;
+
+            int availableWidth = flowItemsList.ClientSize.Width - 30;
+
+            foreach (Control ctrl in flowItemsList.Controls)
+            {
+                if (ctrl is Panel cardPanel)
+                {
+                    cardPanel.Width = availableWidth;
+
+                    foreach (Control child in cardPanel.Controls)
+                    {
+                        if (child is IconButton btn)
+                        {
+                            if (btn.IconChar == IconChar.Edit)
+                            {
+                                btn.Location = new Point(cardPanel.Width - 110, btn.Location.Y);
+                            }
+                            else if (btn.IconChar == IconChar.TrashAlt)
+                            {
+                                btn.Location = new Point(cardPanel.Width - 55, btn.Location.Y);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        
+
+
+        private void UpdateTongSoLuong()
+        {
+            int tongSP = flowItemsList.Controls.Count;
+            lblTongSoLuong.Text = $"Tổng số lượng: {tongSP} SP";
+        }
+
+        private void AddItemCard(TempExportItem item)
+        {
+            // Tính width động
+            int cardWidth = flowItemsList.ClientSize.Width - 30;
+
+            Panel cardPanel = new Panel
+            {
+                Width = cardWidth,
+                Height = 150,
+                BackColor = Color.FromArgb(248, 249, 250),
+                Margin = new Padding(0, 0, 0, 12),
+                Padding = new Padding(15),
+                Tag = item
+            };
+
+            // Border
+            cardPanel.Paint += (s, e) =>
+            {
+                using (Pen pen = new Pen(Color.FromArgb(220, 225, 230), 1))
+                {
+                    Rectangle rect = new Rectangle(0, 0, cardPanel.Width - 1, cardPanel.Height - 1);
+                    e.Graphics.DrawRectangle(pen, rect);
+                }
+            };
+
+            // Icon sản phẩm chính (bên trái)
+            IconPictureBox iconProduct = new IconPictureBox
+            {
+                IconChar = IconChar.BoxOpen,
+                IconColor = Color.FromArgb(220, 53, 69),
+                IconSize = 40,
+                Location = new Point(15, 15),
+                Size = new Size(40, 40)
+            };
+
+            // Tên sản phẩm
+            Label lblProductName = new Label
+            {
+                Text = item.ProductName,
+                ForeColor = Color.FromArgb(33, 37, 41),
+                Font = new Font("Segoe UI", 10.5F, FontStyle.Bold),
+                Location = new Point(70, 8),
+                AutoSize = false,
+                Size = new Size(320, 25),
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            // Dòng 1: Danh mục
+            IconPictureBox iconCategory = new IconPictureBox
+            {
+                IconChar = IconChar.FolderOpen,
+                IconColor = Color.FromArgb(108, 117, 125),
+                IconSize = 16,
+                Location = new Point(70, 38),
+                Size = new Size(16, 16)
+            };
+
+            Label lblCategory = new Label
+            {
+                Text = item.CategoryName,
+                ForeColor = Color.FromArgb(108, 117, 125),
+                Font = new Font("Segoe UI", 9F),
+                Location = new Point(92, 37),
+                AutoSize = true
+            };
+
+            // Dòng 2: Người nhận
+            IconPictureBox iconReceiver = new IconPictureBox
+            {
+                IconChar = IconChar.UserCheck,
+                IconColor = Color.FromArgb(255, 193, 7),
+                IconSize = 16,
+                Location = new Point(70, 63),
+                Size = new Size(16, 16)
+            };
+
+            Label lblReceiver = new Label
+            {
+                Text = item.ReceiverName ?? "N/A",
+                ForeColor = Color.FromArgb(255, 193, 7),
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                Location = new Point(92, 62),
+                AutoSize = true
+            };
+
+            // Dòng 3: Số lượng xuất
+            IconPictureBox iconQuantity = new IconPictureBox
+            {
+                IconChar = IconChar.ArrowAltCircleRight,
+                IconColor = Color.FromArgb(220, 53, 69),
+                IconSize = 16,
+                Location = new Point(70, 88),
+                Size = new Size(16, 16)
+            };
+
+            Label lblQuantity = new Label
+            {
+                Text = $"Xuất: {item.Quantity:N0} {item.DonViTinh}",
+                ForeColor = Color.FromArgb(220, 53, 69),
+                Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
+                Location = new Point(92, 87),
+                AutoSize = true
+            };
+
+            // Dòng 4: Tồn kho
+            IconPictureBox iconStock = new IconPictureBox
+            {
+                IconChar = IconChar.Warehouse,
+                IconColor = Color.FromArgb(40, 167, 69),
+                IconSize = 16,
+                Location = new Point(70, 113),
+                Size = new Size(16, 16)
+            };
+
+            int conLai = item.SoLuongTonKho - item.Quantity;
+            Color stockColor = conLai < 5 ? Color.FromArgb(220, 53, 69) : Color.FromArgb(40, 167, 69);
+
+            Label lblStock = new Label
+            {
+                Text = $"Tồn kho: {item.SoLuongTonKho} → Còn: {conLai}",
+                ForeColor = stockColor,
+                Font = new Font("Segoe UI", 9F),
+                Location = new Point(92, 112),
+                AutoSize = true
+            };
+
+            // Button Sửa
+            IconButton btnEdit = new IconButton
+            {
+                Text = "",
+                IconChar = IconChar.Edit,
+                IconColor = Color.White,
+                IconSize = 22,
+                Size = new Size(45, 45),
+                Location = new Point(cardWidth - 110, 50),
+                BackColor = Color.FromArgb(52, 152, 219),
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+            btnEdit.FlatAppearance.BorderSize = 0;
+            btnEdit.Click += (s, e) => OpenEditModal(item, flowItemsList.Controls.IndexOf(cardPanel));
+            btnEdit.MouseEnter += (s, e) => btnEdit.BackColor = Color.FromArgb(41, 128, 185);
+            btnEdit.MouseLeave += (s, e) => btnEdit.BackColor = Color.FromArgb(52, 152, 219);
+
+            // Button Xóa
+            IconButton btnDelete = new IconButton
+            {
+                Text = "",
+                IconChar = IconChar.TrashAlt,
+                IconColor = Color.White,
+                IconSize = 22,
+                Size = new Size(45, 45),
+                Location = new Point(cardWidth - 55, 50),
+                BackColor = Color.FromArgb(220, 53, 69),
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+            btnDelete.FlatAppearance.BorderSize = 0;
+            btnDelete.Click += (s, e) =>
+            {
+                DialogResult result = MessageBox.Show(
+                    "Bạn có chắc muốn xóa sản phẩm này khỏi danh sách?",
+                    "Xác nhận",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    flowItemsList.Controls.Remove(cardPanel);
+
+                    if (tempData != null && tempData.Items != null)
+                    {
+                        tempData.Items.Remove(item);
+                        SaveTempDataToFile();
+                    }
+
+                    UpdateTongSoLuong();
+                }
+            };
+            btnDelete.MouseEnter += (s, e) => btnDelete.BackColor = Color.FromArgb(192, 57, 43);
+            btnDelete.MouseLeave += (s, e) => btnDelete.BackColor = Color.FromArgb(220, 53, 69);
+
+            // Add all controls to card
+            cardPanel.Controls.Add(iconProduct);
+            cardPanel.Controls.Add(lblProductName);
+            cardPanel.Controls.Add(iconCategory);
+            cardPanel.Controls.Add(lblCategory);
+            cardPanel.Controls.Add(iconReceiver);
+            cardPanel.Controls.Add(lblReceiver);
+            cardPanel.Controls.Add(iconQuantity);
+            cardPanel.Controls.Add(lblQuantity);
+            cardPanel.Controls.Add(iconStock);
+            cardPanel.Controls.Add(lblStock);
+            cardPanel.Controls.Add(btnEdit);
+            cardPanel.Controls.Add(btnDelete);
+
+            flowItemsList.Controls.Add(cardPanel);
+        }
+
+        private void OpenEditModal(TempExportItem item, int rowIndex)
+        {
+            using (FormEditExportItem modal = new FormEditExportItem(item, tempData.ReceiverID, dbHelper))
+            {
+                if (modal.ShowDialog() == DialogResult.OK || modal.IsUpdated)
+                {
+                    TempExportItem updatedItem = modal.UpdatedItem;
+
+                    // Cập nhật trong tempData
+                    int itemIndex = tempData.Items.FindIndex(i =>
+                        i.ProductID == item.ProductID &&
+                        i.ProductName == item.ProductName);
+
+                    if (itemIndex >= 0)
+                    {
+                        tempData.Items[itemIndex] = updatedItem;
+                    }
+
+                    // Reload lại TẤT CẢ cards với receiver hiện tại
+                    flowItemsList.Controls.Clear();
+                    foreach (var tempItem in tempData.Items)
+                    {
+                        AddItemCard(tempItem);
+                    }
+
+                    SaveTempDataToFile();
+                    UpdateTongSoLuong();
+                }
+            }
+        }
+
+        #endregion
     }
 }
