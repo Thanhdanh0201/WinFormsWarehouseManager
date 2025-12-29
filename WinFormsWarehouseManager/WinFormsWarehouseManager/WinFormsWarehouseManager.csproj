@@ -284,6 +284,7 @@
       <DependentUpon>FormXuatKho.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ActivityLogger.cs" />
+    <Compile Include="Helpers\ControlExtensions.cs" />
     <Compile Include="Helpers\NotificationManager.cs" />
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
