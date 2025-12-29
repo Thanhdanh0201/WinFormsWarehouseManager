@@ -29,14 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             this.guna2ProgressBar1 = new Guna.UI2.WinForms.Guna2ProgressBar();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // guna2ProgressBar1
             // 
-            this.guna2ProgressBar1.Location = new System.Drawing.Point(65, 201);
+            this.guna2ProgressBar1.CustomizableEdges = customizableEdges1;
+            this.guna2ProgressBar1.Location = new System.Drawing.Point(-33, 489);
             this.guna2ProgressBar1.Name = "guna2ProgressBar1";
+            this.guna2ProgressBar1.ShadowDecoration.CustomizableEdges = customizableEdges2;
             this.guna2ProgressBar1.Size = new System.Drawing.Size(530, 21);
             this.guna2ProgressBar1.TabIndex = 0;
             this.guna2ProgressBar1.Text = "guna2ProgressBar1";
@@ -52,7 +56,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackgroundImage = global::WinFormsWarehouseManager.Properties.Resources.bg;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(660, 300);
+            this.ClientSize = new System.Drawing.Size(450, 650);
             this.Controls.Add(this.guna2ProgressBar1);
             this.Font = new System.Drawing.Font("Comic Sans MS", 10.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

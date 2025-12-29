@@ -28,6 +28,14 @@ namespace WinFormsWarehouseManager
         private System.Windows.Forms.Label badgeNhapKho;
         private System.Windows.Forms.Label badgeXuatKho;
         private System.Windows.Forms.Timer timerUpdateBadges;
+
+        // Fields cho logout animation
+        private Panel logoutPanel;
+        private Label lblSaving;
+        private ProgressBar progressBarLogout;
+        private System.Windows.Forms.Timer logoutTimer;
+        private int logoutProgress = 0;
+
         public MainForm()
         {
             InitializeComponent();
@@ -35,11 +43,148 @@ namespace WinFormsWarehouseManager
             leftBorderBtn.Size = new Size(7, 60);
             panelMenu.Controls.Add(leftBorderBtn);
             this.Padding = new Padding(borderSize);
-            this.BackColor = Color.FromArgb(2, 51, 66);
+            this.BackColor = Color.White;
             NotificationManager.GenerateAllNotifications();
 
             InitializeBadges();
             InitializeBadgeTimer();
+            InitializeLogoutPanel();
+        }
+
+        private void InitializeLogoutPanel()
+        {
+            // Tạo panel overlay cho logout
+            logoutPanel = new Panel
+            {
+                BackColor = Color.FromArgb(220, 2, 51, 66), // Semi-transparent với opacity cao hơn
+                Dock = DockStyle.Fill,
+                Visible = false
+            };
+
+            // Label với icon hourglass "⏳ Loading emails..."
+            lblSaving = new Label
+            {
+                Text = "⏳ Saving ...",
+                Font = new Font("Segoe UI", 18F, FontStyle.Regular), // Không bold, size lớn hơn
+                ForeColor = Color.FromArgb(2, 51, 66), // Màu chữ theo theme
+                AutoSize = true,
+                BackColor = Color.Transparent
+            };
+
+            // Progress Bar dài hơn và style Marquee
+            progressBarLogout = new ProgressBar
+            {
+                Style = ProgressBarStyle.Marquee,
+                MarqueeAnimationSpeed = 30,
+                Width = 500, // Dài hơn
+                Height = 8, // Mỏng hơn, thanh thoát
+                Minimum = 0,
+                Maximum = 100,
+                Value = 0,
+                ForeColor = Color.FromArgb(2, 51, 66)
+            };
+
+            // Timer cho animation
+            logoutTimer = new System.Windows.Forms.Timer
+            {
+                Interval = 2000 // 2 giây để hoàn thành
+            };
+            logoutTimer.Tick += LogoutTimer_Tick;
+
+            logoutPanel.Controls.Add(lblSaving);
+            logoutPanel.Controls.Add(progressBarLogout);
+
+            // Thêm vào panelDesktop
+            panelDesktop.Controls.Add(logoutPanel);
+            logoutPanel.BringToFront();
+
+            // Layout khi panel resize
+            logoutPanel.Resize += (s, e) =>
+            {
+                CenterLogoutControls();
+            };
+        }
+
+        private void CenterLogoutControls()
+        {
+            if (logoutPanel == null) return;
+
+            // Center label
+            lblSaving.Location = new Point(
+                (logoutPanel.Width - lblSaving.Width) / 2,
+                (logoutPanel.Height - lblSaving.Height - progressBarLogout.Height - 30) / 2
+            );
+
+            // Center progress bar
+            progressBarLogout.Location = new Point(
+                (logoutPanel.Width - progressBarLogout.Width) / 2,
+                lblSaving.Bottom + 25
+            );
+        }
+
+        private void LogoutTimer_Tick(object sender, EventArgs e)
+        {
+            // Sau 2 giây thì hoàn thành
+            logoutTimer.Stop();
+            CompleteLogout();
+        }
+
+        private void StartLogout()
+        {
+            // Hiển thị logout panel
+            logoutPanel.Visible = true;
+            logoutPanel.BringToFront();
+            CenterLogoutControls();
+
+            // Bắt đầu animation marquee
+            progressBarLogout.Style = ProgressBarStyle.Marquee;
+            logoutTimer.Start();
+        }
+
+        private void CompleteLogout()
+        {
+            // Ẩn logout panel
+            logoutPanel.Visible = false;
+
+            // Đóng form hiện tại và mở login form
+            this.Hide();
+
+            LoginForm loginForm = new LoginForm();
+            loginForm.FormClosed += (s, args) =>
+            {
+                // Nếu đăng nhập thành công, hiển thị lại MainForm
+                // Nếu không, thoát ứng dụng
+                if (loginForm.DialogResult == DialogResult.OK)
+                {
+                    this.Show();
+                    // Reset lại form
+                    ResetMainForm();
+                }
+                else
+                {
+                    Application.Exit();
+                }
+            };
+
+            loginForm.ShowDialog();
+        }
+
+        private void ResetMainForm()
+        {
+            // Reset các biến và UI về trạng thái ban đầu
+            if (currChildForm != null)
+            {
+                currChildForm.Close();
+                currChildForm = null;
+            }
+
+            DisableButton();
+            leftBorderBtn.Visible = false;
+            iconChildForm.Visible = false;
+            lblChildForm.Visible = false;
+
+            // Click vào dashboard
+            iconButton1.PerformClick();
         }
 
         private void InitializeBadges()
@@ -49,7 +194,7 @@ namespace WinFormsWarehouseManager
             {
                 AutoSize = false,
                 Size = new Size(24, 24),
-                BackColor = Color.FromArgb(4, 119, 154), // Màu của iconButton3
+                BackColor = Color.FromArgb(4, 119, 154),
                 ForeColor = Color.White,
                 Font = new Font("Segoe UI", 8F, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleCenter,
@@ -57,7 +202,6 @@ namespace WinFormsWarehouseManager
                 Location = new Point(iconButton3.Right - 30, iconButton3.Top + 5)
             };
 
-            // Bo tròn badge
             badgeNhapKho.Paint += (s, e) => {
                 Label lbl = s as Label;
                 System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
@@ -79,7 +223,7 @@ namespace WinFormsWarehouseManager
             {
                 AutoSize = false,
                 Size = new Size(24, 24),
-                BackColor = Color.FromArgb(220, 53, 69), // Màu của iconButton4
+                BackColor = Color.FromArgb(220, 53, 69),
                 ForeColor = Color.White,
                 Font = new Font("Segoe UI", 8F, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleCenter,
@@ -107,7 +251,7 @@ namespace WinFormsWarehouseManager
         private void InitializeBadgeTimer()
         {
             timerUpdateBadges = new System.Windows.Forms.Timer();
-            timerUpdateBadges.Interval = 500; // Update mỗi 0.5 giây
+            timerUpdateBadges.Interval = 500;
             timerUpdateBadges.Tick += TimerUpdateBadges_Tick;
             timerUpdateBadges.Start();
         }
@@ -119,7 +263,6 @@ namespace WinFormsWarehouseManager
 
         private void UpdateBadges()
         {
-            // Update badge Nhập Kho
             int nhapKhoCount = GetTempImportCount();
             if (nhapKhoCount > 0)
             {
@@ -131,7 +274,6 @@ namespace WinFormsWarehouseManager
                 badgeNhapKho.Visible = false;
             }
 
-            // Update badge Xuất Kho
             int xuatKhoCount = GetTempExportCount();
             if (xuatKhoCount > 0)
             {
@@ -170,12 +312,11 @@ namespace WinFormsWarehouseManager
             }
         }
 
-    
         public void RefreshBadges()
         {
             UpdateBadges();
         }
-        //Drag Form
+
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
@@ -183,87 +324,77 @@ namespace WinFormsWarehouseManager
 
         protected override void WndProc(ref Message m)
         {
-            const int WM_NCCALCSIZE = 0x0083;//Standar Title Bar - Snap Window
+            const int WM_NCCALCSIZE = 0x0083;
             const int WM_SYSCOMMAND = 0x0112;
-            const int SC_MINIMIZE = 0xF020; //Minimize form (Before)
-            const int SC_RESTORE = 0xF120; //Restore form (Before)
-            const int WM_NCHITTEST = 0x0084;//Win32, Mouse Input Notification: Determine what part of the window corresponds to a point, allows to resize the form.
+            const int SC_MINIMIZE = 0xF020;
+            const int SC_RESTORE = 0xF120;
+            const int WM_NCHITTEST = 0x0084;
             const int resizeAreaSize = 10;
-            #region Form Resize
-            // Resize/WM_NCHITTEST values
-            const int HTCLIENT = 1; //Represents the client area of the window
-            const int HTLEFT = 10;  //Left border of a window, allows resize horizontally to the left
-            const int HTRIGHT = 11; //Right border of a window, allows resize horizontally to the right
-            const int HTTOP = 12;   //Upper-horizontal border of a window, allows resize vertically up
-            const int HTTOPLEFT = 13;//Upper-left corner of a window border, allows resize diagonally to the left
-            const int HTTOPRIGHT = 14;//Upper-right corner of a window border, allows resize diagonally to the right
-            const int HTBOTTOM = 15; //Lower-horizontal border of a window, allows resize vertically down
-            const int HTBOTTOMLEFT = 16;//Lower-left corner of a window border, allows resize diagonally to the left
-            const int HTBOTTOMRIGHT = 17;//Lower-right corner of a window border, allows resize diagonally to the right
-            ///<Doc> More Information: https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-nchittest </Doc>
+
+            const int HTCLIENT = 1;
+            const int HTLEFT = 10;
+            const int HTRIGHT = 11;
+            const int HTTOP = 12;
+            const int HTTOPLEFT = 13;
+            const int HTTOPRIGHT = 14;
+            const int HTBOTTOM = 15;
+            const int HTBOTTOMLEFT = 16;
+            const int HTBOTTOMRIGHT = 17;
+
             if (m.Msg == WM_NCHITTEST)
-            { //If the windows m is WM_NCHITTEST
+            {
                 base.WndProc(ref m);
-                if (this.WindowState == FormWindowState.Normal)//Resize the form if it is in normal state
+                if (this.WindowState == FormWindowState.Normal)
                 {
-                    if ((int)m.Result == HTCLIENT)//If the result of the m (mouse pointer) is in the client area of the window
+                    if ((int)m.Result == HTCLIENT)
                     {
-                        Point screenPoint = new Point(m.LParam.ToInt32()); //Gets screen point coordinates(X and Y coordinate of the pointer)                           
-                        Point clientPoint = this.PointToClient(screenPoint); //Computes the location of the screen point into client coordinates                          
-                        if (clientPoint.Y <= resizeAreaSize)//If the pointer is at the top of the form (within the resize area- X coordinate)
+                        Point screenPoint = new Point(m.LParam.ToInt32());
+                        Point clientPoint = this.PointToClient(screenPoint);
+                        if (clientPoint.Y <= resizeAreaSize)
                         {
-                            if (clientPoint.X <= resizeAreaSize) //If the pointer is at the coordinate X=0 or less than the resizing area(X=10) in 
-                                m.Result = (IntPtr)HTTOPLEFT; //Resize diagonally to the left
-                            else if (clientPoint.X < (this.Size.Width - resizeAreaSize))//If the pointer is at the coordinate X=11 or less than the width of the form(X=Form.Width-resizeArea)
-                                m.Result = (IntPtr)HTTOP; //Resize vertically up
-                            else //Resize diagonally to the right
+                            if (clientPoint.X <= resizeAreaSize)
+                                m.Result = (IntPtr)HTTOPLEFT;
+                            else if (clientPoint.X < (this.Size.Width - resizeAreaSize))
+                                m.Result = (IntPtr)HTTOP;
+                            else
                                 m.Result = (IntPtr)HTTOPRIGHT;
                         }
-                        else if (clientPoint.Y <= (this.Size.Height - resizeAreaSize)) //If the pointer is inside the form at the Y coordinate(discounting the resize area size)
+                        else if (clientPoint.Y <= (this.Size.Height - resizeAreaSize))
                         {
-                            if (clientPoint.X <= resizeAreaSize)//Resize horizontally to the left
+                            if (clientPoint.X <= resizeAreaSize)
                                 m.Result = (IntPtr)HTLEFT;
-                            else if (clientPoint.X > (this.Width - resizeAreaSize))//Resize horizontally to the right
+                            else if (clientPoint.X > (this.Width - resizeAreaSize))
                                 m.Result = (IntPtr)HTRIGHT;
                         }
                         else
                         {
-                            if (clientPoint.X <= resizeAreaSize)//Resize diagonally to the left
+                            if (clientPoint.X <= resizeAreaSize)
                                 m.Result = (IntPtr)HTBOTTOMLEFT;
-                            else if (clientPoint.X < (this.Size.Width - resizeAreaSize)) //Resize vertically down
+                            else if (clientPoint.X < (this.Size.Width - resizeAreaSize))
                                 m.Result = (IntPtr)HTBOTTOM;
-                            else //Resize diagonally to the right
+                            else
                                 m.Result = (IntPtr)HTBOTTOMRIGHT;
                         }
                     }
                 }
                 return;
             }
-            #endregion
-            //Remove border and keep snap window
+
             if (m.Msg == WM_NCCALCSIZE && m.WParam.ToInt32() == 1)
             {
                 return;
             }
-            //Keep form size when it is minimized and restored. Since the form is resized because it takes into account the size of the title bar and borders.
+
             if (m.Msg == WM_SYSCOMMAND)
             {
-                /// <see cref="https://docs.microsoft.com/en-us/windows/win32/menurc/wm-syscommand"/>
-                /// Quote:
-                /// In WM_SYSCOMMAND messages, the four low - order bits of the wParam parameter 
-                /// are used internally by the system.To obtain the correct result when testing 
-                /// the value of wParam, an application must combine the value 0xFFF0 with the 
-                /// wParam value by using the bitwise AND operator.
                 int wParam = (m.WParam.ToInt32() & 0xFFF0);
-                if (wParam == SC_MINIMIZE)  //Before
+                if (wParam == SC_MINIMIZE)
                     formSize = this.ClientSize;
-                if (wParam == SC_RESTORE)// Restored form(Before)
+                if (wParam == SC_RESTORE)
                     this.Size = formSize;
             }
             base.WndProc(ref m);
         }
-
-
 
         private void DisableButton()
         {
@@ -275,7 +406,6 @@ namespace WinFormsWarehouseManager
                 currBtn.IconColor = Color.GhostWhite;
                 currBtn.TextImageRelation = TextImageRelation.ImageBeforeText;
                 currBtn.ImageAlign = ContentAlignment.MiddleLeft;
-
             }
         }
 
@@ -303,7 +433,6 @@ namespace WinFormsWarehouseManager
                 iconChildForm.IconChar = currBtn.IconChar;
                 lblChildForm.Text = currBtn.Text;
                 lblChildForm.ForeColor = iconChildForm.IconColor;
-
             }
         }
 
@@ -322,6 +451,7 @@ namespace WinFormsWarehouseManager
             childForm.BringToFront();
             childForm.Show();
         }
+
         private struct RGBColors
         {
             public static Color color1 = Color.FromArgb(172, 126, 241);
@@ -331,38 +461,6 @@ namespace WinFormsWarehouseManager
             public static Color color5 = Color.FromArgb(249, 88, 155);
             public static Color color6 = Color.FromArgb(24, 161, 251);
             public static Color color7 = Color.Aqua;
-        }
-
-        
-
-        private void lblNameProject_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panelTop_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void btnIconUser_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblNameProject_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
 
         private void iconButton1_Click(object sender, EventArgs e)
@@ -397,21 +495,24 @@ namespace WinFormsWarehouseManager
 
         private void iconButton6_Click(object sender, EventArgs e)
         {
-            ActivateButton(sender, RGBColors.color5);
-            //OpenChildForm(new FormLogin());
-        }
+            // Nút đăng xuất - Bắt đầu animation logout
+            DialogResult result = MessageBox.Show(
+                "Bạn có muốn đăng xuất?",
+                "Xác nhận đăng xuất",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
 
-        private void label1_Click_1(object sender, EventArgs e)
-        {
-
+            if (result == DialogResult.Yes)
+            {
+                StartLogout();
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             formSize = this.ClientSize;
-
             iconButton1.PerformClick();
-
         }
 
         private void iconButton8_Click(object sender, EventArgs e)
@@ -419,7 +520,6 @@ namespace WinFormsWarehouseManager
             ActivateButton(sender, RGBColors.color7);
             iconChildForm.Visible = false;
             lblChildForm.Visible = false;
-            
         }
 
         private void iconButton7_Click(object sender, EventArgs e)
@@ -438,8 +538,8 @@ namespace WinFormsWarehouseManager
 
         private void panelTitleBar_MouseDown(object sender, MouseEventArgs e)
         {
-           ReleaseCapture();
-           SendMessage(this.Handle, 0x112, 0xf012, 0);
+            ReleaseCapture();
+            SendMessage(this.Handle, 0x112, 0xf012, 0);
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -455,13 +555,11 @@ namespace WinFormsWarehouseManager
                     this.Padding = new Padding(0, 8, 8, 8);
                     break;
                 case FormWindowState.Normal:
-                    if(this.Padding.Top != borderSize)
+                    if (this.Padding.Top != borderSize)
                     {
                         this.Padding = new Padding(borderSize);
                     }
                     break;
-
-
             }
         }
 
@@ -472,7 +570,7 @@ namespace WinFormsWarehouseManager
 
         private void iconbtnZoom_Click(object sender, EventArgs e)
         {
-            if(this.WindowState == FormWindowState.Normal)
+            if (this.WindowState == FormWindowState.Normal)
             {
                 this.WindowState = FormWindowState.Maximized;
             }
@@ -484,20 +582,22 @@ namespace WinFormsWarehouseManager
 
         private void iconbtnExit_Click(object sender, EventArgs e)
         {
-           DialogResult result = MessageBox.Show("Bạn có muốn thoát chương trình?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show("Bạn có muốn thoát chương trình?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
                 Application.Exit();
             }
-
-        }
-        private void iconbtnMenu_Click(object sender, EventArgs e)
-        {
         }
 
-        private void panelDesktop_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+        // Placeholder event handlers
+        private void lblNameProject_Click(object sender, EventArgs e) { }
+        private void label1_Click(object sender, EventArgs e) { }
+        private void panelTop_Paint(object sender, PaintEventArgs e) { }
+        private void btnIconUser_Click(object sender, EventArgs e) { }
+        private void lblNameProject_Click_1(object sender, EventArgs e) { }
+        private void panel1_Paint(object sender, PaintEventArgs e) { }
+        private void label1_Click_1(object sender, EventArgs e) { }
+        private void iconbtnMenu_Click(object sender, EventArgs e) { }
+        private void panelDesktop_Paint(object sender, PaintEventArgs e) { }
     }
 }

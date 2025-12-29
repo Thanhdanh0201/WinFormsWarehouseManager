@@ -21,11 +21,23 @@ namespace WinFormsWarehouseManager
         private DatabaseHelper dbHelper;
         private const string REMEMBER_FILE = "remember.dat";
 
+        // Splash screen controls - hiển thị trên panel login
+        private Label lblWelcome;
+        private ProgressBar progressBarSplash;
+        private Label lblSplashStatus;
+        private Timer timerProgress;
+        private Timer timerTextReveal;
+        private int progressValue = 0;
+        private MainForm mainForm;
+        private string fullWelcomeText = "";
+        private int currentCharIndex = 0;
+
         public LoginForm()
         {
             InitializeComponent();
             dbHelper = new DatabaseHelper();
             LoadRememberMe();
+            InitializeSplashControls();
         }
 
         //Drag Form
@@ -33,6 +45,213 @@ namespace WinFormsWarehouseManager
         private extern static void ReleaseCapture();
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
         private extern static void SendMessage(System.IntPtr hWnd, int wMsg, int wParam, int lParam);
+
+        /// <summary>
+        /// Khởi tạo các controls cho Splash Screen - hiển thị trên panel login
+        /// </summary>
+        private void InitializeSplashControls()
+        {
+            // Label Welcome - hiển thị ở vị trí email/password
+            lblWelcome = new Label
+            {
+                Text = "",
+                Font = new Font("Segoe UI", 11, FontStyle.Regular),
+                ForeColor = Color.FromArgb(230, 230, 230),
+                AutoSize = false,
+                Size = new Size(350, 120), // Chiếm vùng email + password
+                TextAlign = ContentAlignment.MiddleCenter,
+                Location = txtUsername.Location, // Vị trí của textbox email
+                Visible = false,
+                BackColor = Color.Transparent
+            };
+
+            // ProgressBar - style giống button đăng nhập
+            progressBarSplash = new ProgressBar
+            {
+                Size = btnLogin.Size, // Size giống button login
+                Location = btnLogin.Location, // Vị trí giống button login
+                Style = ProgressBarStyle.Continuous,
+                Maximum = 100,
+                Value = 0,
+                Visible = false
+            };
+
+            // Tùy chỉnh style của progress bar để đẹp như button
+            progressBarSplash.Height = btnLogin.Height;
+
+            // Label Status - hiển thị dưới progress bar
+            lblSplashStatus = new Label
+            {
+                Text = "Đang tải dữ liệu...",
+                Font = new Font("Segoe UI", 10),
+                ForeColor = Color.FromArgb(180, 180, 180),
+                AutoSize = false,
+                Size = new Size(350, 30),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Location = new Point(btnLogin.Location.X, btnLogin.Location.Y + btnLogin.Height + 10),
+                Visible = false,
+                BackColor = Color.Transparent
+            };
+
+            // Add controls vào form (cùng level với các controls login)
+            this.Controls.Add(lblWelcome);
+            this.Controls.Add(progressBarSplash);
+            this.Controls.Add(lblSplashStatus);
+
+            // Đưa splash controls lên trên cùng
+            lblWelcome.BringToFront();
+            progressBarSplash.BringToFront();
+            lblSplashStatus.BringToFront();
+
+            // Timer để update progress
+            timerProgress = new Timer
+            {
+                Interval = 30
+            };
+            timerProgress.Tick += TimerProgress_Tick;
+
+            // Timer để hiện text từ từ
+            timerTextReveal = new Timer
+            {
+                Interval = 50
+            };
+            timerTextReveal.Tick += TimerTextReveal_Tick;
+        }
+
+        /// <summary>
+        /// Timer tick để hiện text từng ký tự
+        /// </summary>
+        private void TimerTextReveal_Tick(object sender, EventArgs e)
+        {
+            if (currentCharIndex < fullWelcomeText.Length)
+            {
+                currentCharIndex++;
+                lblWelcome.Text = fullWelcomeText.Substring(0, currentCharIndex);
+            }
+            else
+            {
+                timerTextReveal.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Timer tick để update progress bar
+        /// </summary>
+        private void TimerProgress_Tick(object sender, EventArgs e)
+        {
+            if (progressValue < 100)
+            {
+                progressValue += 2; // Tăng 2% mỗi lần
+                progressBarSplash.Value = progressValue;
+
+                // Update status text theo progress
+                if (progressValue < 30)
+                    lblSplashStatus.Text = "Đang khởi tạo...";
+                else if (progressValue < 60)
+                    lblSplashStatus.Text = "Đang tải giao diện...";
+                else if (progressValue < 90)
+                    lblSplashStatus.Text = "Đang tải dữ liệu...";
+                else
+                    lblSplashStatus.Text = "Hoàn tất!";
+            }
+            else
+            {
+                // Hoàn thành
+                timerProgress.Stop();
+
+                // Delay 200ms để người dùng thấy 100%
+                Task.Delay(200).ContinueWith(t =>
+                {
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                        // Ẩn LoginForm
+                        this.Hide();
+
+                        // Hiện MainForm (đã được load sẵn)
+                        if (mainForm != null)
+                        {
+                            mainForm.Show();
+                            mainForm.FormClosed += (s, args) => this.Close();
+                        }
+                    });
+                });
+            }
+        }
+
+        /// <summary>
+        /// Hiển thị splash screen và load MainForm
+        /// </summary>
+        private async void ShowSplashAndLoadMainForm(User user)
+        {
+            // Ẩn các controls login
+            HideLoginControls();
+
+            // Hiện splash controls
+            lblWelcome.Visible = true;
+            progressBarSplash.Visible = true;
+            lblSplashStatus.Visible = true;
+
+            // Chuẩn bị text để hiện dần
+            fullWelcomeText = $"Xin chào {user.FullName},bạn đã đăng nhập vào Warehouse Manager";
+            currentCharIndex = 0;
+            lblWelcome.Text = "";
+
+            // Bắt đầu hiện text từ từ
+            timerTextReveal.Start();
+
+            // Đợi 1.8s cho text hiện xong
+            await Task.Delay(1800);
+
+            // Reset progress
+            progressValue = 0;
+            progressBarSplash.Value = 0;
+
+            // Bắt đầu progress bar
+            timerProgress.Start();
+
+            // Load MainForm trong background và ẩn đi
+            await Task.Run(() =>
+            {
+                this.Invoke((MethodInvoker)delegate
+                {
+                    // Tạo MainForm (tốn thời gian)
+                    mainForm = new MainForm();
+
+                    // Load form nhưng ẩn đi (không hiện lên)
+                    mainForm.Opacity = 0; // Ẩn hoàn toàn
+                    mainForm.Show(); // Load form
+                    mainForm.Hide(); // Ẩn ngay
+                    mainForm.Opacity = 1; // Khôi phục opacity
+                });
+
+                // Giả lập thời gian để progress bar chạy mượt
+                System.Threading.Thread.Sleep(500);
+            });
+
+            // Sau khi load xong, chờ progress bar chạy hết
+            // Timer sẽ tự động mở MainForm khi đạt 100%
+        }
+
+        /// <summary>
+        /// Ẩn các controls login
+        /// </summary>
+        private void HideLoginControls()
+        {
+            txtUsername.Visible = false;
+            txtPassword.Visible = false;
+            chkRememberMe.Visible = false;
+            btnLogin.Visible = false;
+            llblForgotPW.Visible = false;
+
+            // Ẩn các label "Email:" và "Password:" nếu có
+            foreach (Control control in this.Controls)
+            {
+                if (control is Label && control != lblWelcome && control != lblSplashStatus)
+                {
+                    control.Visible = false;
+                }
+            }
+        }
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
@@ -109,14 +328,8 @@ namespace WinFormsWarehouseManager
                 // Ghi log đăng nhập
                 LogActivity(user.UserID, "Đăng nhập", "User đăng nhập vào hệ thống");
 
-                // Mở MainForm
-                MessageBox.Show($"Đăng nhập thành công!\nXin chào {user.FullName}",
-                    "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                MainForm mainForm = new MainForm();
-                this.Hide();
-                mainForm.ShowDialog();
-                this.Close();
+                // Hiện splash và load MainForm
+                ShowSplashAndLoadMainForm(user);
             }
             else
             {

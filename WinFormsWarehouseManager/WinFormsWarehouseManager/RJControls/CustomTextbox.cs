@@ -136,8 +136,21 @@ namespace WinFormsWarehouseManager.CustomControls
             }
             set
             {
-                textBox1.Text = value;
-                SetPlaceholder();
+                // Nếu set giá trị thực (không rỗng)
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    isPlaceholder = false;
+                    textBox1.Text = value;
+                    textBox1.ForeColor = this.ForeColor;  // Màu bình thường
+                    if (isPasswordChar)
+                        textBox1.UseSystemPasswordChar = true;
+                }
+                else
+                {
+                    // Nếu set rỗng thì hiện placeholder
+                    textBox1.Text = "";
+                    SetPlaceholder();
+                }
             }
         }
 
